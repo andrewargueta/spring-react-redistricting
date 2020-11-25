@@ -1,0 +1,108 @@
+@media all and (min-width: 992px) {
+	.navbar .nav-item .dropdown-menu{ display: none; }
+	.navbar .nav-item:hover .nav-link{ color: #fff;  }
+	.navbar .nav-item:hover .dropdown-menu{ display: block; }
+}	
+
+body{
+  font-family: "Lucida Console", Monaco, monospace !important;
+  background-color: white;
+}
+.leaflet-container{
+  height: 100%;
+}
+.navbar-brand {
+  margin-top: -3%;
+}
+
+.selectpicker{
+  cursor: ns-resize;
+}
+
+.precinct-popup{
+    position: relative;
+    bottom: 175px;
+    padding-left: 0px;
+    width: 33%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#selectServer, #inputCompact{
+  height: 30px;
+}
+
+#error-msg{
+  color: red;
+}
+#success-msg{
+  color: green;
+}
+.job-tab{
+  width:100%
+}
+#map {
+    width: 100%;
+    height: 700px;
+    position: absolute;
+    margin:0;
+    padding:0; 
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+
+#boxed-form, #generated-box {
+  border: 3px solid gray;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  overflow: hidden;
+  padding-bottom: 15px;
+}
+
+#job-hdr {
+  text-align: center;
+  padding-bottom: 5px;
+}
+
+#submit-btn {
+  text-align: center;
+}
+
+#job-list{
+  overflow: scroll;
+  max-height: 680px;
+}
+
+#job-btn {
+  word-wrap: break-word;
+  text-align : left; 
+  white-space : normal;
+}
+
+#input-min {
+  margin-bottom: 1%;
+  width: 100%;
+}
+
+#del-btn {
+  float : right;
+  color: black;
+}
+
+#map-tabs {
+  z-index:401;
+  float: right;
+  font-family: "Lucida Console", Monaco, monospace !important;
+}
+
+.input-group{
+  z-index: 401;
+  float: right;
+  font-family: "Lucida Console", Monaco, monospace !important;
+}
+.form-check-inline {
+  background: whitesmoke;
+  margin-right:0rem;
+}

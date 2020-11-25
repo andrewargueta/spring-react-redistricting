@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - DemoApplication",
+            "request": "launch",
+            "mainClass": "Lions.demo.DemoApplication",
+            "projectName": "demo"
+        }
+    ]
+}
