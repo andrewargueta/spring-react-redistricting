@@ -12,9 +12,8 @@ class UserForm extends React.Component {
         super(props);
         this.state = {
           numOfPlans: 0,
-          server: "",
           minorityGroup: {},
-          compactnesss: "",
+          compactness: "",
           populationVariation: 0,
           showCreateJob: true,
           jobs:[],
@@ -31,14 +30,12 @@ class UserForm extends React.Component {
         //fix the bug when switching from plot to map
          
       }
-      checkInput(plans, server, minority, compactness, population_variation) {
-        console.log(typeof(plans), server, minority, compactness, population_variation);
+      checkInput(plans, minority, compactness, population_variation) {
+        console.log(typeof(plans), minority, compactness, population_variation);
         if (Number.isInteger(Number(plans)) && plans > 0) {
-          if (server.length != 0) {
             if (minority.length != 0) {
               return true;
             }
-          }
         }
         return false;
       }
@@ -63,11 +60,10 @@ class UserForm extends React.Component {
 
     handleSubmit(e){
         //add job input to job list
-        if(this.checkInput(this.state.numOfPlans, this.state.server, this.state.minorityGroup,this.state.compactnesss, this.state.populationVariation)){
+        if(this.checkInput(this.state.numOfPlans, this.state.minorityGroup,this.state.compactness, this.state.populationVariation)){
             const userInputs = { 
                 'state' : this.props.state,
                 'numOfPlans': this.state.numOfPlans,
-                'server': this.state.server,
                 'minorityGroups': this.state.minorityGroup,
                 'compactness': this.state.compactness,
                 'populationVariation': this.state.populationVariation,
@@ -116,6 +112,7 @@ class UserForm extends React.Component {
       });
     }
     addJob(job){
+        console.log(job);
         this.setState({
           jobs: [...this.state.jobs, <Job
             status="Waiting"
@@ -123,9 +120,9 @@ class UserForm extends React.Component {
             deleteJob={this.deleteJob}
             jobNum={job.jobId}
             numOfPlans={this.state.numOfPlans}
-            server= {this.state.server}
+            server= {job.runLocation}
             minorityGroup= {this.state.minorityGroup}
-            compactnesss= {this.state.compactness}
+            compactness= {this.state.compactness}
             populationVariation= {this.state.populationVariation}
             sendingData = {this.sendingData}
             />]
@@ -154,12 +151,14 @@ class UserForm extends React.Component {
                           <input type="number" name="numOfPlans" className="form-control" id="numPlans" placeholder="Enter Num. of Plans" min="1"  onChange={this.handleChange} required />
                         </div>
                         <div className = "form-group col-md-6 mb-2">
-                          <label htmlFor = "server">Server</label>
-                          <select id="selectServer" name="server" className="form-control" onChange={this.handleChange} required>
-                            <option disabled selected value = "">Select Server</option>
-                            <option>Local</option>
-                            <option>SeaWulf</option>
+                        <label htmlFor="compactness">Compactness Limit</label> 
+                          <select id="inputCompact" name="compactness" className="form-control"   onChange={this.handleChange}  required>
+                            <option disabled selected value = "">Select Compactness</option>
+                            <option>Somewhat Compact </option>
+                            <option>Compact</option>
+                            <option>Very Compact</option>
                           </select>
+                      <br />
                         </div>
                       </div>  
                       <label htmlFor = "minority_group">Minority Group</label> <br />
@@ -172,14 +171,7 @@ class UserForm extends React.Component {
                       </select>
                       <br />
     
-                      <label htmlFor="compactness">Compactness Limit</label> 
-                      <select id="inputCompact" name="compactness" className="form-control"   onChange={this.handleChange}  required>
-                        <option disabled selected value = "">Select Compactness</option>
-                        <option>Somewhat Compact </option>
-                        <option>Compact</option>
-                        <option>Very Compact</option>
-                      </select>
-                      <br />
+                      
     
                       <label htmlFor = "population_variation">Population Variation</label>
                       <div className="d-flex justify-content-center my-4">

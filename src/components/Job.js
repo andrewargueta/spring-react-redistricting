@@ -10,7 +10,7 @@ class Job extends React.Component {
             numOfPlans: this.props.numOfPlans,
             server: this.props.server,
             minorityGroup: this.props.minorityGroup,
-            compactnesss: this.props.compactnesss,
+            compactness: this.props.compactness,
             populationVariation: this.props.populationVariation,
             jobNum: this.props.jobNum,
             status: this.props.status
@@ -100,7 +100,7 @@ class Job extends React.Component {
 
                     <div id={"collapse"+this.props.jobNum} class="collapse" aria-labelledby={"#heading"+this.props.jobNum} data-parent="#accordionExample">
                     <div class="card-body">
-                      <div>Compactnesss:  {this.props.compactnesss}</div>
+                      <div>Compactness:  {this.props.compactness}</div>
                       <div>Minority Groups:  {this.props.minorityGroup}</div>
                       <div>Population Variation:  {this.props.populationVariation}</div>
                       <div>Server:  {this.props.server}</div>
