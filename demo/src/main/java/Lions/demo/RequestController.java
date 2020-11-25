@@ -63,7 +63,7 @@ public class RequestController {
 
     public Location determineRunLocation(InputParam param){
         System.out.println("plan limit : " + Integer.parseInt(prop.getProperty("planLimit")));
-        if(param.getNumOfPlans() > Integer.parseInt(prop.getProperty("planLimit"))){
+        if(param.getNumOfPlans() < Integer.parseInt(prop.getProperty("planLimit"))){
             return Location.LOCAL;        
         }else{
             return Location.SEAWULF;
@@ -80,7 +80,7 @@ public class RequestController {
         // }else{
         //     runLoc = Location.SEAWULF;
         // }
-        System.out.println(param.getServer());
+        // System.out.println(param.getServer());
         System.out.println(runLoc);
         System.out.println(param.getState());
         Job job = jobHandler.createJob(param, runLoc, param.getState());
