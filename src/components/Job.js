@@ -26,7 +26,10 @@ class Job extends React.Component {
     }
 
     clickJob(e){
-      if(! e.target.classList.contains("collapsed")){return;}
+      if(! e.target.classList.contains("collapsed")){
+        document.getElementById("card"+this.props.jobNum).classList.remove('highlighted');
+        return;}
+      document.getElementById("card"+this.props.jobNum).classList.add('highlighted');
       document.getElementById("job-btn").classList.remove('disabled');
       document.getElementById("2").style.display="block";
       this.sendingData(e);
@@ -82,7 +85,7 @@ class Job extends React.Component {
     render() {
         return (
             <div class="accordion" id="accordionExample">
-                <div class="card" onClick={this.clickJob}>
+                <div className="card" id={"card"+this.props.jobNum} onClick={this.clickJob}>
                     <div class="header" id={"#heading"+this.props.jobNum}>
                         <button class="btn job-tab collapsed" type="button" data-toggle="collapse" data-target={"#collapse"+this.props.jobNum} aria-expanded="true" 
                         aria-controls={"collapse"+this.props.jobNum}>
