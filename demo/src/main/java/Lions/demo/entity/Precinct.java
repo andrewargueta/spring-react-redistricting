@@ -8,7 +8,7 @@ import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "texasprecinct", schema = "lions")
+@Table(name = "texasprecinctnew", schema = "lions")
 @SecondaryTable(name = "texasprecinctneighbors", schema = "lions", pkJoinColumns = @PrimaryKeyJoinColumn(name = "geoId"))
 public class Precinct {
     private String geoId;

@@ -13,15 +13,15 @@ import texasState from '../geojson/texas-state.json';
 //import texasPrecinct from '../geojson/texas-precinct.json';
 
 import alabamaStateLayer from '../geojson/alabama-state.json';
-import alabamadistrictLayer from '../geojson/alabama-congressional.json';
+//import alabamadistrictLayer from '../geojson/alabama-congressional.json';
 import alabamaPrecinctLayer from '../geojson/alabama-precinct.json';
 
 import mississippiState from '../geojson/mississippi-state.json';
-import mississippiCongressional from '../geojson/mississippi-congressional.json';
+//import mississippiCongressional from '../geojson/mississippi-congressional.json';
 import mississippiPrecinct from '../geojson/mississippi-precinct.json';
 
 import BoxWhisker from './BoxWhisker.js';
-import PrecinctPopUp from './PrecinctPopUp.js'
+//import PrecinctPopUp from './PrecinctPopUp.js'
 
 let config = {};
 
@@ -285,10 +285,10 @@ class Map extends Component {
         stateDistrictsLayer=JSON.parse(districtLayer);
     }
     if(this.state.currentState === "Alabama"){
-      //stateDistrictsLayer=alabamadistrictLayer;
+      stateDistrictsLayer=JSON.parse(districtLayer);
     }
     if(this.state.currentState === "Mississippi"){
-      //stateDistrictsLayer=mississippiCongressional;
+      stateDistrictsLayer=JSON.parse(districtLayer);
     }
     this.setState({geojson: stateDistrictsLayer});
     geojsonLayer = L.geoJson(stateDistrictsLayer, {
