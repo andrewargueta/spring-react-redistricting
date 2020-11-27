@@ -280,14 +280,15 @@ class Map extends Component {
       }
     });
     var geojsonLayer={}, stateDistrictsLayer={};
+    stateDistrictsLayer=JSON.parse(districtLayer);
     if(this.state.currentState === "Texas"){
         stateDistrictsLayer=JSON.parse(districtLayer);
     }
     if(this.state.currentState === "Alabama"){
-      stateDistrictsLayer=alabamadistrictLayer;
+      //stateDistrictsLayer=alabamadistrictLayer;
     }
     if(this.state.currentState === "Mississippi"){
-      stateDistrictsLayer=mississippiCongressional;
+      //stateDistrictsLayer=mississippiCongressional;
     }
     this.setState({geojson: stateDistrictsLayer});
     geojsonLayer = L.geoJson(stateDistrictsLayer, {
@@ -319,15 +320,16 @@ class Map extends Component {
       }
     });
     var geojsonLayer ={}, statePrecinct={};
+    //statePrecinct=JSON.parse(precinctLayer);
     if(this.state.currentState === "Texas"){
       statePrecinct=JSON.parse(precinctLayer);
       
     }
     if(this.state.currentState === "Alabama"){
-      statePrecinct=alabamaPrecinctLayer;
+      statePrecinct=JSON.parse(precinctLayer);
     }
     if(this.state.currentState === "Mississippi"){ 
-      statePrecinct=mississippiPrecinct;
+      statePrecinct=JSON.parse(precinctLayer);
     }
     this.setState({geojson: statePrecinct});
     var prevPrecinct=null;

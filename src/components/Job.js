@@ -27,9 +27,10 @@ class Job extends React.Component {
 
     clickJob(e){
       if(! e.target.classList.contains("collapsed")){
-        document.getElementById("card"+this.props.jobNum).classList.remove('highlighted');
-        return;}
-      document.getElementById("card"+this.props.jobNum).classList.add('highlighted');
+        //document.getElementById("card"+this.props.jobNum).classList.remove('highlighted');
+        return;
+      }
+      //document.getElementById("card"+this.props.jobNum).classList.add('highlighted');
       document.getElementById("job-btn").classList.remove('disabled');
       document.getElementById("2").style.display="block";
       this.sendingData(e);
