@@ -8,8 +8,8 @@ import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "texasprecinctnew", schema = "lions")
-@SecondaryTable(name = "texasprecinctneighbors", schema = "lions", pkJoinColumns = @PrimaryKeyJoinColumn(name = "geoId"))
+@Table(name = "allprecincts", schema = "lions")
+//@SecondaryTable(name = "texasprecinctneighbors", schema = "lions", pkJoinColumns = @PrimaryKeyJoinColumn(name = "geoId"))
 public class Precinct {
     private String geoId;
     private String name;
@@ -32,7 +32,7 @@ public class Precinct {
     }
 
     @Id
-    @Column(name = "geoId")
+    @Column(name = "geoID")
     public String getGeoId() {
         return this.geoId;
     }
@@ -41,7 +41,7 @@ public class Precinct {
         this.geoId = geoId;
     }
 
-    @Column(name = "name")
+    @Column(name = "Name")
     public String getName() {
         return this.name;
     }
@@ -158,8 +158,8 @@ public class Precinct {
         this.coordinates = coordinates;
     }
 
-    @Column(name = "neighbors", table = "texasprecinctneighbors")
-    // @Column(name = "neighbors")
+    //@Column(name = "neighbors", table = "texasprecinctneighbors")
+    @Column(name = "neighbors")
     public String getNeighbors() {
         return this.neighbors;
     }
