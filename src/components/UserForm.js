@@ -37,14 +37,15 @@ class UserForm extends React.Component {
                          for(var i=0; i<response.data.length; i++){
                           prevJobs.push( <Job
                             status="Waiting"
-                            state={response.data[i].state}
+                            state={response.data[i].stateName}
                             deleteJob={this.deleteJob}
                             jobNum={response.data[i].jobId}
-                            numOfPlans={response.data[i].numOfPlans}
+                            numOfPlans={response.data[i].numberOfPlans}
                             server= {response.data[i].runLocation}
                             minorityGroup= {response.data[i].minorityGroup}
                             compactness= {response.data[i].compactness}
-                            populationVariation= {response.data[i].populationVariation}
+                            populationVariation= {response.data[i].populationThreshold}
+                            status= {response.data[i].status}
                             sendingData = {this.sendingData}
                             />)
                          }
