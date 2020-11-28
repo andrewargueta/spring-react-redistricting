@@ -98,7 +98,6 @@ class Map extends Component {
           pairOfCoords=[];
         } 
       }
-      console.log(currentPrecinct);
       prefix += JSON.stringify(listOfCoords) +']},"properties":{'+
         '"aianTotal":'+currentPrecinct.aianTotal+','+
         '"aianVap":'+currentPrecinct.aianVap+','+
