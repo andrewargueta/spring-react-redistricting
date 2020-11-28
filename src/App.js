@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Map from './components/Map';
 import MapNavbar from './components/MapNavbar';
 import UserForm from './components/UserForm';
@@ -24,8 +25,8 @@ class App extends Component {
                     console.log(error); 
                 } 
             ); 
-        }
-  }
+    }
+
   render() {
     return(
       <>
