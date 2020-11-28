@@ -37,6 +37,8 @@ public class RequestController {
     private CongressionalRepository congressionalRepository;
     @Autowired
     private StateRepository stateRepository;
+    @Autowired
+    private JobRepository jobRepository;
 
     @PostConstruct
     private void postConstruct() {
@@ -56,8 +58,10 @@ public class RequestController {
         Optional<State> temp = stateRepository.findById(stateName);
         State selectedState = temp.get();
         // System.out.println(selectedState.getName());
-        System.out.println(selectedState.getPrecincts().get(0).getCoordinates());
+        // System.out.println(selectedState.getPrecincts().get(0).getCoordinates());
         // System.out.println(selectedState.getCoordinates().get(0).getNeighbors());
+        Iterable<Job> jobs = jobRepository.findAll();
+        System.out.println(jobs.toString());
         return stateRepository.findById(stateName);
         // return stateRepository.findAll();
     }

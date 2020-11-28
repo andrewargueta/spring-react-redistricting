@@ -69,7 +69,8 @@ public class JobHandler {
             }
         }
         Location runLoc = location;
-        Job newJob = new Job(stateName, newJobId, numOfPlans, compactness, populationVariation, minorityGroups, runLoc, Progress.WAITING);
+        // Job newJob = new Job(stateName, newJobId, numOfPlans, compactness, populationVariation, minorityGroups, runLoc, Progress.WAITING);
+        Job newJob = new Job(stateName, newJobId, numOfPlans, "Compact", populationVariation, minorityGroups, "Local", "Waiting");
         addJob(newJob);
         //persist job in em
         return newJob;
