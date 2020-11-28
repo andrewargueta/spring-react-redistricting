@@ -51,6 +51,12 @@ public class RequestController {
         
     }
 
+    @GetMapping(value = "job/previousJobs")
+    public @ResponseBody Iterable<Job> getPreviousJobs(){
+        Iterable<Job> jobs = jobRepository.findAll();
+        return jobs;
+    }
+
     @PostMapping(value = "state/setState")
     public @ResponseBody Optional<State> getState(@RequestBody Map<String, String> map) {
         String stateName = map.get("name");
