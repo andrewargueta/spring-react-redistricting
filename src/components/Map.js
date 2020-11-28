@@ -9,19 +9,11 @@ import 'leaflet/dist/leaflet.css';
 import baseLayer from '../geojson/states.json';
 
 import texasState from '../geojson/texas-state.json';
-//import texasCongressional from '../geojson/texas-congressional.json';
-//import texasPrecinct from '../geojson/texas-precinct.json';
-
 import alabamaStateLayer from '../geojson/alabama-state.json';
-//import alabamadistrictLayer from '../geojson/alabama-congressional.json';
-import alabamaPrecinctLayer from '../geojson/alabama-precinct.json';
-
 import mississippiState from '../geojson/mississippi-state.json';
-//import mississippiCongressional from '../geojson/mississippi-congressional.json';
-import mississippiPrecinct from '../geojson/mississippi-precinct.json';
+
 
 import BoxWhisker from './BoxWhisker.js';
-//import PrecinctPopUp from './PrecinctPopUp.js'
 
 let config = {};
 
@@ -153,17 +145,14 @@ class Map extends Component {
     var map = this.state.map;
     var tileLayer = this.state.tileLayer;
     var geojsonLayer={}, precinct={}, stateAverages={} ;
+    precinct=JSON.parse(precinctLayer);
     if(this.state.currentState=="Texas"){
-      // precinct = texasPrecinct;
-      precinct=JSON.parse(precinctLayer);
       stateAverages={"asian":.052, "black":.129, "hispanic":.397,"native":.011};
     }
     if(this.state.currentState=="Alabama"){
-      precinct = alabamaPrecinctLayer;
       stateAverages={"asian":.015, "black":.268, "hispanic":.046,"native":.007};
     }
     if(this.state.currentState=="Mississippi"){
-      precinct = mississippiPrecinct;
       stateAverages={"asian":.011, "black":.378, "hispanic":.034,"native":.007};
     }
     map.eachLayer(function (layer) {
@@ -282,15 +271,6 @@ class Map extends Component {
     });
     var geojsonLayer={}, stateDistrictsLayer={};
     stateDistrictsLayer=JSON.parse(districtLayer);
-    if(this.state.currentState === "Texas"){
-        stateDistrictsLayer=JSON.parse(districtLayer);
-    }
-    if(this.state.currentState === "Alabama"){
-      stateDistrictsLayer=JSON.parse(districtLayer);
-    }
-    if(this.state.currentState === "Mississippi"){
-      stateDistrictsLayer=JSON.parse(districtLayer);
-    }
     this.setState({geojson: stateDistrictsLayer});
     geojsonLayer = L.geoJson(stateDistrictsLayer, {
       onEachFeature: function(feature, layer){  
@@ -321,17 +301,7 @@ class Map extends Component {
       }
     });
     var geojsonLayer ={}, statePrecinct={};
-    //statePrecinct=JSON.parse(precinctLayer);
-    if(this.state.currentState === "Texas"){
-      statePrecinct=JSON.parse(precinctLayer);
-      
-    }
-    if(this.state.currentState === "Alabama"){
-      statePrecinct=JSON.parse(precinctLayer);
-    }
-    if(this.state.currentState === "Mississippi"){ 
-      statePrecinct=JSON.parse(precinctLayer);
-    }
+    statePrecinct=JSON.parse(precinctLayer);
     this.setState({geojson: statePrecinct});
     var prevPrecinct=null;
     geojsonLayer = L.geoJson(statePrecinct, {
