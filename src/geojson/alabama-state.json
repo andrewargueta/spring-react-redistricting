@@ -1,14 +1,5 @@
-{
-    "type": "Feature",
-    "properties": {
-     "name": "Alabama",
-     "population": 4833722,
-     "houseseats": 7
-    },
-    "geometry": {
-     "coordinates": [
-      [
-       [
+{"type": "Feature","properties": {"name": "Alabama","population": 4833722,"houseseats": 7},
+    "geometry": {"coordinates": [[[
         [
          -88.124658,
          30.28364
