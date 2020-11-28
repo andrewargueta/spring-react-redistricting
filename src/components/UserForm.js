@@ -17,7 +17,7 @@ class UserForm extends React.Component {
           populationVariation: 0,
           showCreateJob: true,
           jobs:[],
-          childData:{}
+          childData:{},
         };
         this.handleChange = this.handleChange.bind(this);
         this.addJob = this.addJob.bind(this);
@@ -25,6 +25,45 @@ class UserForm extends React.Component {
       }
       componentDidMount(){
         document.getElementById("global-summary").style.display="none";
+          axios.get("http://localhost:8080/job/previousJobs", {
+                       headers: {
+                           'Content-Type': 'application/json',
+                       }
+                   }
+                 ).then( 
+                     (response) => { 
+                         console.log(response);
+                         var prevJobs = [];
+                         for(var i=0; i<response.data.length; i++){
+                          prevJobs.push( <Job
+                            status="Waiting"
+                            state={response.data[i].state}
+                            deleteJob={this.deleteJob}
+                            jobNum={response.data[i].jobId}
+                            numOfPlans={response.data[i].numOfPlans}
+                            server= {response.data[i].runLocation}
+                            minorityGroup= {response.data[i].minorityGroup}
+                            compactness= {response.data[i].compactness}
+                            populationVariation= {response.data[i].populationVariation}
+                            sendingData = {this.sendingData}
+                            />)
+                         }
+                         this.setState({jobs: prevJobs});
+                         var str = "";
+                         for (var a = 0; a < prevJobs.length; a++) {
+                           str += "{";
+                           str += prevJobs[a].jobId + ",";
+                           str += prevJobs[a].stateName + "}";
+                           if (a != prevJobs.length - 1) {
+                             str += ",";
+                           }
+                         }
+                         console.log("spring : prev jobs: " + str); 
+                     }, 
+                     (error) => { 
+                         console.log(error); 
+                     } 
+                 ); 
       }
       componentDidUpdate(){
         //fix the bug when switching from plot to map
