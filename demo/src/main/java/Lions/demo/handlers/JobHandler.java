@@ -1,6 +1,12 @@
 package Lions.demo.handlers;
 
 import java.util.*;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
+
 import Lions.demo.*;
 import Lions.demo.enums.*;
 import Lions.demo.entity.*;
@@ -8,6 +14,9 @@ import Lions.demo.entity.*;
 public class JobHandler {
     private List<Job> createdJobs;
     private int nextId;
+
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistence");
+    EntityManager em = emf.createEntityManager();
 
     public JobHandler(){
         this.createdJobs = new ArrayList<Job>();
@@ -56,6 +65,7 @@ public class JobHandler {
         // Job newJob = new Job(stateName, newJobId, numOfPlans, compactness, populationVariation, minorityGroups, runLoc, Progress.WAITING);
         Job newJob = new Job(stateName, newJobId, numOfPlans, param.getCompactness(), populationVariation, minorityGroups, "Local", "Waiting");
         addJob(newJob);
+        // em.persist(newJob);
         //persist job in em
         return newJob;
     }
