@@ -53,15 +53,15 @@ class PrecinctPopUp extends React.Component {
                     <div class="card-body">
                       <div>Name:  {this.state.currentPrecinct.feature.properties.name}</div>
                       <div>Total Population:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.totPop)}</div>
-                      <div>Total VAP:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.totVAP)}</div>
+                      <div>Total VAP:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.totVap)}</div>
                       <div>Total Asian American Population:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.asianTotal)}</div>
-                      <div>Total Asian American VAP:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.asianVAP)}</div>
+                      <div>Total Asian American VAP:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.asianVap)}</div>
                       <div>Total Black Population:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.blackTotal)}</div>
-                      <div>Total Black VAP:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.blackVAP)}</div>
+                      <div>Total Black VAP:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.blackVap)}</div>
                       <div>Total Hispanic Population:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.hispTotal)}</div>
-                      <div>Total Hispanic VAP:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.hispVAP)}</div>
+                      <div>Total Hispanic VAP:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.hispVap)}</div>
                       <div>Total American Indian/ Alaskan Native Population:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.aianTotal)}</div>
-                      <div>Total American Indian/ Alaskan Native VAP:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.aianVAP)}</div>
+                      <div>Total American Indian/ Alaskan Native VAP:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.aianVap)}</div>
                     </div>
                     </div>
                 </div>

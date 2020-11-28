@@ -14,6 +14,7 @@ import mississippiState from '../geojson/mississippi-state.json';
 
 
 import BoxWhisker from './BoxWhisker.js';
+//import PrecinctPopUp from './PrecinctPopUp.js'
 
 let config = {};
 
@@ -97,6 +98,7 @@ class Map extends Component {
           pairOfCoords=[];
         } 
       }
+      console.log(currentPrecinct);
       prefix += JSON.stringify(listOfCoords) +']},"properties":{'+
         '"aianTotal":'+currentPrecinct.aianTotal+','+
         '"aianVap":'+currentPrecinct.aianVap+','+

@@ -32,7 +32,7 @@ public class Precinct {
     }
 
     @Id
-    @Column(name = "geoID")
+    @Column(name = "geoId")
     public String getGeoId() {
         return this.geoId;
     }
@@ -41,7 +41,7 @@ public class Precinct {
         this.geoId = geoId;
     }
 
-    @Column(name = "Name")
+    @Column(name = "name")
     public String getName() {
         return this.name;
     }
