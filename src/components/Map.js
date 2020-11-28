@@ -262,6 +262,7 @@ class Map extends Component {
         (response) => { 
             districtLayer = this.generateDistrictLayer(response);
             precinctLayer = this.generatePrecinctLayer(response);
+            console.log("spring :" + JSON.stringify(response.data)); 
         }, 
         (error) => { 
             console.log(error); 
