@@ -22,12 +22,6 @@ public class JobHandler {
         this.createdJobs = new ArrayList<Job>();
     }
 
-    /**
-     *  create the actual job class and store it in presistance layer
-     * @param config user inputed fields to be injected and passed
-     * @param location Location to run the algorithm
-     * @return the jobId of the created job
-     */
     public Job createJob(InputParam param, Location location, String stateName){
         int newJobId = 1;
         if(createdJobs.size() != 0){
@@ -45,44 +39,39 @@ public class JobHandler {
         // }
         double populationVariation = param.getPopulationVariation();
         List<MinorityGroup> minorityGroups = new ArrayList<MinorityGroup>();
+        String miniorityGroupString = "";
         for(String s : param.getMinorityGroups()){
-            switch(s){
-                case "African-Americans":
-                    minorityGroups.add(MinorityGroup.AFRICAN);
-                    break;
-                case "Asian Americans":
-                    minorityGroups.add(MinorityGroup.ASIAN);
-                    break;
-                case "Hispanics":
-                    minorityGroups.add(MinorityGroup.HISPANIC);
-                    break;
-                case "Native Americans":
-                    minorityGroups.add(MinorityGroup.NATIVE);
-                    break;
-            }
+            // switch(s){
+            //     case "African-Americans":
+            //         minorityGroups.add(MinorityGroup.AFRICAN);
+            //         break;
+            //     case "Asian Americans":
+            //         minorityGroups.add(MinorityGroup.ASIAN);
+            //         break;
+            //     case "Hispanics":
+            //         minorityGroups.add(MinorityGroup.HISPANIC);
+            //         break;
+            //     case "Native Americans":
+            //         minorityGroups.add(MinorityGroup.NATIVE);
+            //         break;
+            // }
+            miniorityGroupString += s +" ";
         }
         Location runLoc = location;
         // Job newJob = new Job(stateName, newJobId, numOfPlans, compactness, populationVariation, minorityGroups, runLoc, Progress.WAITING);
-        Job newJob = new Job(stateName, newJobId, numOfPlans, param.getCompactness(), populationVariation, minorityGroups, "Local", "Waiting");
+        Job newJob = new Job(stateName, newJobId, numOfPlans, param.getCompactness(), populationVariation, miniorityGroupString, "Local", "Waiting");
         addJob(newJob);
+        // em.getTransaction().begin();
         // em.persist(newJob);
+        // em.getTransaction().commit();
         //persist job in em
         return newJob;
     }
 
-    /**
-     * add the job passed in to the list of created Jobs
-     * @param job The created job 
-     */
     public void addJob(Job job){
         createdJobs.add(job);
     }
 
-    /**
-     * fetch the job from the list of jobs matching the Id passed by user
-     * @param jobId Id of the job clicked by the user
-     * @return the job class with matching Id
-     */
     public Job getJob(int jobId){
         for(Job j : createdJobs){
             if(j.getJobId() == jobId){
@@ -92,10 +81,6 @@ public class JobHandler {
         return null;
     }
 
-    /**
-     * delete the job from the presistance layer and from the list of jobs
-     * @param jobId Id of the job clicked by the user
-     */
     public void deleteJob(int jobId){
         for(int i =0; i < createdJobs.size(); i++){
             if(createdJobs.get(i).getJobId() == jobId){

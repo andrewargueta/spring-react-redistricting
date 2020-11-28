@@ -26,8 +26,9 @@ public class Job {
     private String runLocation;
     
     private String status;
+    private String minorityGroups;
 
-    public Job(String stateName, int newJobId, int numOfPlans, String compactness, double populationVariation, List<MinorityGroup> minorityGroups, String runLoc, String status){
+    public Job(String stateName, int newJobId, int numOfPlans, String compactness, double populationVariation, String minorityGroups, String runLoc, String status){
         this.stateName = stateName;
         this.jobId = newJobId;
         this.numberOfPlans = numOfPlans;
@@ -37,6 +38,7 @@ public class Job {
         this.status = status;
         this.averageDistricting = -1;
         this.extremeDistricting = -1;
+        this.minorityGroups = minorityGroups;
     }
 
     public Job(){
@@ -133,4 +135,14 @@ public class Job {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Column(name = "minorityGroups")
+    public String getMinorityGroups() {
+        return this.minorityGroups;
+    }
+
+    public void setMinorityGroups(String minorityGroups) {
+        this.minorityGroups = minorityGroups;
+    }
+
 }
