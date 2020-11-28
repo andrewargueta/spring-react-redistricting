@@ -205,7 +205,7 @@ class Map extends Component {
     geojsonLayer.addTo(this.state.map);
   }
 
-  handleStateView(state){
+  handleStateView(stateName){
     //handles styling to make room for user form
     var mapDiv = document.getElementById('map-div');
     mapDiv.classList.add("col-8");
@@ -213,20 +213,20 @@ class Map extends Component {
     leafletMap.style.width = "95%";
     //sets states and bounds
     var geojson = {}, northEast ={} ,southWest={},bounds={};
-    this.setState({currentState: state});
-    if(state=="Alabama"){
+    this.setState({currentState: stateName});
+    if(stateName=="Alabama"){
       northEast = L.latLng(35.875037325904316,-73.72722985856066);
       southWest = L.latLng(29.424411702754066, -92.06341149918566);
       bounds = L.latLngBounds(northEast, southWest);
       geojson=alabamaStateLayer; 
     }
-    if(state=="Texas"){
+    if(stateName=="Texas"){
       northEast = L.latLng( 37.85750715625203,  -82.77118435813476);
       southWest = L.latLng( 24.80668135385199, -105.11737576438475);
       bounds = L.latLngBounds(northEast, southWest);
       geojson=texasState; 
     }
-    if(state=="Mississippi"){
+    if(stateName=="Mississippi"){
       northEast = L.latLng(35.88014896488361, -80.87039007077917);
       southWest = L.latLng(29.430029404571762, -92.04348577390417);
       bounds = L.latLngBounds(northEast, southWest);
@@ -240,19 +240,19 @@ class Map extends Component {
     currentPrecinct: null,
     showDistrictLayer: true,
     showPrecinctLayer: true,
-    state: state});
+    state: stateName});
     //adds layer to map
     this.addGeoJSONLayer(geojson);
     
     //sends post to axios
-    axios.post('http://localhost:8080/state/setState', { name: state }, {
+    axios.post('http://localhost:8080/state/setState', { name: stateName }, {
     headers: {
         'Content-Type': 'application/json',
     }}).then( 
         (response) => { 
             districtLayer = this.generateDistrictLayer(response);
             precinctLayer = this.generatePrecinctLayer(response);
-            console.log("spring :" + JSON.stringify(response.data)); 
+            //console.log("spring :" + JSON.stringify(response.data)); 
         }, 
         (error) => { 
             console.log(error); 
@@ -401,7 +401,7 @@ class Map extends Component {
       <>
       {
         this.state.currentState?
-        <UserForm state={this.state.currentState} parentCallBack={this.handleCallback} currentPrecinct={this.state.currentPrecinct}
+        <UserForm state={this.state.currentState} parentCallBack={this.handleCallback} currentPrecinct={this.state.currentPrecinct} previousJobs={this.props.previousJobs}
         />
         :
         <div></div>
