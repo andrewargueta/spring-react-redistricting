@@ -9,26 +9,8 @@ public class JobHandler {
     private List<Job> createdJobs;
     private int nextId;
 
-    public List<Job> getCreatedJobs() {
-        return this.createdJobs;
-    }
-
-    public void setCreatedJobs(List<Job> createdJobs) {
-        this.createdJobs = createdJobs;
-    }
-
-    public int getNextId() {
-        return this.nextId;
-    }
-
-    public void setNextId(int nextId) {
-        this.nextId = nextId;
-    }
-    
-
     public JobHandler(){
         this.createdJobs = new ArrayList<Job>();
-        this.nextId = 1;
     }
 
     /**
@@ -38,18 +20,20 @@ public class JobHandler {
      * @return the jobId of the created job
      */
     public Job createJob(InputParam param, Location location, String stateName){
-        int newJobId = nextId;
-        nextId++;
-        int numOfPlans = param.getNumOfPlans();
-        Compactness compactness = Compactness.VERYCOMPACT;
-        switch(param.getCompactness()){
-            case "Somewhat Compact":
-                compactness = Compactness.SOMEWHATCOMPACT;
-                break;
-            case "Compact":
-                compactness = Compactness.COMPACT;
-                break;
+        int newJobId = 1;
+        if(createdJobs.size() != 0){
+            newJobId = createdJobs.get(createdJobs.size() - 1).getJobId() +1;
         }
+        int numOfPlans = param.getNumOfPlans();
+        // Compactness compactness = Compactness.VERYCOMPACT;
+        // switch(param.getCompactness()){
+        //     case "Somewhat Compact":
+        //         compactness = Compactness.SOMEWHATCOMPACT;
+        //         break;
+        //     case "Compact":
+        //         compactness = Compactness.COMPACT;
+        //         break;
+        // }
         double populationVariation = param.getPopulationVariation();
         List<MinorityGroup> minorityGroups = new ArrayList<MinorityGroup>();
         for(String s : param.getMinorityGroups()){
@@ -70,7 +54,7 @@ public class JobHandler {
         }
         Location runLoc = location;
         // Job newJob = new Job(stateName, newJobId, numOfPlans, compactness, populationVariation, minorityGroups, runLoc, Progress.WAITING);
-        Job newJob = new Job(stateName, newJobId, numOfPlans, "Compact", populationVariation, minorityGroups, "Local", "Waiting");
+        Job newJob = new Job(stateName, newJobId, numOfPlans, param.getCompactness(), populationVariation, minorityGroups, "Local", "Waiting");
         addJob(newJob);
         //persist job in em
         return newJob;
@@ -118,5 +102,21 @@ public class JobHandler {
 
     public void processResult(int jobId){
 
+    }
+
+    public List<Job> getCreatedJobs() {
+        return this.createdJobs;
+    }
+
+    public void setCreatedJobs(List<Job> createdJobs) {
+        this.createdJobs = createdJobs;
+    }
+
+    public int getNextId() {
+        return this.nextId;
+    }
+
+    public void setNextId(int nextId) {
+        this.nextId = nextId;
     }
 }

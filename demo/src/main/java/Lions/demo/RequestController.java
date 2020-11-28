@@ -54,6 +54,14 @@ public class RequestController {
     @GetMapping(value = "job/previousJobs")
     public @ResponseBody Iterable<Job> getPreviousJobs(){
         Iterable<Job> jobs = jobRepository.findAll();
+        List<Job> temp = new ArrayList<>();
+        for(Job j: jobs){
+            temp.add(j);
+        }
+        Collections.sort(temp, (a,b) -> a.getJobId() - b.getJobId());
+        for(Job j : temp){
+            jobHandler.addJob(j);
+        }
         return jobs;
     }
 
