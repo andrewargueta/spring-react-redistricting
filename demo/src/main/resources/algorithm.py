@@ -3,8 +3,18 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import random
 
+import sys
+
+    # def compactness(compactness_str):
+    #     if compactness_str == "VERYCOMPACT":
+    #         return 
+    #     elif compactness_str == "COMPACT":
+    #         return
+    #     elif compactness_str == "SOMEWHATCOMPACT":
+    #         return
+
 def showGraph(G):
-    nx.draw(G, with_labels=True)
+    nx.draw(G, with_labels=False)
     plt.draw()
     plt.show()
 
@@ -15,9 +25,13 @@ def generate_precinct(jsonpath):
         data = json.load(jsonfile)
     
     for precinct in data:
-        precinct_graph.add_node(precinct, population=data[precinct]["population"])
-        for neighbor in data[precinct]["neighbors"]:
-            precinct_graph.add_edge(precinct, neighbor)
+        geoId = precinct["geoId"]
+        totPop = precinct["totPop"]
+        neighbors = precinct["neighbors"].split(" ")
+        precinct_graph.add_node(geoId, population=totPop)
+        
+        for neighbor in neighbors:
+            precinct_graph.add_edge(geoId, neighbor)
     return precinct_graph
 
 def generate_district(precinct_graph, numOfDistrict):
@@ -57,7 +71,7 @@ def generate_district(precinct_graph, numOfDistrict):
 
 def combine_district(precinct_graph, district_clusters, district_edges):
     selected_edge = random.choice(district_edges)
-    print("selected_edge", selected_edge, "from", district_edges)
+    # print("selected_edge", selected_edge, "from", district_edges)
     cluster1 = district_clusters[selected_edge[0]]
     cluster2 = district_clusters[selected_edge[1]]
     selected_clusters = [cluster1, cluster2]
@@ -79,12 +93,24 @@ def calculate_ideal_pop(precinct_graph, numOfDistrict):
     
     return total // numOfDistrict
 
-def calculate_district_population(precinct_graph, cluster):
+def calculate_district_population(precinct_graph, district):
     total_pop = 0
-    for precinct in cluster:
+    for precinct in district:
         total_pop += precinct_graph.nodes[precinct]['population']
 
     return total_pop
+
+def calculate_district_compactness(precinct_graph, total_edge, district):
+    cut_edge_count = 0
+    for precinct1 in district:
+        edges = precinct_graph.edges(precinct1)
+        num_edges = len(edges)
+        for precinct2 in district:
+            if precinct1 != precinct2:
+                if precinct_graph.has_edge(precinct1, precinct2):
+                    num_edges -= 1
+        cut_edge_count += num_edges
+    return total_edge/cut_edge_count
 
 def check_acceptability(precinct_graph, population_var, ideal_pop, new_districts):
     lower_range = ideal_pop - (0.5 * population_var * ideal_pop)
@@ -93,6 +119,7 @@ def check_acceptability(precinct_graph, population_var, ideal_pop, new_districts
     acceptable = 0
     for district in new_districts:
         new_district_population = calculate_district_population(precinct_graph, district)
+        # new_district_compactness = calculate_district_compactness(precinct_graph, total_edge, district)
         if lower_range <= new_district_population and new_district_population <= upper_range:
             acceptable += 1
 
@@ -119,7 +146,8 @@ def check_improvement(precinct_graph, population_var, ideal_pop, old_districts, 
     return True
 
 def generate_new_districts_list(spanning_tree, precinct_graph, population_var, ideal_pop, old_districts):
-    new_districts_list = []
+    acceptable_districts_list = []
+    improved_districts_list = []
 
     for edge in spanning_tree.edges:
         temp_tree = spanning_tree.copy()
@@ -131,11 +159,32 @@ def generate_new_districts_list(spanning_tree, precinct_graph, population_var, i
             new_districts.append(list(new_district))
 
         if check_acceptability(precinct_graph, population_var, ideal_pop, new_districts):
-            new_districts_list.append(new_districts)
+            acceptable_districts_list.append(new_districts)
         elif check_improvement(precinct_graph, population_var, ideal_pop, old_districts, new_districts):
-            new_districts_list.append(new_districts)
+            improved_districts_list.append(new_districts)
 
-    return new_districts_list
+    return acceptable_districts_list, improved_districts_list
+
+def select_new_districts(acceptable_districts_list, improved_districts_list, district_clusters, old_districts, district_edge):
+    if len(acceptable_districts_list) != 0:
+        del district_clusters[district_edge[0]]
+        del district_clusters[district_edge[1]]
+
+        new_districts = random.choice(acceptable_districts_list)
+        new_district_edge = []
+        for district in new_districts:
+            district_clusters[district[0]] = district
+            new_district_edge.append(district[0])
+
+    elif len(improved_districts_list) != 0:
+        del district_clusters[district_edge[0]]
+        del district_clusters[district_edge[1]]
+
+        new_districts = random.choice(improved_districts_list)
+        new_district_edge = []
+        for district in new_districts:
+            district_clusters[district[0]] = district
+            new_district_edge.append(district[0])
 
 def connected_clusters(precinct_graph, cluster1, cluster2):
     for precinctA in cluster1:
@@ -144,6 +193,7 @@ def connected_clusters(precinct_graph, cluster1, cluster2):
                 return True
     return False
 
+# how do we know the connection between these newly generated districts with other districts
 def reconfigure_district_edges(precinct_graph, district_clusters):
     districts = list(district_clusters.keys())
     new_district_edges = []
@@ -157,28 +207,16 @@ def reconfigure_district_edges(precinct_graph, district_clusters):
 
     return new_district_edges
 
-def select_new_districts(new_districts_list, district_clusters, old_districts, district_edge):
-    if len(new_districts_list) != 0:
-        del district_clusters[district_edge[0]]
-        del district_clusters[district_edge[1]]
-
-        new_districts = random.choice(new_districts_list)
-        new_district_edge = []
-        for district in new_districts:
-            district_clusters[district[0]] = district
-            new_district_edge.append(district[0])
-
-    # how do we know the connection between these newly generated districts with other districts
-
 def main():
-    population_var = 0.9
-    numOfDistrict = 3
-    iteration = 10
+    jsonpath = sys.argv[1]
+    population_var = float(sys.argv[2])
+    numOfDistrict = int(sys.argv[3])
+    max_iteration = 1
 
-    precinct_graph = generate_precinct("precinct_neighbor.json")
+    precinct_graph = generate_precinct(jsonpath)
     # print("------------------------------------------------------------")
     # print(precinct_graph.nodes(data=True))
-    showGraph(precinct_graph)
+    # showGraph(precinct_graph)
 
     ideal_pop = calculate_ideal_pop(precinct_graph, numOfDistrict)
     # print("------------------------------------------------------------")
@@ -191,9 +229,9 @@ def main():
     # print("init", district_clusters)
     # showGraph(district_graph)
 
-    for i in range(1, iteration):
-        print("Interation:", i)
-        print("------------------------------------------------------------")
+    for i in range(0, max_iteration):
+        print("Interation:", i+1)
+        # print("------------------------------------------------------------")
         combined_subgraph, old_districts, district_edge = combine_district(precinct_graph, district_clusters, district_edges)
         # print("------------------------------------------------------------")
         # print(combined_subgraph.nodes(data=True))
@@ -202,18 +240,25 @@ def main():
         spanning_tree = generate_spanningtree(combined_subgraph)
         # showGraph(spanning_tree)
 
-        new_districts_list = generate_new_districts_list(spanning_tree, precinct_graph, population_var, ideal_pop, old_districts)
-        print("------------------------------------------------------------")
-        print("acceptable", new_districts_list)
-        print("------------------------------------------------------------")
+        acceptable_districts_list, improved_districts_list = generate_new_districts_list(spanning_tree, precinct_graph, population_var, ideal_pop, old_districts)
+        # print("------------------------------------------------------------")
+        # print("acceptable", acceptable_districts_list)
+        # print("------------------------------------------------------------")
+        # print("improved", improved_districts_list)
+        # print("------------------------------------------------------------")
 
-        print("prev", district_clusters)
-        select_new_districts(new_districts_list, district_clusters, old_districts, district_edge)
-        print("curr", district_clusters)
+        # print("prev", district_clusters)
+        select_new_districts(acceptable_districts_list, improved_districts_list, district_clusters, old_districts, district_edge)
+        # print("curr", district_clusters)
 
         district_edges = reconfigure_district_edges(precinct_graph, district_clusters)
 
-        print()
+        # print()
+
+    with open('demo/src/main/resources/static/new_mississippi.json', 'w') as result_file:
+        json.dump(district_clusters, result_file, indent=4, sort_keys=True)
+
+    print("done")
 
 if __name__ == "__main__":
     main()

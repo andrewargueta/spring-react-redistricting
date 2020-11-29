@@ -17,10 +17,10 @@ public class LocalHandler {
      * @param jobId -> jobId for the job created for the run
      * @param config -> JSON/string with the injected params from the user
      */
-    public void runLocalJob(int jobId, InputParam config, State selectedState){
+    public void runLocalJob(int jobId, InputParam config, State selectedState, String JSONObject){
         try {
             System.out.println("here");
-            ProcessBuilder pb = new ProcessBuilder("python", "demo/src/main/resources/test.py", "hello");
+            ProcessBuilder pb = new ProcessBuilder("C:/Users/Spriors/AppData/Local/Programs/Python/Python39/python.exe", "demo/src/main/resources/algorithm.py", "demo/src/main/resources/static/mississippi.json", String.valueOf(config.getPopulationVariation()), String.valueOf(4));
             pb.redirectErrorStream(true);
             Process process = pb.start();
             printProcessOutput(process);
