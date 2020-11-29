@@ -210,7 +210,17 @@ def reconfigure_district_edges(precinct_graph, district_clusters):
 def main():
     jsonpath = sys.argv[1]
     population_var = float(sys.argv[2])
-    numOfDistrict = int(sys.argv[3])
+    state = sys.argv[3]
+    numOfDistrict = 0
+    if state == "Mississippi":
+        numOfDistrict = 4
+    elif state == "Texas":
+        numOfDistrict = 36
+    elif state == "Alabama":
+        numOfDistrict = 7
+    else:
+        print("Wrong state name")
+        exit()
     max_iteration = 1
 
     precinct_graph = generate_precinct(jsonpath)
@@ -255,7 +265,8 @@ def main():
 
         # print()
 
-    with open('demo/src/main/resources/static/new_mississippi.json', 'w') as result_file:
+    result_path = 'demo/src/main/resources/static/new_' + state + '.json'
+    with open(result_path, 'w') as result_file:
         json.dump(district_clusters, result_file, indent=4, sort_keys=True)
 
     print("done")
