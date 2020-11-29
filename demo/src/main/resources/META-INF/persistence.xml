@@ -1,0 +1,21 @@
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+	version="2.1">
+
+	<persistence-unit name="persistence">
+	    <description>Hibernate EntityManager Demo</description>
+	    <class>Lions.demo.entity.Job</class> 
+	    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+	    <properties>
+	        <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+	        <property name="hibernate.hbm2ddl.auto" value="update"/>
+	        <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+	        <property name="javax.persistence.jdbc.url" value="jdbc:mysql://mysql3.cs.stonybrook.edu:3306/lions"/>
+	        <property name="javax.persistence.jdbc.user" value="lions"/>
+	        <property name="javax.persistence.jdbc.password" value="changeit"/>
+	    </properties>
+	</persistence-unit>
+
+</persistence>

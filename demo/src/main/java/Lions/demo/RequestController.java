@@ -37,6 +37,8 @@ public class RequestController {
     private CongressionalRepository congressionalRepository;
     @Autowired
     private StateRepository stateRepository;
+    @Autowired
+    private JobRepository jobRepository;
 
     @PostConstruct
     private void postConstruct() {
@@ -49,17 +51,32 @@ public class RequestController {
         
     }
 
+    @GetMapping(value = "job/previousJobs")
+    public @ResponseBody Iterable<Job> getPreviousJobs(){
+        Iterable<Job> jobs = jobRepository.findAll();
+        List<Job> temp = new ArrayList<>();
+        for(Job j: jobs){
+            temp.add(j);
+        }
+        Collections.sort(temp, (a,b) -> a.getJobId() - b.getJobId());
+        for(Job j : temp){
+            jobHandler.addJob(j);
+        }
+        return jobs;
+    }
+
     @PostMapping(value = "state/setState")
     public @ResponseBody Optional<State> getState(@RequestBody Map<String, String> map) {
         String stateName = map.get("name");
         System.out.println(stateName);
-        Optional<State> temp = stateRepository.findById(stateName);
-        State selectedState = temp.get();
+        // Optional<State> temp = stateRepository.findById(stateName);
+        // State selectedState = temp.get();
         // System.out.println(selectedState.getName());
-        System.out.println(selectedState.getPrecincts().get(0).getCoordinates());
+        // System.out.println(selectedState.getPrecincts().get(0).getCoordinates());
         // System.out.println(selectedState.getCoordinates().get(0).getNeighbors());
+        Iterable<Job> jobs = jobRepository.findAll();
+        System.out.println(jobs.toString());
         return stateRepository.findById(stateName);
-        // return stateRepository.findAll();
     }
 
     public Location determineRunLocation(InputParam param){
@@ -89,7 +106,7 @@ public class RequestController {
         List<Precinct> precincts = state.getPrecincts();
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.setPrettyPrinting().create();
-        // String JSONObject = gson.toJson(precincts);
+        String JSONObject = gson.toJson(precincts);
         // try (FileWriter file = new FileWriter("demo/src/main/resources/static/test.json")) {
         //     file.write(JSONObject);
         //     file.flush();
