@@ -9,7 +9,7 @@ class Job extends React.Component {
             state:this.props.state,
             numOfPlans: this.props.numOfPlans,
             server: this.props.server,
-            minorityGroup: this.props.minorityGroup,
+            minorityGroups: this.props.minorityGroups,
             compactness: this.props.compactness,
             populationVariation: this.props.populationVariation,
             jobNum: this.props.jobNum,
@@ -49,8 +49,7 @@ class Job extends React.Component {
     deleteJob(e){
       e.preventDefault();
       e.stopPropagation();
-      document.getElementById("job-btn").classList.add('disabled');
-      document.getElementById("job-tab").classList.add('disabled');
+      //document.getElementById("job-btn").classList.add('disabled');
       document.getElementById("2").style.display="none";
       var jobID = this.props.jobNum;
       const url = 'http://localhost:8080/job/' + jobID + '/delete';
@@ -105,7 +104,7 @@ class Job extends React.Component {
                     <div id={"collapse"+this.props.jobNum} class="collapse" aria-labelledby={"#heading"+this.props.jobNum} data-parent="#accordionExample">
                     <div class="card-body">
                       <div>Compactness:  {this.props.compactness}</div>
-                      <div>Minority Groups:  {this.props.minorityGroup}</div>
+                      <div>Minority Groups:  {this.props.minorityGroups}</div>
                       <div>Population Variation:  {this.props.populationVariation}</div>
                       <div>Server:  {this.props.server}</div>
                       <div>Status:  {this.props.status}</div>
