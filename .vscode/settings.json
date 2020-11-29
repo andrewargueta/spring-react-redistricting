@@ -1,4 +1,5 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
-    "spring-boot.ls.checkJVM": false
+    "spring-boot.ls.checkJVM": false,
+    "python.pythonPath": "C:\\Users\\Spriors\\AppData\\Local\\Programs\\Python\\Python39\\python.exe"
 }
