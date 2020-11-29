@@ -116,6 +116,8 @@ public class RequestController {
         if(runLoc == Location.LOCAL){
             localHandler.runLocalJob(job.getJobId(), param, selectedState, JSONObject);
             System.out.println("testtest");
+            String path = "result_" + param.getState() + ".json";
+            processResult(path);
         }else{
             seaWulfHandler.runSeaWulfJob(job.getJobId(), param, selectedState);
         }
@@ -152,8 +154,8 @@ public class RequestController {
         return null;
     }
 
-    public void processResult(String json){
-
+    public void processResult(String path){
+        
     }
 
     public List<Progress> getStatus(List<Integer> jobIds){
