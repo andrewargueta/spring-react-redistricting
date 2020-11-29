@@ -208,16 +208,21 @@ def reconfigure_district_edges(precinct_graph, district_clusters):
     return new_district_edges
 
 def main():
-    jsonpath = sys.argv[1]
-    population_var = float(sys.argv[2])
-    state = sys.argv[3]
+    jobId = sys.argv[1]
+    numOfPlans = int(sys.argv[2])
+    population_var = float(sys.argv[3])
+    state = sys.argv[4]
+    jsonpath = "demo/src/main/resources/static/"
     numOfDistrict = 0
     if state == "Mississippi":
         numOfDistrict = 4
+        jsonpath += "mississippi.json"
     elif state == "Texas":
         numOfDistrict = 36
+        jsonpath += "texas.json"
     elif state == "Alabama":
         numOfDistrict = 7
+        jsonpath += "alabama.json"
     else:
         print("Wrong state name")
         exit()
@@ -232,42 +237,48 @@ def main():
     # print("------------------------------------------------------------")
     # print(ideal_pop)
 
-    district_graph, district_clusters, district_edges = generate_district(precinct_graph.copy(), numOfDistrict)
-    # print("------------------------------------------------------------")
-    # print(district_graph.nodes(data=True))
-    # print("------------------------------------------------------------")
-    # print("init", district_clusters)
-    # showGraph(district_graph)
+    # Loop here for numOfPlans
+    result = dict()
 
-    for i in range(0, max_iteration):
-        print("Interation:", i+1)
+    for n in range(0, numOfPlans):
+        district_graph, district_clusters, district_edges = generate_district(precinct_graph.copy(), numOfDistrict)
         # print("------------------------------------------------------------")
-        combined_subgraph, old_districts, district_edge = combine_district(precinct_graph, district_clusters, district_edges)
+        # print(district_graph.nodes(data=True))
         # print("------------------------------------------------------------")
-        # print(combined_subgraph.nodes(data=True))
-        # showGraph(combined_subgraph)
+        # print("init", district_clusters)
+        # showGraph(district_graph)
 
-        spanning_tree = generate_spanningtree(combined_subgraph)
-        # showGraph(spanning_tree)
+        for i in range(0, max_iteration):
+            print("Interation:", i+1)
+            # print("------------------------------------------------------------")
+            combined_subgraph, old_districts, district_edge = combine_district(precinct_graph, district_clusters, district_edges)
+            # print("------------------------------------------------------------")
+            # print(combined_subgraph.nodes(data=True))
+            # showGraph(combined_subgraph)
 
-        acceptable_districts_list, improved_districts_list = generate_new_districts_list(spanning_tree, precinct_graph, population_var, ideal_pop, old_districts)
-        # print("------------------------------------------------------------")
-        # print("acceptable", acceptable_districts_list)
-        # print("------------------------------------------------------------")
-        # print("improved", improved_districts_list)
-        # print("------------------------------------------------------------")
+            spanning_tree = generate_spanningtree(combined_subgraph)
+            # showGraph(spanning_tree)
 
-        # print("prev", district_clusters)
-        select_new_districts(acceptable_districts_list, improved_districts_list, district_clusters, old_districts, district_edge)
-        # print("curr", district_clusters)
+            acceptable_districts_list, improved_districts_list = generate_new_districts_list(spanning_tree, precinct_graph, population_var, ideal_pop, old_districts)
+            # print("------------------------------------------------------------")
+            # print("acceptable", acceptable_districts_list)
+            # print("------------------------------------------------------------")
+            # print("improved", improved_districts_list)
+            # print("------------------------------------------------------------")
 
-        district_edges = reconfigure_district_edges(precinct_graph, district_clusters)
+            # print("prev", district_clusters)
+            select_new_districts(acceptable_districts_list, improved_districts_list, district_clusters, old_districts, district_edge)
+            # print("curr", district_clusters)
 
-        # print()
+            district_edges = reconfigure_district_edges(precinct_graph, district_clusters)
 
-    result_path = 'demo/src/main/resources/static/new_' + state + '.json'
+            # print()
+
+        result[jobId +'_'+ str(n)] = district_clusters
+
+    result_path = 'demo/src/main/resources/static/result_' + state + '.json'
     with open(result_path, 'w') as result_file:
-        json.dump(district_clusters, result_file, indent=4, sort_keys=True)
+        json.dump(result, result_file, indent=4, sort_keys=True)
 
     print("done")
 
