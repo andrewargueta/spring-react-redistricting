@@ -74,6 +74,7 @@ public class JobHandler {
         em.persist(newJob);
         em.getTransaction().commit();
         //persist job in em
+        em.close();
         return newJob;
     }
 
@@ -98,6 +99,13 @@ public class JobHandler {
             }
         }
         //remove from em
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistence");
+        EntityManager em = emf.createEntityManager();
+        Job job = em.find(Job.class, jobId);
+        em.getTransaction().begin();
+        em.remove(job);
+        em.getTransaction().commit();
+        em.close();
     }
 
     public void updateStatus(int jobId, Progress status){
