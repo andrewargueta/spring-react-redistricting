@@ -43,6 +43,7 @@ class Map extends Component {
       geojsonLayer: null,
       baseLayer: null,
       currentState: null,
+      currentStateLayer:null,
       currentDistrictLayer: null,
       currentPrecinctLayer: null,
       showDistrictLayer: true,
@@ -147,15 +148,11 @@ class Map extends Component {
     var tileLayer = this.state.tileLayer;
     var geojsonLayer={}, precinct={}, stateAverages={} ;
     precinct=JSON.parse(precinctLayer);
-    if(this.state.currentState=="Texas"){
-      stateAverages={"asian":.052, "black":.129, "hispanic":.397,"native":.011};
-    }
-    if(this.state.currentState=="Alabama"){
-      stateAverages={"asian":.015, "black":.268, "hispanic":.046,"native":.007};
-    }
-    if(this.state.currentState=="Mississippi"){
-      stateAverages={"asian":.011, "black":.378, "hispanic":.034,"native":.007};
-    }
+    var statePopulations = this.state.currentStateLayer.features[0].properties;
+    stateAverages={"asian":(statePopulations.ASIANTOTAL/statePopulations.TOTPOP), 
+                  "black":(statePopulations.BLKTOTAL/statePopulations.TOTPOP), 
+                  "hispanic":(statePopulations.HISPTOTAL/statePopulations.TOTPOP),
+                  "native":(statePopulations.AIANTOTAL/statePopulations.TOTPOP)};
     map.eachLayer(function (layer) {
       if(layer !== tileLayer){
         map.removeLayer(layer);
@@ -237,6 +234,7 @@ class Map extends Component {
     this.setState({geojson: geojson,
     currentDistrictLayer: null,
     currentPrecinctLayer: null,
+    currentStateLayer: geojson,
     currentPrecinct: null,
     showDistrictLayer: true,
     showPrecinctLayer: true,

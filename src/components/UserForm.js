@@ -12,7 +12,7 @@ class UserForm extends React.Component {
         super(props);
         this.state = {
           numOfPlans: 0,
-          minorityGroup: {},
+          minorityGroups: {},
           compactness: "",
           populationVariation: 0,
           showCreateJob: true,
@@ -25,16 +25,16 @@ class UserForm extends React.Component {
       }
       componentDidMount(){
         document.getElementById("global-summary").style.display="none";
-          axios.get("http://localhost:8080/job/previousJobs", {
-                       headers: {
-                           'Content-Type': 'application/json',
-                       }
-                   }
-                 ).then( 
-                     (response) => { 
-                         console.log(response);
-                         var prevJobs = [];
-                         for(var i=0; i<response.data.length; i++){
+        axios.get("http://localhost:8080/job/previousJobs", {
+                      headers: {
+                          'Content-Type': 'application/json',
+                      }
+                  }
+                ).then( 
+                    (response) => { 
+                        console.log(response);
+                        var prevJobs = [];
+                        for(var i=0; i<response.data.length; i++){
                           prevJobs.push( <Job
                             status="Waiting"
                             state={response.data[i].stateName}
@@ -42,36 +42,27 @@ class UserForm extends React.Component {
                             jobNum={response.data[i].jobId}
                             numOfPlans={response.data[i].numberOfPlans}
                             server= {response.data[i].runLocation}
-                            minorityGroup= {response.data[i].minorityGroup}
+                            minorityGroups= {response.data[i].minorityGroups}
                             compactness= {response.data[i].compactness}
                             populationVariation= {response.data[i].populationThreshold}
                             status= {response.data[i].status}
                             sendingData = {this.sendingData}
                             />)
-                         }
-                         this.setState({jobs: prevJobs});
-                         var str = "";
-                         for (var a = 0; a < prevJobs.length; a++) {
-                           str += "{";
-                           str += prevJobs[a].jobId + ",";
-                           str += prevJobs[a].stateName + "}";
-                           if (a != prevJobs.length - 1) {
-                             str += ",";
-                           }
-                         }
-                         console.log("spring : prev jobs: " + str); 
-                     }, 
-                     (error) => { 
-                         console.log(error); 
-                     } 
-                 ); 
+                        }
+                        this.setState({jobs: prevJobs});
+                        
+                        console.log("spring : prev jobs: " + prevJobs); 
+                    }, 
+                    (error) => { 
+                        console.log(error); 
+                    } 
+                ); 
       }
       componentDidUpdate(){
         //fix the bug when switching from plot to map
          
       }
       checkInput(plans, minority, compactness, population_variation) {
-        console.log(typeof(plans), minority, compactness, population_variation);
         if (Number.isInteger(Number(plans)) && plans > 0) {
             if (minority.length != 0) {
               return true;
@@ -80,9 +71,6 @@ class UserForm extends React.Component {
         return false;
       }
 
-      // const compactness = {
-      //   COMPACT : ""
-      // }
 
     handleChange(e) {
         const target = e.target;
@@ -100,11 +88,11 @@ class UserForm extends React.Component {
 
     handleSubmit(e){
         //add job input to job list
-        if(this.checkInput(this.state.numOfPlans, this.state.minorityGroup,this.state.compactness, this.state.populationVariation)){
+        if(this.checkInput(this.state.numOfPlans, this.state.minorityGroups,this.state.compactness, this.state.populationVariation)){
             const userInputs = { 
                 'state' : this.props.state,
                 'numOfPlans': this.state.numOfPlans,
-                'minorityGroups': this.state.minorityGroup,
+                'minorityGroups': this.state.minorityGroups,
                 'compactness': this.state.compactness,
                 'populationVariation': this.state.populationVariation,
             };
@@ -152,7 +140,6 @@ class UserForm extends React.Component {
       });
     }
     addJob(job){
-        console.log(job);
         this.setState({
           jobs: [...this.state.jobs, <Job
             status="Waiting"
@@ -161,7 +148,7 @@ class UserForm extends React.Component {
             jobNum={job.jobId}
             numOfPlans={this.state.numOfPlans}
             server= {job.runLocation}
-            minorityGroup= {this.state.minorityGroup}
+            minorityGroups= {this.state.minorityGroups}
             compactness= {this.state.compactness}
             populationVariation= {this.state.populationVariation}
             sendingData = {this.sendingData}
@@ -188,11 +175,11 @@ class UserForm extends React.Component {
                       <div className = "form-row">
                         <div className = "form-group col-md-6 mb-2">
                           <label htmlFor = "plans">Number of Plans</label>
-                          <input type="number" name="numOfPlans" className="form-control" id="numPlans" placeholder="Enter Num. of Plans" min="1"  onChange={this.handleChange} required />
+                          <input type="number" name="numOfPlans" className="form-control" id="num-plans" placeholder="Enter Num. of Plans" min="1"  onChange={this.handleChange} required />
                         </div>
                         <div className = "form-group col-md-6 mb-2">
                         <label htmlFor="compactness">Compactness Limit</label> 
-                          <select id="inputCompact" name="compactness" className="form-control"   onChange={this.handleChange}  required>
+                          <select id="input-compact" name="compactness" className="form-control"   onChange={this.handleChange}  required>
                             <option disabled selected value = "">Select Compactness</option>
                             <option>Somewhat Compact </option>
                             <option>Compact</option>
@@ -201,19 +188,19 @@ class UserForm extends React.Component {
                       <br />
                         </div>
                       </div>  
-                      <label htmlFor = "minority_group">Minority Group</label> <br />
-                      <select id="input-min" name="minorityGroup" className="selectpicker" onChange={this.handleChange}  multiple required>
+                      <label htmlFor = "minorityGroups">Minority Group</label> <br />
+                      <select id="input-min" name="minorityGroups" className="select-picker" onChange={this.handleChange}  multiple required>
                         <option disabled selected value = "">Select Minority Group(s)</option>
                         <option value = "African Americans">African-Americans</option>
                         <option value = "Asian Americans">Asian Americans</option>
                         <option value = "Hispanics">Hispanics</option>
-                        <option value = "Native Americans">Native Americans</option>
+                        <option value = "Native Americans">Native Americans </option>
                       </select>
                       <br />
     
                       
     
-                      <label htmlFor = "population_variation">Population Variation</label>
+                      <label htmlFor = "populationVariation">Population Variation</label>
                       <div className="d-flex justify-content-center my-4">
                         <span className="font-weight-bold indigo-text mr-2 mt-1">0</span>
                         <input 

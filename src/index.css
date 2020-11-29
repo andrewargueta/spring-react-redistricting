@@ -15,7 +15,7 @@ body{
   margin-top: -3%;
 }
 
-.selectpicker{
+.select-picker{
   cursor: ns-resize;
 }
 
@@ -28,7 +28,7 @@ body{
     padding-right: 10px;
 }
 
-#selectServer, #inputCompact{
+#select-server, #input-compact{
   height: 30px;
 }
 .highlighted{

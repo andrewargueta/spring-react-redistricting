@@ -7,22 +7,30 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
+
 import Lions.demo.*;
 import Lions.demo.enums.*;
+import Lions.demo.repository.JobRepository;
 import Lions.demo.entity.*;
 
+@Component
 public class JobHandler {
     private List<Job> createdJobs;
     private int nextId;
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistence");
-    EntityManager em = emf.createEntityManager();
+    // @PersistenceContext
+    // private EntityManager em;
 
     public JobHandler(){
         this.createdJobs = new ArrayList<Job>();
     }
 
     public Job createJob(InputParam param, Location location, String stateName){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistence");
+        EntityManager em = emf.createEntityManager();
+
         int newJobId = 1;
         if(createdJobs.size() != 0){
             newJobId = createdJobs.get(createdJobs.size() - 1).getJobId() +1;
@@ -59,11 +67,12 @@ public class JobHandler {
         }
         Location runLoc = location;
         // Job newJob = new Job(stateName, newJobId, numOfPlans, compactness, populationVariation, minorityGroups, runLoc, Progress.WAITING);
+        System.out.println(newJobId);
         Job newJob = new Job(stateName, newJobId, numOfPlans, param.getCompactness(), populationVariation, miniorityGroupString, "Local", "Waiting");
         addJob(newJob);
-        // em.getTransaction().begin();
-        // em.persist(newJob);
-        // em.getTransaction().commit();
+        em.getTransaction().begin();
+        em.persist(newJob);
+        em.getTransaction().commit();
         //persist job in em
         return newJob;
     }

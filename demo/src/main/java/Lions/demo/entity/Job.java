@@ -45,33 +45,6 @@ public class Job {
         
     }
 
-    @Column(name = "averageDistricting")
-    public int getAverageDistricting() {
-        return this.averageDistricting;
-    }
-
-    public void setAverageDistricting(int averageDistricting) {
-        this.averageDistricting = averageDistricting;
-    }
-
-    @Column(name = "extremeDistricting")
-    public int getExtremeDistricting() {
-        return this.extremeDistricting;
-    }
-
-    public void setExtremeDistricting(int extremeDistricting) {
-        this.extremeDistricting = extremeDistricting;
-    }
-
-    @Column(name = "randomDistricting")
-    public int getRandomDistricting() {
-        return this.randomDistricting;
-    }
-
-    public void setRandomDistricting(int randomDistricting) {
-        this.randomDistricting = randomDistricting;
-    }
-
     @Id
     @Column(name = "jobId")
     public int getJobId() {
@@ -81,7 +54,7 @@ public class Job {
     public void setJobId(int jobId) {
         this.jobId = jobId;
     }
-
+    
     @Column(name = "stateName")
     public String getStateName() {
         return this.stateName;
@@ -143,6 +116,33 @@ public class Job {
 
     public void setMinorityGroups(String minorityGroups) {
         this.minorityGroups = minorityGroups;
+    }
+
+    @Column(name = "averageDistricting")
+    public int getAverageDistricting() {
+        return this.averageDistricting;
+    }
+
+    public void setAverageDistricting(int averageDistricting) {
+        this.averageDistricting = averageDistricting;
+    }
+
+    @Column(name = "extremeDistricting")
+    public int getExtremeDistricting() {
+        return this.extremeDistricting;
+    }
+
+    public void setExtremeDistricting(int extremeDistricting) {
+        this.extremeDistricting = extremeDistricting;
+    }
+
+    @Column(name = "randomDistricting")
+    public int getRandomDistricting() {
+        return this.randomDistricting;
+    }
+
+    public void setRandomDistricting(int randomDistricting) {
+        this.randomDistricting = randomDistricting;
     }
 
 }
