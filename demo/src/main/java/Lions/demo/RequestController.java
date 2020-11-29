@@ -107,14 +107,15 @@ public class RequestController {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.setPrettyPrinting().create();
         String JSONObject = gson.toJson(precincts);
-        try (FileWriter file = new FileWriter("demo/src/main/resources/static/mississippi.json")) {
-            file.write(JSONObject);
-            file.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // try (FileWriter file = new FileWriter("demo/src/main/resources/static/texas.json")) {
+        //     file.write(JSONObject);
+        //     file.flush();
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
         if(runLoc == Location.LOCAL){
             localHandler.runLocalJob(job.getJobId(), param, selectedState, JSONObject);
+            System.out.println("testtest");
         }else{
             seaWulfHandler.runSeaWulfJob(job.getJobId(), param, selectedState);
         }

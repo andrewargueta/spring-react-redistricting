@@ -20,7 +20,7 @@ public class LocalHandler {
     public void runLocalJob(int jobId, InputParam config, State selectedState, String JSONObject){
         try {
             System.out.println("here");
-            ProcessBuilder pb = new ProcessBuilder("C:/Users/Spriors/AppData/Local/Programs/Python/Python39/python.exe", "demo/src/main/resources/algorithm.py", "demo/src/main/resources/static/mississippi.json", String.valueOf(config.getPopulationVariation()), String.valueOf(4));
+            ProcessBuilder pb = new ProcessBuilder("C:/Users/Spriors/AppData/Local/Programs/Python/Python39/python.exe", "demo/src/main/resources/algorithm.py", "demo/src/main/resources/static/mississippi.json", String.valueOf(config.getPopulationVariation()), config.getState());
             pb.redirectErrorStream(true);
             Process process = pb.start();
             printProcessOutput(process);
