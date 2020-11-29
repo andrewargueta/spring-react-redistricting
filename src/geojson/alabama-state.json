@@ -1,4 +1,4 @@
-{"type": "Feature","properties": {"name": "Alabama","population": 4833722,"houseseats": 7},
+{"type":"FeatureCollection", "features": [{"type": "Feature","properties": {"NAME": "Alabama","TOTPOP": 4903000,"BLKTOTAL": 1320000, "AIANTOTAL":25576, "ASIANTOTAL":66129,"HISPTOTAL":219296},
     "geometry": {"coordinates": [[[
         [
          -88.124658,
@@ -2001,4 +2001,4 @@
      ],
      "type": "MultiPolygon"
     }
-   }
+   }]}
