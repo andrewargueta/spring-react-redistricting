@@ -3,6 +3,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import random
 
+import sys
+
 def showGraph(G):
     nx.draw(G, with_labels=True)
     plt.draw()
@@ -171,11 +173,12 @@ def select_new_districts(new_districts_list, district_clusters, old_districts, d
     # how do we know the connection between these newly generated districts with other districts
 
 def main():
-    population_var = 0.9
-    numOfDistrict = 3
-    iteration = 10
+    jsonpath = sys.argv[1]
+    population_var = float(sys.argv[2])
+    numOfDistrict = int(sys.argv[3])
+    max_iteration = 10
 
-    precinct_graph = generate_precinct("precinct_neighbor.json")
+    precinct_graph = generate_precinct(jsonpath)
     # print("------------------------------------------------------------")
     # print(precinct_graph.nodes(data=True))
     showGraph(precinct_graph)
@@ -191,7 +194,7 @@ def main():
     # print("init", district_clusters)
     # showGraph(district_graph)
 
-    for i in range(1, iteration):
+    for i in range(1, max_iteration):
         print("Interation:", i)
         print("------------------------------------------------------------")
         combined_subgraph, old_districts, district_edge = combine_district(precinct_graph, district_clusters, district_edges)

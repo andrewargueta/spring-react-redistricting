@@ -24,7 +24,7 @@ public class LocalHandler {
     public void runLocalJob(int jobId, InputParam config, State selectedState){
         try {
             System.out.println("here");
-            ProcessBuilder pb = new ProcessBuilder("python", "demo/src/main/resources/test.py", "hello");
+            ProcessBuilder pb = new ProcessBuilder("C:/Users/Spriors/AppData/Local/Programs/Python/Python39/python.exe", "demo/src/main/resources/algorithm.py", "demo/src/main/resources/precinct_neighbor.json", String.valueOf(config.getPopulationVariation()), String.valueOf(3));
             pb.redirectErrorStream(true);
             Process process = pb.start();
             printProcessOutput(process);
