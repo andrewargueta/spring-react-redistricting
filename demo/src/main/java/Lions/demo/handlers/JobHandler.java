@@ -105,7 +105,6 @@ public class JobHandler {
         em.getTransaction().begin();
         em.remove(job);
         em.getTransaction().commit();
-        //persist job in em
         em.close();
     }
 
