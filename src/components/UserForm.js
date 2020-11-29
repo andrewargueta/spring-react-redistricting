@@ -12,7 +12,7 @@ class UserForm extends React.Component {
         super(props);
         this.state = {
           numOfPlans: 0,
-          minorityGroup: {},
+          minorityGroups: {},
           compactness: "",
           populationVariation: 0,
           showCreateJob: true,
@@ -42,7 +42,7 @@ class UserForm extends React.Component {
                             jobNum={response.data[i].jobId}
                             numOfPlans={response.data[i].numberOfPlans}
                             server= {response.data[i].runLocation}
-                            minorityGroup= {response.data[i].minorityGroups}
+                            minorityGroups= {response.data[i].minorityGroups}
                             compactness= {response.data[i].compactness}
                             populationVariation= {response.data[i].populationThreshold}
                             status= {response.data[i].status}
@@ -63,7 +63,6 @@ class UserForm extends React.Component {
          
       }
       checkInput(plans, minority, compactness, population_variation) {
-        console.log(typeof(plans), minority, compactness, population_variation);
         if (Number.isInteger(Number(plans)) && plans > 0) {
             if (minority.length != 0) {
               return true;
@@ -89,11 +88,11 @@ class UserForm extends React.Component {
 
     handleSubmit(e){
         //add job input to job list
-        if(this.checkInput(this.state.numOfPlans, this.state.minorityGroup,this.state.compactness, this.state.populationVariation)){
+        if(this.checkInput(this.state.numOfPlans, this.state.minorityGroups,this.state.compactness, this.state.populationVariation)){
             const userInputs = { 
                 'state' : this.props.state,
                 'numOfPlans': this.state.numOfPlans,
-                'minorityGroups': this.state.minorityGroup,
+                'minorityGroups': this.state.minorityGroups,
                 'compactness': this.state.compactness,
                 'populationVariation': this.state.populationVariation,
             };
@@ -141,7 +140,6 @@ class UserForm extends React.Component {
       });
     }
     addJob(job){
-        console.log(job);
         this.setState({
           jobs: [...this.state.jobs, <Job
             status="Waiting"
@@ -150,7 +148,7 @@ class UserForm extends React.Component {
             jobNum={job.jobId}
             numOfPlans={this.state.numOfPlans}
             server= {job.runLocation}
-            minorityGroup= {this.state.minorityGroup}
+            minorityGroups= {this.state.minorityGroups}
             compactness= {this.state.compactness}
             populationVariation= {this.state.populationVariation}
             sendingData = {this.sendingData}
@@ -177,7 +175,7 @@ class UserForm extends React.Component {
                       <div className = "form-row">
                         <div className = "form-group col-md-6 mb-2">
                           <label htmlFor = "plans">Number of Plans</label>
-                          <input type="number" name="num-plans" className="form-control" id="num-plans" placeholder="Enter Num. of Plans" min="1"  onChange={this.handleChange} required />
+                          <input type="number" name="numOfPlans" className="form-control" id="num-plans" placeholder="Enter Num. of Plans" min="1"  onChange={this.handleChange} required />
                         </div>
                         <div className = "form-group col-md-6 mb-2">
                         <label htmlFor="compactness">Compactness Limit</label> 
@@ -190,8 +188,8 @@ class UserForm extends React.Component {
                       <br />
                         </div>
                       </div>  
-                      <label htmlFor = "minority-group">Minority Group</label> <br />
-                      <select id="input-min" name="minority-group" className="select-picker" onChange={this.handleChange}  multiple required>
+                      <label htmlFor = "minorityGroups">Minority Group</label> <br />
+                      <select id="input-min" name="minorityGroups" className="select-picker" onChange={this.handleChange}  multiple required>
                         <option disabled selected value = "">Select Minority Group(s)</option>
                         <option value = "African Americans">African-Americans</option>
                         <option value = "Asian Americans">Asian Americans</option>
@@ -202,7 +200,7 @@ class UserForm extends React.Component {
     
                       
     
-                      <label htmlFor = "population_variation">Population Variation</label>
+                      <label htmlFor = "populationVariation">Population Variation</label>
                       <div className="d-flex justify-content-center my-4">
                         <span className="font-weight-bold indigo-text mr-2 mt-1">0</span>
                         <input 
