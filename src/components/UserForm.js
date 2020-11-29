@@ -25,16 +25,16 @@ class UserForm extends React.Component {
       }
       componentDidMount(){
         document.getElementById("global-summary").style.display="none";
-          axios.get("http://localhost:8080/job/previousJobs", {
-                       headers: {
-                           'Content-Type': 'application/json',
-                       }
-                   }
-                 ).then( 
-                     (response) => { 
-                         console.log(response);
-                         var prevJobs = [];
-                         for(var i=0; i<response.data.length; i++){
+        axios.get("http://localhost:8080/job/previousJobs", {
+                      headers: {
+                          'Content-Type': 'application/json',
+                      }
+                  }
+                ).then( 
+                    (response) => { 
+                        console.log(response);
+                        var prevJobs = [];
+                        for(var i=0; i<response.data.length; i++){
                           prevJobs.push( <Job
                             status="Waiting"
                             state={response.data[i].stateName}
@@ -42,29 +42,21 @@ class UserForm extends React.Component {
                             jobNum={response.data[i].jobId}
                             numOfPlans={response.data[i].numberOfPlans}
                             server= {response.data[i].runLocation}
-                            minorityGroup= {response.data[i].minorityGroup}
+                            minorityGroup= {response.data[i].minorityGroups}
                             compactness= {response.data[i].compactness}
                             populationVariation= {response.data[i].populationThreshold}
                             status= {response.data[i].status}
                             sendingData = {this.sendingData}
                             />)
-                         }
-                         this.setState({jobs: prevJobs});
-                         var str = "";
-                         for (var a = 0; a < prevJobs.length; a++) {
-                           str += "{";
-                           str += prevJobs[a].jobId + ",";
-                           str += prevJobs[a].stateName + "}";
-                           if (a != prevJobs.length - 1) {
-                             str += ",";
-                           }
-                         }
-                         console.log("spring : prev jobs: " + str); 
-                     }, 
-                     (error) => { 
-                         console.log(error); 
-                     } 
-                 ); 
+                        }
+                        this.setState({jobs: prevJobs});
+                        
+                        console.log("spring : prev jobs: " + prevJobs); 
+                    }, 
+                    (error) => { 
+                        console.log(error); 
+                    } 
+                ); 
       }
       componentDidUpdate(){
         //fix the bug when switching from plot to map
@@ -80,9 +72,6 @@ class UserForm extends React.Component {
         return false;
       }
 
-      // const compactness = {
-      //   COMPACT : ""
-      // }
 
     handleChange(e) {
         const target = e.target;
@@ -188,11 +177,11 @@ class UserForm extends React.Component {
                       <div className = "form-row">
                         <div className = "form-group col-md-6 mb-2">
                           <label htmlFor = "plans">Number of Plans</label>
-                          <input type="number" name="numOfPlans" className="form-control" id="numPlans" placeholder="Enter Num. of Plans" min="1"  onChange={this.handleChange} required />
+                          <input type="number" name="num-plans" className="form-control" id="num-plans" placeholder="Enter Num. of Plans" min="1"  onChange={this.handleChange} required />
                         </div>
                         <div className = "form-group col-md-6 mb-2">
                         <label htmlFor="compactness">Compactness Limit</label> 
-                          <select id="inputCompact" name="compactness" className="form-control"   onChange={this.handleChange}  required>
+                          <select id="input-compact" name="compactness" className="form-control"   onChange={this.handleChange}  required>
                             <option disabled selected value = "">Select Compactness</option>
                             <option>Somewhat Compact </option>
                             <option>Compact</option>
@@ -201,13 +190,13 @@ class UserForm extends React.Component {
                       <br />
                         </div>
                       </div>  
-                      <label htmlFor = "minority_group">Minority Group</label> <br />
-                      <select id="input-min" name="minorityGroup" className="selectpicker" onChange={this.handleChange}  multiple required>
+                      <label htmlFor = "minority-group">Minority Group</label> <br />
+                      <select id="input-min" name="minority-group" className="select-picker" onChange={this.handleChange}  multiple required>
                         <option disabled selected value = "">Select Minority Group(s)</option>
                         <option value = "African Americans">African-Americans</option>
                         <option value = "Asian Americans">Asian Americans</option>
                         <option value = "Hispanics">Hispanics</option>
-                        <option value = "Native Americans">Native Americans</option>
+                        <option value = "Native Americans">Native Americans </option>
                       </select>
                       <br />
     

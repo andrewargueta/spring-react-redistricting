@@ -12,6 +12,7 @@ class JobList extends React.Component {
         };
       }
 
+      
   componentDidUpdate(prevProps){
     if(prevProps.jobs !== this.props.jobs){
       this.setState({          
