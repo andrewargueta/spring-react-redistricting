@@ -100,7 +100,7 @@ public class RequestController {
         //     e.printStackTrace();
         // }
         if(runLoc == Location.LOCAL){
-            // localHandler.runLocalJob(job.getJobId(), param, selectedState, JSONObject);
+            localHandler.runLocalJob(job.getJobId(), param, selectedState, JSONObject);
             String path = "demo/src/main/resources/static/result_" + param.getState() + ".json";
             // jobHandler.updateStatus(job.getJobId(), "Completed");
             job.processGraph(path, precinctRepository);
