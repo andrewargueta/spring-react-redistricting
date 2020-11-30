@@ -157,6 +157,7 @@ class UserForm extends React.Component {
       }    
    
   render() {
+    console.log( this.props.currentPrecinct);
     return (
       <>
       {
@@ -216,7 +217,17 @@ class UserForm extends React.Component {
                     </div>
                   </form>
                 </ul>
-                <PrecinctPopUp currentPrecinct={this.props.currentPrecinct}/>
+                <>
+                
+                {
+                  this.props.currentPrecinct?
+                  
+                  <PrecinctPopUp currentPrecinct={this.props.currentPrecinct}/>
+                  :
+                  <div></div>
+                }
+                        
+                </>
             </div>
             <div id="global-summary">
               <JobList jobs={this.state.jobs} />
