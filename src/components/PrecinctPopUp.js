@@ -19,6 +19,13 @@ class PrecinctPopUp extends React.Component {
         };
       }
 
+    componentDidMount(){
+        if(this.props.currentPrecinct){
+          this.setState({          
+              currentPrecinct: this.props.currentPrecinct
+          });
+        }
+      }
     componentDidUpdate(prevProps){
       if(prevProps.currentPrecinct !== this.props.currentPrecinct){
         this.setState({          
@@ -33,7 +40,8 @@ class PrecinctPopUp extends React.Component {
           return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         else
           return 0
-      }
+      } 
+      console.log( this.state.currentPrecinct);
         return (
             <>
             {
@@ -51,17 +59,17 @@ class PrecinctPopUp extends React.Component {
 
                     <div id={"collapsePrecinct"} class="collapse" aria-labelledby={"#headingPrecinct"} data-parent="#accordionExample">
                     <div class="card-body">
-                      <div>Name:  {this.state.currentPrecinct.feature.properties.name}</div>
-                      <div>Total Population:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.totPop)}</div>
-                      <div>Total VAP:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.totVap)}</div>
-                      <div>Total Asian American Population:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.asianTotal)}</div>
-                      <div>Total Asian American VAP:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.asianVap)}</div>
-                      <div>Total Black Population:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.blackTotal)}</div>
-                      <div>Total Black VAP:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.blackVap)}</div>
-                      <div>Total Hispanic Population:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.hispTotal)}</div>
-                      <div>Total Hispanic VAP:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.hispVap)}</div>
-                      <div>Total American Indian/ Alaskan Native Population:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.aianTotal)}</div>
-                      <div>Total American Indian/ Alaskan Native VAP:  {commaSeperatedNum(this.state.currentPrecinct.feature.properties.aianVap)}</div>
+                      <div>Name:  {this.state.currentPrecinct.feature?this.state.currentPrecinct.feature.properties.name:"" }</div>
+                      <div>Total Population:  {this.state.currentPrecinct.feature?commaSeperatedNum(this.state.currentPrecinct.feature.properties.totPop):0}</div>
+                      <div>Total VAP:  {this.state.currentPrecinct.feature?commaSeperatedNum(this.state.currentPrecinct.feature.properties.totVap):0}</div>
+                      <div>Total Asian American Population:  {this.state.currentPrecinct.feature?commaSeperatedNum(this.state.currentPrecinct.feature.properties.asianTotal):0}</div>
+                      <div>Total Asian American VAP:  {this.state.currentPrecinct.feature?commaSeperatedNum(this.state.currentPrecinct.feature.properties.asianVap):0}</div>
+                      <div>Total Black Population:  {this.state.currentPrecinct.feature?commaSeperatedNum(this.state.currentPrecinct.feature.properties.blackTotal):0}</div>
+                      <div>Total Black VAP:  {this.state.currentPrecinct.feature?commaSeperatedNum(this.state.currentPrecinct.feature.properties.blackVap):0}</div>
+                      <div>Total Hispanic Population:  {this.state.currentPrecinct.feature?commaSeperatedNum(this.state.currentPrecinct.feature.properties.hispTotal):0}</div>
+                      <div>Total Hispanic VAP:  {this.state.currentPrecinct.feature?commaSeperatedNum(this.state.currentPrecinct.feature.properties.hispVap):0}</div>
+                      <div>Total American Indian/ Alaskan Native Population:  {this.state.currentPrecinct.feature?commaSeperatedNum(this.state.currentPrecinct.feature.properties.aianTotal):0}</div>
+                      <div>Total American Indian/ Alaskan Native VAP:  {this.state.currentPrecinct.feature?commaSeperatedNum(this.state.currentPrecinct.feature.properties.aianVap):0}</div>
                     </div>
                     </div>
                 </div>
