@@ -77,6 +77,7 @@ public class Job {
                     newDistrict.setCounties(counties.size());
                     calculateDistrictVap(newDistrict, precinctRepo);
                     newDistricting.addDistrict(newDistrict);
+                    
                 }
                 newDistricting.generateBoxAndWhisker();
                 districtings.add(newDistricting);
