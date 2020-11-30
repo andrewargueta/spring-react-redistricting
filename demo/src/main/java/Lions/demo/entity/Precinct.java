@@ -8,7 +8,7 @@ import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "allprecincts", schema = "lions")
+@Table(name = "Precincts", schema = "lions")
 public class Precinct {
     private String geoId;
     private String name;

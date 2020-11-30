@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import Lions.demo.enums.*;
 
 @Entity
-@Table(name = "state")
+@Table(name = "States")
 public class State {
     private String name;
     private String symbol;

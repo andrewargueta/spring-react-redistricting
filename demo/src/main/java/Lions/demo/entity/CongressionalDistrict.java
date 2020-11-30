@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "congressionaldistricts")
+@Table(name = "CongressionalDistricts")
 public class CongressionalDistrict {
     private int districtNum;
     private String coordinates;

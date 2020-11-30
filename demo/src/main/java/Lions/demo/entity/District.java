@@ -1,59 +1,68 @@
 package Lions.demo.entity;
 
 import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import Lions.demo.enums.*;
+import Lions.demo.repository.PrecinctRepository;
 
 public class District {
-    private int districtId;
-    private List<Precinct> precincts;
-    private int counites;
-    private Double percentVotingAge;
+    private String districtId;
+    // private List<Precinct> precincts;
+    private List<String> precincts;
+    private int counties;
+    private Double votingAgePercent;
+    private String districtingId;
 
-    public int getDistrictId() {
+    public District(String districtId, String districtingId){
+        this.districtId = districtId;
+        this.districtingId = districtingId;
+        this.precincts = new ArrayList<>();
+    }
+
+    public String getDistrictId() {
         return this.districtId;
     }
 
-    public void setDistrictId(int districtId) {
+    public void setDistrictId(String districtId) {
         this.districtId = districtId;
     }
 
-    public List<Precinct> getPrecincts() {
+    public String getDistrictingId() {
+        return this.districtingId;
+    }
+
+    public void setDistrictingId(String districtingId) {
+        this.districtingId = districtingId;
+    }
+
+    public List<String> getPrecincts() {
         return this.precincts;
     }
 
-    public void setPrecincts(List<Precinct> precincts) {
+    public void setPrecincts(List<String> precincts) {
         this.precincts = precincts;
     }
 
-    public int getCounites() {
-        return this.counites;
+    public void addPrecinct(String precinctId){
+        this.precincts.add(precinctId);
     }
 
-    public void setCounites(int counites) {
-        this.counites = counites;
+    public int getCounties() {
+        return this.counties;
     }
 
-    public Double getPercentVotingAge() {
-        return this.percentVotingAge;
+    public void setCounties(int counties) {
+        this.counties = counties;
     }
 
-    public void setPercentVotingAge(Double percentVotingAge) {
-        this.percentVotingAge = percentVotingAge;
+
+    public Double getVotingAgePercent() {
+        return this.votingAgePercent;
     }
 
-    /**
-     * @return The number of distinct counties in the precincts
-     */
-    public int calculateCounties(){
-        return 0;
+    public void setVotingAgePercent(Double votingAgePercent) {
+        this.votingAgePercent = votingAgePercent;
     }
-
-    // /**
-    //  * for each precinct sum up the values for a population class for this district
-    //  * @param minGroups the user select minority groups
-    //  * @return a population class containing information from all precincts
-    //  */
-    // public Population calculatePopulation(List<MinorityGroup> minGroups){
-    //     return null;
-    // }
 }

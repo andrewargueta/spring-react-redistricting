@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import Lions.demo.entity.*;
 
-public interface PrecinctRepository extends CrudRepository<Precinct, Integer> {
+public interface PrecinctRepository extends CrudRepository<Precinct, String> {
     
 }

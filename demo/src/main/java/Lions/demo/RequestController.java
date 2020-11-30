@@ -48,10 +48,9 @@ public class RequestController {
         }catch (Exception e) {
             e.printStackTrace();
         }
-        
     }
 
-    @GetMapping(value = "job/previousJobs")
+    @GetMapping(value = "job/previous-jobs")
     public @ResponseBody Iterable<Job> getPreviousJobs(){
         Iterable<Job> jobs = jobRepository.findAll();
         List<Job> temp = new ArrayList<>();
@@ -65,15 +64,10 @@ public class RequestController {
         return jobs;
     }
 
-    @PostMapping(value = "state/setState")
+    @PostMapping(value = "state/set-state")
     public @ResponseBody Optional<State> getState(@RequestBody Map<String, String> map) {
         String stateName = map.get("name");
         System.out.println(stateName);
-        // Optional<State> temp = stateRepository.findById(stateName);
-        // State selectedState = temp.get();
-        // System.out.println(selectedState.getName());
-        // System.out.println(selectedState.getPrecincts().get(0).getCoordinates());
-        // System.out.println(selectedState.getCoordinates().get(0).getNeighbors());
         Iterable<Job> jobs = jobRepository.findAll();
         System.out.println(jobs.toString());
         return stateRepository.findById(stateName);
@@ -88,17 +82,9 @@ public class RequestController {
         }
     }
 
-    @PostMapping(value = "job/runJob")
+    @PostMapping(value = "job/run-job")
     public Job runJob(@RequestBody InputParam param){
         Location runLoc = determineRunLocation(param);
-        // System.out.println(param.getNumOfPlans());
-        // Location runLoc;
-        // if(param.getServer().equals("Local")){
-        //     runLoc = Location.LOCAL;
-        // }else{
-        //     runLoc = Location.SEAWULF;
-        // }
-        // System.out.println(param.getServer());
         System.out.println(runLoc);
         System.out.println(param.getState());
         Job job = jobHandler.createJob(param, runLoc, param.getState());
@@ -114,49 +100,50 @@ public class RequestController {
         //     e.printStackTrace();
         // }
         if(runLoc == Location.LOCAL){
-            localHandler.runLocalJob(job.getJobId(), param, selectedState, JSONObject);
-            System.out.println("testtest");
-            String path = "result_" + param.getState() + ".json";
-            processResult(path);
+            // localHandler.runLocalJob(job.getJobId(), param, selectedState, JSONObject);
+            String path = "demo/src/main/resources/static/result_" + param.getState() + ".json";
+            // jobHandler.updateStatus(job.getJobId(), "Completed");
+            job.processGraph(path, precinctRepository);
+            
         }else{
             seaWulfHandler.runSeaWulfJob(job.getJobId(), param, selectedState);
         }
         return job;
     }
 
-    @DeleteMapping(value = "/job/{Id}/cancel")
-    public int cancelJob(@PathVariable int Id){
-        System.out.println(Id);
+    @DeleteMapping(value = "/job/{id}/cancel")
+    public int cancelJob(@PathVariable int id){
+        System.out.println(id);
         //cancel based on run location
-        jobHandler.deleteJob(Id);
-        return Id;
+        jobHandler.deleteJob(id);
+        return id;
     }
     
     public List<Job> getAllJobs(){
         return null;
     }
 
-    @GetMapping(value = "/job/{Id}")
-    public int getJob(@PathVariable int Id){
-        System.out.println(Id);
-        Job job = jobHandler.getJob(Id);
+    @GetMapping(value = "/job/{id}")
+    public int getJob(@PathVariable int id){
+        System.out.println(id);
+        Job job = jobHandler.getJob(id);
         return job.getJobId();
     }
 
-    @DeleteMapping(value = "/job/{Id}/delete")
-    public int deleteJob(@PathVariable int Id){
-        System.out.println(Id);
-        jobHandler.deleteJob(Id);
-        return Id;
+    @DeleteMapping(value = "/job/{id}/delete")
+    public int deleteJob(@PathVariable int id){
+        System.out.println(id);
+        jobHandler.deleteJob(id);
+        return id;
     }
 
-    public List<PlotData> getPlotDatas(int jobId){
+    public List<BoxAndWhisker> getPlotDatas(int jobId){
         return null;
     }
 
-    public void processResult(String path){
-        
-    }
+    // public void processResult(String path, int jobId, int numOfPlans){
+    //     jobHandler.processResult(path, jobId, numOfPlans);
+    // }
 
     public List<Progress> getStatus(List<Integer> jobIds){
         return null;

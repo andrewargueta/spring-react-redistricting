@@ -243,7 +243,7 @@ class Map extends Component {
     this.addGeoJSONLayer(geojson);
     
     //sends post to axios
-    axios.post('http://localhost:8080/state/setState', { name: stateName }, {
+    axios.post('http://localhost:8080/state/set-state', { name: stateName }, {
     headers: {
         'Content-Type': 'application/json',
     }}).then( 

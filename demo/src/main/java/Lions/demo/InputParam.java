@@ -58,8 +58,4 @@ public class InputParam {
     public void setPopulationVariation(double populationVariation) {
         this.populationVariation = populationVariation;
     }
-
-    
-
-    
 }

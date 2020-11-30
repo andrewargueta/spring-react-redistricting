@@ -7,7 +7,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import Lions.demo.*;
@@ -19,9 +18,6 @@ import Lions.demo.entity.*;
 public class JobHandler {
     private List<Job> createdJobs;
     private int nextId;
-
-    // @PersistenceContext
-    // private EntityManager em;
 
     public JobHandler(){
         this.createdJobs = new ArrayList<Job>();
@@ -36,37 +32,13 @@ public class JobHandler {
             newJobId = createdJobs.get(createdJobs.size() - 1).getJobId() +1;
         }
         int numOfPlans = param.getNumOfPlans();
-        // Compactness compactness = Compactness.VERYCOMPACT;
-        // switch(param.getCompactness()){
-        //     case "Somewhat Compact":
-        //         compactness = Compactness.SOMEWHATCOMPACT;
-        //         break;
-        //     case "Compact":
-        //         compactness = Compactness.COMPACT;
-        //         break;
-        // }
         double populationVariation = param.getPopulationVariation();
         List<MinorityGroup> minorityGroups = new ArrayList<MinorityGroup>();
         String miniorityGroupString = "";
         for(String s : param.getMinorityGroups()){
-            // switch(s){
-            //     case "African-Americans":
-            //         minorityGroups.add(MinorityGroup.AFRICAN);
-            //         break;
-            //     case "Asian Americans":
-            //         minorityGroups.add(MinorityGroup.ASIAN);
-            //         break;
-            //     case "Hispanics":
-            //         minorityGroups.add(MinorityGroup.HISPANIC);
-            //         break;
-            //     case "Native Americans":
-            //         minorityGroups.add(MinorityGroup.NATIVE);
-            //         break;
-            // }
             miniorityGroupString += s +" ";
         }
         Location runLoc = location;
-        // Job newJob = new Job(stateName, newJobId, numOfPlans, compactness, populationVariation, minorityGroups, runLoc, Progress.WAITING);
         System.out.println(newJobId);
         Job newJob = new Job(stateName, newJobId, numOfPlans, param.getCompactness(), populationVariation, miniorityGroupString, "Local", "Waiting");
         addJob(newJob);
@@ -108,12 +80,14 @@ public class JobHandler {
         em.close();
     }
 
-    public void updateStatus(int jobId, Progress status){
-
-    }
-
-    public void processResult(int jobId){
-
+    public void updateStatus(int jobId, String status){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistence");
+        EntityManager em = emf.createEntityManager();
+        Job job = em.find(Job.class, jobId);
+        em.getTransaction().begin();
+        job.setStatus(status);
+        em.getTransaction().commit();
+        em.close();
     }
 
     public List<Job> getCreatedJobs() {

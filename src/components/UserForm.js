@@ -25,7 +25,7 @@ class UserForm extends React.Component {
       }
       componentDidMount(){
         document.getElementById("global-summary").style.display="none";
-        axios.get("http://localhost:8080/job/previousJobs", {
+        axios.get("http://localhost:8080/job/previous-jobs", {
                       headers: {
                           'Content-Type': 'application/json',
                       }
@@ -96,7 +96,7 @@ class UserForm extends React.Component {
                 'compactness': this.state.compactness,
                 'populationVariation': this.state.populationVariation,
             };
-            axios.post("http://localhost:8080/job/runJob", userInputs, {
+            axios.post("http://localhost:8080/job/run-job", userInputs, {
                   headers: {
                       'Content-Type': 'application/json',
                   }
@@ -191,10 +191,10 @@ class UserForm extends React.Component {
                       <label htmlFor = "minorityGroups">Minority Group</label> <br />
                       <select id="input-min" name="minorityGroups" className="select-picker" onChange={this.handleChange}  multiple required>
                         <option disabled selected value = "">Select Minority Group(s)</option>
-                        <option value = "African Americans">African-Americans</option>
-                        <option value = "Asian Americans">Asian Americans</option>
-                        <option value = "Hispanics">Hispanics</option>
-                        <option value = "Native Americans">Native Americans </option>
+                        <option value = "black">African-Americans</option>
+                        <option value = "asian">Asian Americans</option>
+                        <option value = "hisp">Hispanics</option>
+                        <option value = "aian">Native Americans </option>
                       </select>
                       <br />
     
