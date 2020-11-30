@@ -103,7 +103,7 @@ public class RequestController {
             localHandler.runLocalJob(job.getJobId(), param, selectedState, JSONObject);
             String path = "demo/src/main/resources/static/result_" + param.getState() + ".json";
             // jobHandler.updateStatus(job.getJobId(), "Completed");
-            job.processGraph(path, precinctRepository);
+            job.processGraph(path, precincts);
             
         }else{
             seaWulfHandler.runSeaWulfJob(job.getJobId(), param, selectedState);

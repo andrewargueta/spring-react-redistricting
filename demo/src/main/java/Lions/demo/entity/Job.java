@@ -53,7 +53,8 @@ public class Job {
         
     }
 
-    public void processGraph(String path, PrecinctRepository precinctRepo){
+    public void processGraph(String path, List<Precinct> precincts){
+        System.out.println("Processing Job");
         JSONParser parser = new JSONParser();
         try {
             Object obj = parser.parse(new FileReader(path));
@@ -67,15 +68,15 @@ public class Job {
                 Set<String> keys = districtingJson.keySet();
                 for(String districtKey : keys){
                     District newDistrict = new District(districtKey, districtingKey);
-                    List<String> precincts = (List<String>)districtingJson.get(districtKey);
+                    List<String> precinctsJson = (List<String>)districtingJson.get(districtKey);
                     HashSet<String> counties = new HashSet<>();
-                    for(String precinctId : precincts){
-                        Precinct precinct = precinctRepo.findById(precinctId).get();
+                    for(String precinctId : precinctsJson){
+                        Precinct precinct = findPrecinct(precincts, precinctId);
                         counties.add(precinct.getCounty());
                         newDistrict.addPrecinct(precinctId);
                     }
                     newDistrict.setCounties(counties.size());
-                    calculateDistrictVap(newDistrict, precinctRepo);
+                    calculateDistrictVap(newDistrict, precincts);
                     newDistricting.addDistrict(newDistrict);
                     
                 }
@@ -88,17 +89,26 @@ public class Job {
             extremeDistricting = districtings.get(0).getDistrictingId();
             int randindex = new Random().nextInt(districtings.size());
             randomDistricting = districtings.get(randindex).getDistrictingId();
+            System.out.println("Done Processing");
          } catch(Exception e) {
             e.printStackTrace();
          }
     }
 
+    public Precinct findPrecinct(List<Precinct> precincts, String precinctId){
+        for(Precinct p : precincts){
+            if(p.getGeoId().equals(precinctId)){
+                return p;
+            }
+        }
+        return null;
+    }
+
     public void sortDistrictings(){
-        // Collections.sort(districtings, (a,b) -> a.getVotingAgePercent().compareTo(b.getVotingAgePercent()));
         Collections.sort(districtings, (a,b) -> a.getBoxAndWhisker().getMedian().compareTo(b.getBoxAndWhisker().getMedian()));
     }
 
-    public void calculateDistrictVap(District newDistrict, PrecinctRepository precinctRepo){
+    public void calculateDistrictVap(District newDistrict, List<Precinct> precincts){
         double sumVap = 0;
         double totVap = 0;
         double hispVap = 0;
@@ -106,7 +116,7 @@ public class Job {
         double aianVap = 0;
         double asianVap = 0;
         for(String precinctId : newDistrict.getPrecincts()){
-            Precinct precinct = precinctRepo.findById(precinctId).get();
+            Precinct precinct = findPrecinct(precincts, precinctId);
             totVap += precinct.getTotVap();
             hispVap += precinct.getHispVap();
             blackVap += precinct.getBlackVap();
