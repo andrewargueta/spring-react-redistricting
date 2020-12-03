@@ -17,16 +17,12 @@ import Lions.demo.entity.*;
 @Component
 public class JobHandler {
     private List<Job> createdJobs;
-    private int nextId;
 
     public JobHandler(){
         this.createdJobs = new ArrayList<Job>();
     }
 
     public Job createJob(InputParam param, Location location, String stateName){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistence");
-        EntityManager em = emf.createEntityManager();
-
         int newJobId = 1;
         if(createdJobs.size() != 0){
             newJobId = createdJobs.get(createdJobs.size() - 1).getJobId() +1;
@@ -42,10 +38,11 @@ public class JobHandler {
         System.out.println(newJobId);
         Job newJob = new Job(stateName, newJobId, numOfPlans, param.getCompactness(), populationVariation, miniorityGroupString, "Local", "Waiting");
         addJob(newJob);
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Lions.demo.entity.Job");
+        EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(newJob);
         em.getTransaction().commit();
-        //persist job in em
         em.close();
         return newJob;
     }
@@ -71,7 +68,7 @@ public class JobHandler {
             }
         }
         //remove from em
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistence");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Lions.demo.entity.Job");
         EntityManager em = emf.createEntityManager();
         Job job = em.find(Job.class, jobId);
         em.getTransaction().begin();
@@ -81,7 +78,7 @@ public class JobHandler {
     }
 
     public void updateStatus(int jobId, String status){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistence");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Lions.demo.entity.Job");
         EntityManager em = emf.createEntityManager();
         Job job = em.find(Job.class, jobId);
         em.getTransaction().begin();
@@ -96,13 +93,5 @@ public class JobHandler {
 
     public void setCreatedJobs(List<Job> createdJobs) {
         this.createdJobs = createdJobs;
-    }
-
-    public int getNextId() {
-        return this.nextId;
-    }
-
-    public void setNextId(int nextId) {
-        this.nextId = nextId;
     }
 }

@@ -65,8 +65,8 @@ public class RequestController {
     }
 
     @PostMapping(value = "state/set-state")
-    public @ResponseBody Optional<State> getState(@RequestBody Map<String, String> map) {
-        String stateName = map.get("name");
+    public @ResponseBody Optional<State> getState(@RequestBody Map<String, String> input) {
+        String stateName = input.get("name");
         System.out.println(stateName);
         Iterable<Job> jobs = jobRepository.findAll();
         System.out.println(jobs.toString());
@@ -102,7 +102,7 @@ public class RequestController {
         if(runLoc == Location.LOCAL){
             localHandler.runLocalJob(job.getJobId(), param, selectedState, JSONObject);
             String path = "demo/src/main/resources/static/result_" + param.getState() + ".json";
-            // jobHandler.updateStatus(job.getJobId(), "Completed");
+            jobHandler.updateStatus(job.getJobId(), "Completed");
             job.processGraph(path, precincts);
             
         }else{

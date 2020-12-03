@@ -4,8 +4,8 @@
              http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
 	version="2.1">
 
-	<persistence-unit name="persistence">
-	    <description>Hibernate EntityManager Demo</description>
+	<persistence-unit name="Lions.demo.entity.Job">
+	    <description>Job EntityManager</description>
 	    <class>Lions.demo.entity.Job</class> 
 	    <exclude-unlisted-classes>true</exclude-unlisted-classes>
 	    <properties>

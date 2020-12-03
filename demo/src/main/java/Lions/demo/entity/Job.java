@@ -69,7 +69,7 @@ public class Job {
                 for(String districtKey : keys){
                     District newDistrict = new District(districtKey, districtingKey);
                     List<String> precinctsJson = (List<String>)districtingJson.get(districtKey);
-                    HashSet<String> counties = new HashSet<>();
+                    Set<String> counties = new HashSet<>();
                     for(String precinctId : precinctsJson){
                         Precinct precinct = findPrecinct(precincts, precinctId);
                         counties.add(precinct.getCounty());
