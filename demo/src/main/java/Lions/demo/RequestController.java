@@ -136,7 +136,7 @@ public class RequestController {
     public List<District> getExtremeDistricting(@PathVariable int id){
         System.out.println(id);
         Job job = jobRepository.findById(id).get();
-        String districtingId = id +"_" + job.getExtremeDistricting();
+        String districtingId = job.getExtremeDistricting();
         List<District> districting = districtRepository.findByDistrictingId(districtingId);
         return districting;
     }
@@ -145,7 +145,7 @@ public class RequestController {
     public List<District> getRandomDistricting(@PathVariable int id){
         System.out.println(id);
         Job job = jobRepository.findById(id).get();
-        String districtingId = id +"_" + job.getRandomDistricting();
+        String districtingId = job.getRandomDistricting();
         List<District> districting = districtRepository.findByDistrictingId(districtingId);
         return districting;
     }
