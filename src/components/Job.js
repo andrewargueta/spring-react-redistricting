@@ -20,9 +20,17 @@ class Job extends React.Component {
       this.cancelJob = this.cancelJob.bind(this);
       }
     
-    sendingData = (event) => {
-        this.props.sendingData(this);
-        event.preventDefault();
+    sendingData = (data) => {
+        this.props.sendingData(data);
+        //event.preventDefault();
+    }
+    
+    generateDistrcting(plan){
+      if(plan =="Average"){
+        this.sendingData("Average was clicked");
+      }
+      else if(plan =="Extreme"){}
+      else{}
     }
 
     clickJob(e){
@@ -30,10 +38,8 @@ class Job extends React.Component {
         //document.getElementById("card"+this.props.jobNum).classList.remove('highlighted');
         return;
       }
-      //document.getElementById("card"+this.props.jobNum).classList.add('highlighted');
-      document.getElementById("job-btn").classList.remove('disabled');
       document.getElementById("2").style.display="block";
-      this.sendingData(e);
+      // this.sendingData(e);
       var jobID = this.props.jobNum;
       const url = 'http://localhost:8080/job/' + jobID;
       axios.get(url).then( 
@@ -102,12 +108,25 @@ class Job extends React.Component {
                     </div>
 
                     <div id={"collapse"+this.props.jobNum} class="collapse" aria-labelledby={"#heading"+this.props.jobNum} data-parent="#accordionExample">
-                    <div class="card-body">
+                    <div class="card-body row">
+                      <div class="col">
                       <div>Compactness:  {this.props.compactness}</div>
                       <div>Minority Groups:  {this.props.minorityGroups}</div>
                       <div>Population Variation:  {this.props.populationVariation}</div>
                       <div>Server:  {this.props.server}</div>
                       <div>Status:  {this.props.status}</div>
+                      </div>
+                      <div class="dropdown col">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Districtings
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" onClick={()=> this.generateDistrcting('Average')}>Average</a>
+                          <a class="dropdown-item" onClick={()=> this.generateDistrcting('Extreme')}>Extreme</a>
+                          <a class="dropdown-item" onClick={()=> this.generateDistrcting('Random')}>Random</a>
+                        </div>
+                      </div>
+
                     </div>
                     </div>
                 </div>

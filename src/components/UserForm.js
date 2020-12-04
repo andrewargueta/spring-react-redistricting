@@ -121,9 +121,7 @@ class UserForm extends React.Component {
         }
 
     }
-    handleCallback = (childData) =>{
-        this.setState({childData: childData});
-    }
+    
     sendingData = (data) => {
         this.props.parentCallBack(data);  
     }
@@ -157,7 +155,6 @@ class UserForm extends React.Component {
       }    
    
   render() {
-    console.log( this.props.currentPrecinct);
     return (
       <>
       {
@@ -198,9 +195,6 @@ class UserForm extends React.Component {
                         <option value = "aian">Native Americans </option>
                       </select>
                       <br />
-    
-                      
-    
                       <label htmlFor = "populationVariation">Population Variation</label>
                       <div className="d-flex justify-content-center my-4">
                         <span className="font-weight-bold indigo-text mr-2 mt-1">0</span>

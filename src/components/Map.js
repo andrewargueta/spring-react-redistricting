@@ -1,6 +1,8 @@
+
 import React, { Component } from 'react';
 import axios from 'axios';
 import L from 'leaflet';
+
 
 import UserForm  from './UserForm.js';
 
@@ -66,7 +68,7 @@ class Map extends Component {
     // create the Leaflet map 
     if (!this.state.map) this.init(this._mapNode);
     //hide plot tab so user cannot click it
-    document.getElementById("2").style.display="block";
+    document.getElementById("2").style.display="none";
     document.getElementById('menu1').style.display="none";
   }
 
@@ -116,6 +118,7 @@ class Map extends Component {
     }
     geojsonResponse = geojsonResponse.slice(0,-1);
     geojsonResponse += "]}";
+   
 
     return geojsonResponse;
   }
@@ -331,6 +334,7 @@ class Map extends Component {
 
   handleCallback = (currentJob) =>{
     this.setState({currentJob: currentJob});
+    console.log(this.state.currentJob);
   }
 
   addGeoJSONLayer(geojson) {
@@ -431,7 +435,6 @@ class Map extends Component {
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" onClick={this.handleDistrictView}>Districts</a>
                     <a class="dropdown-item" onClick={this.handlePrecinctView}>Precincts</a>
-                    <a class="dropdown-item" id="job-btn">Batch</a>
                   </div>
               </div>
               <div class="dropdown">

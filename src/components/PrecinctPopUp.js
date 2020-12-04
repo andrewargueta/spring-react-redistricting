@@ -18,7 +18,6 @@ class PrecinctPopUp extends React.Component {
 
         };
       }
-
     componentDidMount(){
         if(this.props.currentPrecinct){
           this.setState({          
