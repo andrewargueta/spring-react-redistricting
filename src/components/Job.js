@@ -27,7 +27,18 @@ class Job extends React.Component {
     
     generateDistrcting(plan){
       if(plan =="Average"){
-        this.sendingData("Average was clicked");
+        const url = 'http://localhost:8080/job/' + jobID + '/averageDistricting';;
+        axios.get(url).then( 
+          (response) => { 
+              var result = response.data; 
+              console.log(response)
+              // this.sendingData(response.data);
+              console.log("Average Districting was clicked:" + result);
+          }, 
+          (error) => { 
+              console.log(error); 
+          } 
+        );
       }
       else if(plan =="Extreme"){
         this.sendingData("Extreme was clicked");
