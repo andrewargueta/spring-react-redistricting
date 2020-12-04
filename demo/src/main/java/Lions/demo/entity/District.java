@@ -18,16 +18,20 @@ public class District {
     private String districtId;
     // private List<Precinct> precincts;
     private List<String> precincts;
+    private String precicntIds;
     private int counties;
     private Double votingAgePercent;
     private String districtingId;
     private String coordinates;
+    private int jobId;
 
-    public District(String districtId, String districtingId){
+    public District(String districtId, String districtingId, int jobId){
         this.districtId = districtId;
         this.districtingId = districtingId;
         this.coordinates = "place holder";
         this.precincts = new ArrayList<>();
+        this.precicntIds = "";
+        this.jobId = jobId;
     }
 
     @Id
@@ -88,4 +92,25 @@ public class District {
         this.coordinates = coordinates;
     }
 
+    @Column(name="precinctIds")
+    public String getPrecicntIds() {
+        return this.precicntIds;
+    }
+
+    public void setPrecicntIds(String precicntIds) {
+        this.precicntIds = precicntIds;
+    }
+
+    public void addPrecinctIds(String s){
+        this.precicntIds = this.precicntIds + s + " ";
+    }
+
+    @Column(name="jobId")
+    public int getJobId() {
+        return this.jobId;
+    }
+
+    public void setJobId(int jobId) {
+        this.jobId = jobId;
+    }
 }

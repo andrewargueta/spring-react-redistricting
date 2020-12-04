@@ -108,21 +108,12 @@ public class RequestController {
         if(runLoc == Location.LOCAL){
             // localHandler.runLocalJob(job.getJobId(), param, selectedState, JSONObject);
             String path = "demo/src/main/resources/static/result_" + param.getState() + ".json";
-            jobHandler.updateStatus(job.getJobId(), "Completed");
             job.processGraph(path, precincts);
-            
+            jobHandler.updateStatus(job.getJobId(), "Completed");
         }else{
             seaWulfHandler.runSeaWulfJob(job.getJobId(), param, selectedState);
         }
         return job;
-    }
-
-    @DeleteMapping(value = "/job/{id}/cancel")
-    public int cancelJob(@PathVariable int id){
-        System.out.println(id);
-        //cancel based on run location
-        jobHandler.deleteJob(id);
-        return id;
     }
     
     public List<Job> getAllJobs(){
@@ -143,6 +134,19 @@ public class RequestController {
     public int deleteJob(@PathVariable int id){
         System.out.println(id);
         jobHandler.deleteJob(id);
+        // boxAndWhiskerRepository.deleteByJob(id);
+        // districtRepository.deleteByJob(id);
+        return id;
+    }
+
+    @DeleteMapping(value = "/job/{id}/cancel")
+    public int cancelJob(@PathVariable int id){
+        System.out.println(id);
+        //cancel based on run location
+        jobHandler.deleteJob(id);
+        //test function for non updated job history
+        // boxAndWhiskerRepository.deleteByJob(id);
+        // districtRepository.deleteByJob(id);
         return id;
     }
 

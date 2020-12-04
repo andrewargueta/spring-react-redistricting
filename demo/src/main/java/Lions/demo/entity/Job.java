@@ -66,17 +66,17 @@ public class Job {
             for(int i =0; i < numberOfPlans; i++){
                 String districtingKey = jobId +"_"+i;
                 Districting newDistricting = new Districting(districtingKey, jobId);
-                //persist districting
                 JSONObject districtingJson = (JSONObject)jsonObject.get(districtingKey);
                 Set<String> keys = districtingJson.keySet();
                 for(String districtKey : keys){
-                    District newDistrict = new District(districtKey, districtingKey);
+                    District newDistrict = new District(districtKey, districtingKey, jobId);
                     List<String> precinctsJson = (List<String>)districtingJson.get(districtKey);
                     Set<String> counties = new HashSet<>();
                     for(String precinctId : precinctsJson){
                         Precinct precinct = findPrecinct(precincts, precinctId);
                         counties.add(precinct.getCounty());
                         newDistrict.addPrecinct(precinctId);
+                        newDistrict.addPrecinctIds(precinctId);
                     }
                     newDistrict.setCounties(counties.size());
                     calculateDistrictVap(newDistrict, precincts);
@@ -85,18 +85,29 @@ public class Job {
                 }
                 newDistricting.generateBoxAndWhisker();
                 districtings.add(newDistricting);
-                // persistDistricting(newDistricting);
             }
-            System.out.println(districtings.size());
             sortDistrictings();
             averageDistricting = districtings.get(districtings.size()/2).getDistrictingId();
             extremeDistricting = districtings.get(0).getDistrictingId();
             int randindex = new Random().nextInt(districtings.size());
             randomDistricting = districtings.get(randindex).getDistrictingId();
             System.out.println("Done Processing");
+            persistJobDistricting();
          } catch(Exception e) {
             e.printStackTrace();
          }
+    }
+
+    public void persistJobDistricting(){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Lions.demo.entity.Job");
+        EntityManager em = emf.createEntityManager();
+        Job job = em.find(Job.class, jobId);
+        em.getTransaction().begin();
+        job.setAverageDistricting(this.averageDistricting);
+        job.setExtremeDistricting(this.extremeDistricting);
+        job.setRandomDistricting(this.randomDistricting); 
+        em.getTransaction().commit();
+        em.close();
     }
 
     public void persistDistrict(District d){

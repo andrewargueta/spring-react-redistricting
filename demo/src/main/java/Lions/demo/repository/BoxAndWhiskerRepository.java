@@ -1,5 +1,6 @@
 package Lions.demo.repository;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -12,4 +13,8 @@ public interface BoxAndWhiskerRepository extends CrudRepository<BoxAndWhisker, S
 
     @Query(value = "SELECT * FROM BoxAndWhiskers WHERE jobId = :id", nativeQuery = true)
     List<BoxAndWhisker> findByJob(@Param("id") int id);
+
+    @Modifying
+    @Query(value = "DELETE FROM BoxAndWhiskers WHERE jobId = :id", nativeQuery = true)
+    void deleteByJob(@Param("id") int id);
 }
