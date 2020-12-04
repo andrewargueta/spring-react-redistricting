@@ -1,6 +1,7 @@
 package Lions.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -120,33 +121,44 @@ public class RequestController {
         return null;
     }
 
+    public List<District> getAverageDistricting(@PathVariable int id){
+        System.out.println(id);
+        Job job = jobRepository.findById(id).get();
+        String districtingId = id +"_" + job.getAverageDistricting();
+        List<District> districting = districtRepository.findByDistrictingId(districtingId);
+        // System.out.println(jobBoxAndWhiskers.size());
+        // return job.getJobId();
+        return districting;
+    }
+
     @GetMapping(value = "/job/{id}")
     public List<BoxAndWhisker> getJob(@PathVariable int id){
         System.out.println(id);
-        Job job = jobHandler.getJob(id);
-        List<BoxAndWhisker> jobBoxAndWhiskers = boxAndWhiskerRepository.findByJob(id);
+        List<BoxAndWhisker> jobBoxAndWhiskers = boxAndWhiskerRepository.findByJobId(id);
         System.out.println(jobBoxAndWhiskers.size());
         // return job.getJobId();
         return jobBoxAndWhiskers;
     }
 
     @DeleteMapping(value = "/job/{id}/delete")
+    @Transactional
     public int deleteJob(@PathVariable int id){
         System.out.println(id);
         jobHandler.deleteJob(id);
-        // boxAndWhiskerRepository.deleteByJob(id);
-        // districtRepository.deleteByJob(id);
+        boxAndWhiskerRepository.deleteByJobId(id);
+        districtRepository.deleteByJobId(id);
         return id;
     }
 
     @DeleteMapping(value = "/job/{id}/cancel")
+    @Transactional
     public int cancelJob(@PathVariable int id){
         System.out.println(id);
         //cancel based on run location
         jobHandler.deleteJob(id);
         //test function for non updated job history
-        // boxAndWhiskerRepository.deleteByJob(id);
-        // districtRepository.deleteByJob(id);
+        boxAndWhiskerRepository.deleteByJobId(id);
+        districtRepository.deleteByJobId(id);
         return id;
     }
 

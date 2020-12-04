@@ -77,7 +77,7 @@ class Job extends React.Component {
     cancelJob(e){
       e.preventDefault();
       e.stopPropagation();
-      document.getElementById("job-btn").classList.add('disabled');
+      // document.getElementById("job-btn").classList.add('disabled');
       document.getElementById("2").style.display="none";
       var jobID = this.props.jobNum;
       const url = 'http://localhost:8080/job/' + jobID + '/cancel';
