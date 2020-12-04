@@ -334,7 +334,7 @@ class Map extends Component {
 
   handleCallback = (currentJob) =>{
     this.setState({currentJob: currentJob});
-    console.log(this.state.currentJob);
+    console.log(currentJob);
   }
 
   addGeoJSONLayer(geojson) {

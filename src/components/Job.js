@@ -29,8 +29,12 @@ class Job extends React.Component {
       if(plan =="Average"){
         this.sendingData("Average was clicked");
       }
-      else if(plan =="Extreme"){}
-      else{}
+      else if(plan =="Extreme"){
+        this.sendingData("Extreme was clicked");
+      }
+      else{
+        this.sendingData("Random was clicked");
+      }
     }
 
     clickJob(e){

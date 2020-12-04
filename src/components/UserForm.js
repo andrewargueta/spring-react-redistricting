@@ -18,12 +18,16 @@ class UserForm extends React.Component {
           showCreateJob: true,
           jobs:[],
           childData:{},
+          showJobs: false,
+          showForm:true
         };
         this.handleChange = this.handleChange.bind(this);
         this.addJob = this.addJob.bind(this);
         this.deleteJob = this.deleteJob.bind(this);
       }
       componentDidMount(){
+        document.getElementById('home').classList.add('active');
+        document.getElementById('home').classList.add('show');
         document.getElementById("global-summary").style.display="none";
         axios.get("http://localhost:8080/job/previous-jobs", {
                       headers: {
@@ -58,8 +62,14 @@ class UserForm extends React.Component {
                     } 
                 ); 
       }
-      componentDidUpdate(){
+      componentDidUpdate(prevProps, prevState){
         //fix the bug when switching from plot to map
+        if(this.state.showJobs){
+          document.getElementById('home').classList.remove('active');
+          document.getElementById('home').classList.remove('show');
+          document.getElementById('global-summary').classList.add('active');
+          document.getElementById('global-summary').classList.add('show');
+        }
          
       }
       checkInput(plans, minority, compactness, population_variation) {
@@ -121,7 +131,7 @@ class UserForm extends React.Component {
         }
 
     }
-    
+
     sendingData = (data) => {
         this.props.parentCallBack(data);  
     }
@@ -153,7 +163,19 @@ class UserForm extends React.Component {
             />]
         });
       }    
-   
+    showJobs= () => {
+      this.setState({
+        showJobs: true,
+        showForm: false 
+      });
+    }
+  
+    showForm= () => {
+      this.setState({
+        showJobs: false,
+        showForm: true 
+      });
+    }
   render() {
     return (
       <>
@@ -161,11 +183,11 @@ class UserForm extends React.Component {
         
         <div className="col-4"  id="job-div">
           <ul className="nav nav-tabs" id = "jobTabs">
-            <li id = '3' className="active"><a data-toggle="tab" href="#home" >Create Job</a></li>
-            <li id = '4'> <a data-toggle="tab" href="#global-summary" >Global History</a></li>
+            <li id = '3' className=""><a data-toggle="tab" href="#home" onClick={this.showForm} >Create Job</a></li>
+            <li id = '4'> <a data-toggle="tab" href="#global-summary" onClick={this.showJobs} >Global History</a></li>
           </ul>
           <div className="tab-content">
-            <div id="home" className="tab-pane fade in active">
+            <div id="home" className="tab-pane fade in">
               <ul className="nav flex-column" id="boxed-form">
                 <h4 id = "job-hdr"> Create Job</h4>
                   <form id="job-form">
