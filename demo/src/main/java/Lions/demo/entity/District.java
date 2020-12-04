@@ -34,6 +34,10 @@ public class District {
         this.jobId = jobId;
     }
 
+    public District(){
+        
+    }
+
     @Id
     @Column(name="districtId")
     public String getDistrictId() {

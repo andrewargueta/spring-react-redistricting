@@ -125,10 +125,10 @@ public class RequestController {
     public List<District> getAverageDistricting(@PathVariable int id){
         System.out.println(id);
         Job job = jobRepository.findById(id).get();
-        String districtingId = id +"_" + job.getAverageDistricting();
+        String districtingId = job.getAverageDistricting();
+        System.out.println(districtingId);
         List<District> districting = districtRepository.findByDistrictingId(districtingId);
-        // System.out.println(jobBoxAndWhiskers.size());
-        // return job.getJobId();
+        System.out.println(districting.size());
         return districting;
     }
 
