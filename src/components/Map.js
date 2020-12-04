@@ -54,6 +54,7 @@ class Map extends Component {
       showMap: true,
       currentJob:{},
       currentPrecinct:{},
+      plotData:{}
     };
     this._mapNode = null;
     this.handleDistrictView = this.handleDistrictView.bind(this);
@@ -332,9 +333,8 @@ class Map extends Component {
     }
   }
 
-  handleCallback = (currentJob) =>{
-    this.setState({currentJob: currentJob});
-    console.log(currentJob);
+  handleCallback = (plotData) =>{
+    this.setState({plotData: plotData});
   }
 
   addGeoJSONLayer(geojson) {
@@ -451,7 +451,7 @@ class Map extends Component {
               </div>
             </div> 
             <div id="menu1" class="tab-pane fade">
-                  <div id="plot"><BoxWhisker /></div>
+                  <div id="plot"><BoxWhisker plotData={this.state.plotData} /></div>
             </div> 
           </div>     
         </div> 

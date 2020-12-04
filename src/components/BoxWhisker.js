@@ -23,17 +23,18 @@ class BocWhisker extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            x: ['1', '1', '1', '1', '2', '2', '2', '2', '3', '3', '3', '3', '4', '4', '4', '4'],
-            trace1: {
-                y: [0.2, 0.2, 0.5, 0.1, 0.5, 0.4, 0.2, 0.7, 0.9, 0.8, 0.7, 1.2, 1.1, 1.5, 1.9, 1.3],
-                x: ['1', '1', '1', '1', '2', '2', '2', '2', '3', '3', '3', '3', '4', '4', '4', '4'],
-                name: 'Orginal',
-                marker: {color: '#3D9970'},
-                type: 'box'
-            },
+            plotData:{},
+            // trace1: {
+            //     y: [0, 0, 0, 0],
+            //     x: ['1', '1', '1', '1'],
+            //     name: 'Orginal',
+            //     marker: {color: '#3D9970'},
+            //     type: 'box'
+            // },
             trace2: {
-                y: [0.5, 0.7, 0.9, 1.0, 0.6, 0.8, 0.9, 1.1, 0.9, 0.8, 0.7, 1.0, 1.3, 1.2, 1.6, 1.3],
-                x: ['1', '1', '1', '1', '2', '2', '2', '2', '3', '3', '3', '3', '4', '4', '4', '4'],
+                y: this.props.plotData[0]?[this.props.plotData[0].min,this.props.plotData[0].q1,
+                    this.props.plotData[0].median,this.props.plotData[0].q3, this.props.plotData[0].max]: [0,0,0,0,0] ,/*min  ?? ?? max*/
+                x: ['1', '1', '1', '1', '1'],
                 name: 'New',
                 marker: {color: '#FF4136'},
                 type: 'box'
@@ -43,14 +44,30 @@ class BocWhisker extends React.Component {
         
       }
 
+    componentDidUpdate(prevProps, prevState) {
+        if(prevProps.plotData !== this.props.plotData){
+            this.setState({trace2: {
+                y: this.props.plotData[0]?[this.props.plotData[0].min,this.props.plotData[0].q1,
+                this.props.plotData[0].median,this.props.plotData[0].q3, this.props.plotData[0].max]: [0,0,0,0,0] ,/*min  ?? ?? max*/
+                x: ['1', '1', '1', '1', '1'],
+                name: 'New',
+                marker: {color: '#FF4136'},
+                type: 'box'
+            }});
+        }
+        console.log(this.state.trace2['y'])
+        
+        
+      }
+
 
     render() {
-        var trace1= this.state.trace1;
+        // var trace1= this.state.trace1;
         var trace2 = this.state.trace2;
         return (
                 <Plot
                     data={[
-                        trace1,
+                        // trace1,
                         trace2,
                     ]}
                     layout={config.layout}

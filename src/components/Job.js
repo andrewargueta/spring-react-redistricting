@@ -49,6 +49,7 @@ class Job extends React.Component {
       axios.get(url).then( 
         (response) => { 
             var result = response.data; 
+            this.sendingData(response.data);
             console.log("Clicked JobID :" + result);
         }, 
         (error) => { 
