@@ -121,6 +121,7 @@ public class RequestController {
         return null;
     }
 
+    @GetMapping(value = "/job/{id}/averageDistricting")
     public List<District> getAverageDistricting(@PathVariable int id){
         System.out.println(id);
         Job job = jobRepository.findById(id).get();
@@ -131,12 +132,29 @@ public class RequestController {
         return districting;
     }
 
+    @GetMapping(value = "/job/{id}/extremeDistricting")
+    public List<District> getExtremeDistricting(@PathVariable int id){
+        System.out.println(id);
+        Job job = jobRepository.findById(id).get();
+        String districtingId = id +"_" + job.getExtremeDistricting();
+        List<District> districting = districtRepository.findByDistrictingId(districtingId);
+        return districting;
+    }
+
+    @GetMapping(value = "/job/{id}/randomDistricting")
+    public List<District> getRandomDistricting(@PathVariable int id){
+        System.out.println(id);
+        Job job = jobRepository.findById(id).get();
+        String districtingId = id +"_" + job.getRandomDistricting();
+        List<District> districting = districtRepository.findByDistrictingId(districtingId);
+        return districting;
+    }
+
     @GetMapping(value = "/job/{id}")
     public List<BoxAndWhisker> getJob(@PathVariable int id){
         System.out.println(id);
         List<BoxAndWhisker> jobBoxAndWhiskers = boxAndWhiskerRepository.findByJobId(id);
         System.out.println(jobBoxAndWhiskers.size());
-        // return job.getJobId();
         return jobBoxAndWhiskers;
     }
 
@@ -160,21 +178,5 @@ public class RequestController {
         boxAndWhiskerRepository.deleteByJobId(id);
         districtRepository.deleteByJobId(id);
         return id;
-    }
-
-    public List<BoxAndWhisker> getPlotDatas(int jobId){
-        return null;
-    }
-
-    // public void processResult(String path, int jobId, int numOfPlans){
-    //     jobHandler.processResult(path, jobId, numOfPlans);
-    // }
-
-    public List<Progress> getStatus(List<Integer> jobIds){
-        return null;
-    }
-
-    public void getHeatMap(List<MinorityGroup> minGroups){
-        
     }
 }
