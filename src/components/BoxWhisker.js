@@ -55,7 +55,6 @@ class BocWhisker extends React.Component {
                 type: 'box'
             }});
         }
-        console.log(this.state.trace2['y'])
         
         
       }

@@ -27,6 +27,7 @@ class Job extends React.Component {
     
     generateDistrcting(plan){
       if(plan =="Average"){
+        var jobID = this.props.jobNum;
         const url = 'http://localhost:8080/job/' + jobID + '/averageDistricting';;
         axios.get(url).then( 
           (response) => { 

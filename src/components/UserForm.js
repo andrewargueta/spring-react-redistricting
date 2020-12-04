@@ -36,7 +36,7 @@ class UserForm extends React.Component {
                   }
                 ).then( 
                     (response) => { 
-                        console.log(response);
+                        // console.log(response);
                         var prevJobs = [];
                         for(var i=0; i<response.data.length; i++){
                           prevJobs.push( <Job
@@ -54,8 +54,6 @@ class UserForm extends React.Component {
                             />)
                         }
                         this.setState({jobs: prevJobs});
-                        
-                        console.log("spring : prev jobs: " + prevJobs); 
                     }, 
                     (error) => { 
                         console.log(error); 
@@ -113,7 +111,7 @@ class UserForm extends React.Component {
               }
             ).then( 
                 (response) => { 
-                    console.log(response);
+                    // console.log(response);
                     var result = response.data; 
                     this.addJob(result);
                     this.refs["error-msg"].innerHTML = "";

@@ -40,7 +40,6 @@ class PrecinctPopUp extends React.Component {
         else
           return 0
       } 
-      console.log( this.state.currentPrecinct);
         return (
             <>
             {
