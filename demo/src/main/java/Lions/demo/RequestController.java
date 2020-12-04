@@ -39,6 +39,12 @@ public class RequestController {
     private StateRepository stateRepository;
     @Autowired
     private JobRepository jobRepository;
+    @Autowired
+    private DistrictRepository districtRepository;
+    @Autowired
+    private BoxAndWhiskerRepository boxAndWhiskerRepository;
+    // @Autowired
+    // private DistrictingRepository districtingRepository;
 
     @PostConstruct
     private void postConstruct() {
@@ -100,7 +106,7 @@ public class RequestController {
         //     e.printStackTrace();
         // }
         if(runLoc == Location.LOCAL){
-            localHandler.runLocalJob(job.getJobId(), param, selectedState, JSONObject);
+            // localHandler.runLocalJob(job.getJobId(), param, selectedState, JSONObject);
             String path = "demo/src/main/resources/static/result_" + param.getState() + ".json";
             jobHandler.updateStatus(job.getJobId(), "Completed");
             job.processGraph(path, precincts);
@@ -124,10 +130,13 @@ public class RequestController {
     }
 
     @GetMapping(value = "/job/{id}")
-    public int getJob(@PathVariable int id){
+    public List<BoxAndWhisker> getJob(@PathVariable int id){
         System.out.println(id);
         Job job = jobHandler.getJob(id);
-        return job.getJobId();
+        List<BoxAndWhisker> jobBoxAndWhiskers = boxAndWhiskerRepository.findByJob(id);
+        System.out.println(jobBoxAndWhiskers.size());
+        // return job.getJobId();
+        return jobBoxAndWhiskers;
     }
 
     @DeleteMapping(value = "/job/{id}/delete")

@@ -5,8 +5,11 @@ import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Persistence;
 import javax.persistence.Table;
 
 import java.io.FileReader;
@@ -57,12 +60,12 @@ public class Job {
         System.out.println("Processing Job");
         JSONParser parser = new JSONParser();
         try {
-            Object obj = parser.parse(new FileReader(path));
-            // Object obj = parser.parse(new FileReader("demo/src/main/resources/static/test.json"));
+            // Object obj = parser.parse(new FileReader(path));
+            Object obj = parser.parse(new FileReader("demo/src/main/resources/static/test.json"));
             JSONObject jsonObject = (JSONObject)obj;
             for(int i =0; i < numberOfPlans; i++){
                 String districtingKey = jobId +"_"+i;
-                Districting newDistricting = new Districting(districtingKey);
+                Districting newDistricting = new Districting(districtingKey, jobId);
                 //persist districting
                 JSONObject districtingJson = (JSONObject)jsonObject.get(districtingKey);
                 Set<String> keys = districtingJson.keySet();
@@ -77,11 +80,12 @@ public class Job {
                     }
                     newDistrict.setCounties(counties.size());
                     calculateDistrictVap(newDistrict, precincts);
+                    persistDistrict(newDistrict); //replaces adding to the list -> do it through the a join
                     newDistricting.addDistrict(newDistrict);
-                    
                 }
                 newDistricting.generateBoxAndWhisker();
                 districtings.add(newDistricting);
+                // persistDistricting(newDistricting);
             }
             System.out.println(districtings.size());
             sortDistrictings();
@@ -95,6 +99,15 @@ public class Job {
          }
     }
 
+    public void persistDistrict(District d){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Lions.demo.entity.District");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(d);
+        em.getTransaction().commit();
+        em.close();
+    }
+
     public Precinct findPrecinct(List<Precinct> precincts, String precinctId){
         for(Precinct p : precincts){
             if(p.getGeoId().equals(precinctId)){
@@ -105,7 +118,7 @@ public class Job {
     }
 
     public void sortDistrictings(){
-        Collections.sort(districtings, (a,b) -> a.getBoxAndWhisker().getMedian().compareTo(b.getBoxAndWhisker().getMedian()));
+        Collections.sort(districtings, (a,b) -> a.findBoxAndWhisker().getMedian().compareTo(b.findBoxAndWhisker().getMedian()));
     }
 
     public void calculateDistrictVap(District newDistrict, List<Precinct> precincts){
@@ -115,7 +128,7 @@ public class Job {
         double blackVap = 0;
         double aianVap = 0;
         double asianVap = 0;
-        for(String precinctId : newDistrict.getPrecincts()){
+        for(String precinctId : newDistrict.findPrecincts()){
             Precinct precinct = findPrecinct(precincts, precinctId);
             totVap += precinct.getTotVap();
             hispVap += precinct.getHispVap();

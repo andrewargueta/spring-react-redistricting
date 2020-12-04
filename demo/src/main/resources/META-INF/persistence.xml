@@ -18,4 +18,32 @@
 	    </properties>
 	</persistence-unit>
 
+	<persistence-unit name="Lions.demo.entity.District">
+	    <description>District EntityManager</description>
+	    <class>Lions.demo.entity.District</class> 
+	    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+	    <properties>
+	        <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+	        <property name="hibernate.hbm2ddl.auto" value="update"/>
+	        <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+	        <property name="javax.persistence.jdbc.url" value="jdbc:mysql://mysql3.cs.stonybrook.edu:3306/lions"/>
+	        <property name="javax.persistence.jdbc.user" value="lions"/>
+	        <property name="javax.persistence.jdbc.password" value="changeit"/>
+	    </properties>
+	</persistence-unit>
+
+	<persistence-unit name="Lions.demo.entity.BoxAndWhisker">
+	    <description>BoxAndWhisker EntityManager</description>
+	    <class>Lions.demo.entity.BoxAndWhisker</class> 
+	    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+	    <properties>
+	        <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+	        <property name="hibernate.hbm2ddl.auto" value="update"/>
+	        <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+	        <property name="javax.persistence.jdbc.url" value="jdbc:mysql://mysql3.cs.stonybrook.edu:3306/lions"/>
+	        <property name="javax.persistence.jdbc.user" value="lions"/>
+	        <property name="javax.persistence.jdbc.password" value="changeit"/>
+	    </properties>
+	</persistence-unit>
+
 </persistence>

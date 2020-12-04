@@ -3,20 +3,29 @@ package Lions.demo.entity;
 import Lions.demo.*;
 import java.util.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 // @Entity
-// @Table(name = "districting")
+// @Table(name = "Districtings")
 public class Districting {
     private String districtingId;
     private List<District> districts;
     private BoxAndWhisker boxAndWhisker;
+    private int jobId;
 
-    public Districting(String districtingId){
+    public Districting(String districtingId, int jobId){
         this.districtingId = districtingId;
+        this.jobId = jobId;
         this.districts = new ArrayList<>();
     }
 
@@ -31,7 +40,17 @@ public class Districting {
         Double mid = districts.get(districts.size()/2).getVotingAgePercent();
         Double q3 = districts.get((districts.size()*3) / 4).getVotingAgePercent();
         Double max = districts.get(districts.size()-1).getVotingAgePercent();
-        this.boxAndWhisker = new BoxAndWhisker(min, q1, mid, q3, max);
+        this.boxAndWhisker = new BoxAndWhisker(min, q1, mid, q3, max, districtingId, jobId);
+        persistBoxAndWhisker(this.boxAndWhisker);
+    }
+
+    public void persistBoxAndWhisker(BoxAndWhisker boxAndWhisker){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Lions.demo.entity.BoxAndWhisker");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(boxAndWhisker);
+        em.getTransaction().commit();
+        em.close();
     }
 
     // @Id
@@ -44,6 +63,8 @@ public class Districting {
         this.districtingId = districtingId;
     }
 
+    // @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    // @JoinColumn(name = "districtingId")
     public List<District> getDistricts() {
         return this.districts;
     }
@@ -56,7 +77,7 @@ public class Districting {
         this.districts.add(d);
     }
 
-    public BoxAndWhisker getBoxAndWhisker() {
+    public BoxAndWhisker findBoxAndWhisker() {
         return this.boxAndWhisker;
     }
 
