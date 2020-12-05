@@ -39,8 +39,6 @@ config.tileLayer = {
 
 };
 var dissolve = require('geojson-dissolve');
-var mapshaper = require('mapshaper');
-var turf = require('@turf/turf');
 
 var districtLayer="", precinctLayer="";
 class Map extends Component {
@@ -157,8 +155,10 @@ class Map extends Component {
   generatePlanDistrictingLayer(state,response){
     //districtings 
     var precincts={};
+    var districtings=[];
+    this.handleStateView(state);
     if(state=="Mississippi"){
-      precincts=mississippiPrecinct;  
+      precincts=mississippiPrecinct; 
     }  
     for(var i = 0; i<response.length; i++){
       var geojsonResponse = "{\"type\":\"FeatureCollection\", \"features\": [";
@@ -181,23 +181,42 @@ class Map extends Component {
             pairOfCoords=[];
         } 
       }
-      prefix += JSON.stringify(listOfCoords) +']},"properties":{}},';
+      prefix += JSON.stringify(listOfCoords) +']},"properties":{' +
+       
+      '}},';
       geojsonResponse += prefix;
     }
     geojsonResponse = geojsonResponse.slice(0,-1);
     geojsonResponse += "]}";
-    var json = JSON.parse(geojsonResponse);
     // var dissolved =  turf.dissolve(json);
     // console.log(dissolved);
-    const randomColor = Math.floor(Math.random()*16777215).toString(16);
-    var geojsonLayer = L.geoJson(dissolve(json), {
+    
+    var geojsonLayer = L.geoJson(dissolve(JSON.parse(geojsonResponse)), {
       onEachFeature: function(feature, layer){  
-        layer.setStyle({"color": "#" + randomColor});
+        layer.setStyle({"color": "palegreen"});
+        layer.on('click', e=>{
+          layer.openPopup();
+        });
       }
     });
-    geojsonLayer.addTo(this.state.map)
+
+    geojsonLayer.eachLayer(function (layer) {
+      console.log(layer);
+      layer.bindPopup("<b>District #</b>" + (i+1)); 
+      });
+    districtings.push(geojsonLayer);
   }
-    // console.log(precinctLayer); 
+    //add precinct and district layers
+    var map = this.state.map;
+    var tileLayer = this.state.tileLayer;
+    map.eachLayer(function (layer) {
+      if(layer !== tileLayer){
+        map.removeLayer(layer);
+      }
+    });
+    for(var i =0; i<districtings.length;i++){
+      districtings[i].addTo(map);
+    }
   }
   handleHeatMapView(demographic){
     if(!this.state.currentState ) return;
