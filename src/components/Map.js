@@ -60,7 +60,8 @@ class Map extends Component {
       currentJob:{},
       currentPrecinct:{},
       plotData:{},
-      districtingData:{}
+      districtingData:{},
+      layersOnMap:[]
     };
     this._mapNode = null;
     this.handleDistrictView = this.handleDistrictView.bind(this);
@@ -201,7 +202,6 @@ class Map extends Component {
     });
 
     geojsonLayer.eachLayer(function (layer) {
-      console.log(layer);
       layer.bindPopup("<b>District #</b>" + (i+1)); 
       });
     districtings.push(geojsonLayer);
@@ -214,6 +214,7 @@ class Map extends Component {
         map.removeLayer(layer);
       }
     });
+
     for(var i =0; i<districtings.length;i++){
       districtings[i].addTo(map);
     }
@@ -284,6 +285,10 @@ class Map extends Component {
     mapDiv.classList.add("col-8");
     var leafletMap = document.getElementById('map');
     leafletMap.style.width = "95%";
+    var filters = document.getElementsByClassName("map-filter");
+    for(var i=0; i<filters.length; i++) {
+       filters[i].checked = false;
+     }   
     //sets states and bounds
     var geojson = {}, northEast ={} ,southWest={},bounds={};
     this.setState({currentState: stateName});
@@ -355,17 +360,14 @@ class Map extends Component {
       this.state.currentPrecinctLayer.addTo(this.state.map)
     if(this.state.showDistrictLayer){
       geojsonLayer.addTo(this.state.map);
+      this.state.layersOnMap.push(geojsonLayer);
       this.setState({ geojsonLayer });
       this.setState({currentDistrictLayer: geojsonLayer});
-    }
-    else{
-      this.setState({currentDistrictLayer: null});
     }
     
   }
 
   handlePrecinctView(){
-    if(!this.state.currentState ) return;
     this.setState({ showPrecinctLayer: !this.state.showPrecinctLayer});
     var map = this.state.map;
     var tileLayer = this.state.tileLayer;
@@ -399,9 +401,7 @@ class Map extends Component {
       this.setState({ geojsonLayer });
       this.setState({currentPrecinctLayer: geojsonLayer});
     }
-    else{
-      this.setState({currentPrecinctLayer: null});
-    }
+    // console.log(this.state, 'precinct');
   }
 
   handleCallback = (data) =>{
@@ -510,21 +510,37 @@ class Map extends Component {
               <>
               <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  State Layers
+                   <text>Map Filters </text>
                 </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <div class="font-small d-flex align-items-center">
                       <label class="radio-inline">
-                      <input type="checkbox" name="inlineDistricttOption" id="districtCheckbox" onClick={this.handleDistrictView} /> Districts</label>
+                      <input class="map-filter" type="checkbox" name="inlineDistricttOption" id="districtCheckbox" onClick={this.handleDistrictView} /> Districts</label>
                     </div>                  
                     <div class="font-small d-flex align-items-center">
                       <label class="radio-inline">
-                      <input type="checkbox" name="inlinePrecinctOption" id="precinctCheckbox" onClick={this.handlePrecinctView} /> Precicnts</label>
+                      <input class="map-filter" type="checkbox" name="inlinePrecinctOption" id="precinctCheckbox" onClick={this.handlePrecinctView} /> Precicnts</label>
+                    </div>
+                    <div class="font-small d-flex align-items-center">
+                      <label class="radio-inline">
+                      <input type="radio" name="inlinePrecinctOption" id="precinctCheckbox" onClick={()=> this.handleHeatMapView('black')} /> Black</label>
+                    </div>
+                    <div class="font-small d-flex align-items-center">
+                      <label class="radio-inline">
+                      <input type="radio" name="inlinePrecinctOption" id="precinctradio" onClick={()=> this.handleHeatMapView('asian')} /> Asian</label>
+                    </div>
+                    <div class="font-small d-flex align-items-center">
+                      <label class="radio-inline">
+                      <input type="radio" name="inlinePrecinctOption" id="precinctradio" onClick={()=> this.handleHeatMapView('hispanic')} /> Hispanic</label>
+                    </div>
+                    <div class="font-small d-flex align-items-center">
+                      <label class="radio-inline">
+                      <input type="radio" name="inlinePrecinctOption" id="precinctradio" onClick={()=> this.handleHeatMapView('native')} /> Native</label>
                     </div>
                   </div>
               </div>
               
-              <div class="dropdown">
+              {/* <div class="dropdown">
                 <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Demo. Layers
                 </button>
@@ -534,7 +550,7 @@ class Map extends Component {
                     <a class="dropdown-item" onClick={()=> this.handleHeatMapView('hispanic')}>Hispanic</a>
                     <a class="dropdown-item" onClick={()=> this.handleHeatMapView('native')}>Native/Alaskan American</a>
                   </div>
-              </div>
+              </div> */}
               </>
               :
               <div></div>
