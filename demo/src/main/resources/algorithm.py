@@ -274,7 +274,13 @@ def main():
 
             # print()
 
-        result[jobId +'_'+ str(n)] = district_clusters
+        district_idx = 0
+        result_districts = {}
+        for key in district_clusters:
+            result_districts[jobId+'_'+str(n)+'_'+str(district_idx)] = district_clusters[key]
+            district_idx += 1
+
+        result[jobId +'_'+ str(n)] = result_districts
 
     result_path = 'demo/src/main/resources/static/result_' + state + '.json'
     with open(result_path, 'w') as result_file:
