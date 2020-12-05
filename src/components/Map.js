@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import L from 'leaflet';
+import { oneLine } from "common-tags";
+
 
 
 import UserForm  from './UserForm.js';
@@ -13,6 +15,8 @@ import baseLayer from '../geojson/states.json';
 import texasState from '../geojson/texas-state.json';
 import alabamaStateLayer from '../geojson/alabama-state.json';
 import mississippiState from '../geojson/mississippi-state.json';
+
+import mississippiPrecinct from '../geojson/mississippi.json'
 
 
 import BoxWhisker from './BoxWhisker.js';
@@ -34,6 +38,9 @@ config.tileLayer = {
   url: 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',
 
 };
+var dissolve = require('geojson-dissolve');
+var mapshaper = require('mapshaper');
+var turf = require('@turf/turf');
 
 var districtLayer="", precinctLayer="";
 class Map extends Component {
@@ -54,7 +61,8 @@ class Map extends Component {
       showMap: true,
       currentJob:{},
       currentPrecinct:{},
-      plotData:{}
+      plotData:{},
+      districtingData:{}
     };
     this._mapNode = null;
     this.handleDistrictView = this.handleDistrictView.bind(this);
@@ -119,7 +127,7 @@ class Map extends Component {
     }
     geojsonResponse = geojsonResponse.slice(0,-1);
     geojsonResponse += "]}";
-   
+    
 
     return geojsonResponse;
   }
@@ -145,6 +153,51 @@ class Map extends Component {
     geojsonResponse += "]}";
 
     return geojsonResponse;
+  }
+  generatePlanDistrictingLayer(state,response){
+    //districtings 
+    var precincts={};
+    if(state=="Mississippi"){
+      precincts=mississippiPrecinct;  
+    }  
+    for(var i = 0; i<response.length; i++){
+      var geojsonResponse = "{\"type\":\"FeatureCollection\", \"features\": [";
+      var districtingPrecincts=[];
+      var precinctIds= response[i]['precicntIds'].split(' ');
+      for(var j =0; j<precinctIds.length-1;j++){
+        var correspondingPrecinct = precincts.filter(obj => obj.geoId === precinctIds[j]);
+        districtingPrecincts.push(correspondingPrecinct);
+      }
+      for(j =0; j<districtingPrecincts.length;j++){
+        var prefix = '{"type":"Feature","geometry":{"type":"Polygon","coordinates":[';
+        var listOfCoords=[];
+        var pairOfCoords=[];
+        var currentPrecinct = districtingPrecincts[j][0];
+        var currPrecinctCoords = currentPrecinct.coordinates.split(',').map(Number);
+        for (var k = 0; k < currPrecinctCoords.length; k++) {
+          pairOfCoords.push(currPrecinctCoords[k])
+          if(pairOfCoords.length == 2){
+            listOfCoords.push(pairOfCoords);
+            pairOfCoords=[];
+        } 
+      }
+      prefix += JSON.stringify(listOfCoords) +']},"properties":{}},';
+      geojsonResponse += prefix;
+    }
+    geojsonResponse = geojsonResponse.slice(0,-1);
+    geojsonResponse += "]}";
+    var json = JSON.parse(geojsonResponse);
+    // var dissolved =  turf.dissolve(json);
+    // console.log(dissolved);
+    const randomColor = Math.floor(Math.random()*16777215).toString(16);
+    var geojsonLayer = L.geoJson(dissolve(json), {
+      onEachFeature: function(feature, layer){  
+        layer.setStyle({"color": "#" + randomColor});
+      }
+    });
+    geojsonLayer.addTo(this.state.map)
+  }
+    // console.log(precinctLayer); 
   }
   handleHeatMapView(demographic){
     if(!this.state.currentState ) return;
@@ -333,8 +386,13 @@ class Map extends Component {
     }
   }
 
-  handleCallback = (plotData) =>{
-    this.setState({plotData: plotData});
+  handleCallback = (data) =>{
+    if(data[0]=="plot")
+      this.setState({plotData: data[1]});
+    else{
+      this.setState({districtingData: data[1]});
+      this.generatePlanDistrictingLayer(data[0],data[1]);
+    }
   }
 
   addGeoJSONLayer(geojson) {

@@ -25,16 +25,16 @@ class Job extends React.Component {
         //event.preventDefault();
     }
     
-    generateDistrcting(plan){
+    requestDistrcting(plan){
       if(plan =="Average"){
         var jobID = this.props.jobNum;
         const url = 'http://localhost:8080/job/' + jobID + '/averageDistricting';;
         axios.get(url).then( 
           (response) => { 
               var result = response.data; 
-              console.log(response)
-              // this.sendingData(response.data);
-              console.log("Average Districting was clicked:" + result);
+              // console.log(response)
+              this.sendingData([this.state.state,response.data]);
+              // console.log("Average Districting was clicked:" + result);
           }, 
           (error) => { 
               console.log(error); 
@@ -42,10 +42,10 @@ class Job extends React.Component {
         );
       }
       else if(plan =="Extreme"){
-        this.sendingData("Extreme was clicked");
+        // this.sendingData("Extreme was clicked");
       }
       else{
-        this.sendingData("Random was clicked");
+        // this.sendingData("Random was clicked");
       }
     }
 
@@ -61,8 +61,8 @@ class Job extends React.Component {
       axios.get(url).then( 
         (response) => { 
             var result = response.data; 
-            this.sendingData(response.data);
-            console.log("Clicked JobID :" + result);
+            this.sendingData(["plot",response.data]);
+            // console.log("Clicked JobID :" + result);
         }, 
         (error) => { 
             console.log(error); 
@@ -79,7 +79,7 @@ class Job extends React.Component {
       axios.delete(url).then( 
         (response) => { 
             var result = response.data; 
-            console.log("Successfully deleted JobID :" + result);
+            // console.log("Successfully deleted JobID :" + result);
         }, 
         (error) => { 
             console.log(error); 
@@ -97,7 +97,7 @@ class Job extends React.Component {
       axios.delete(url).then( 
         (response) => { 
             var result = response.data; 
-            console.log("Successfully cancelled JobID :" + result);
+            // console.log("Successfully cancelled JobID :" + result);
         }, 
         (error) => { 
             console.log(error); 
@@ -138,9 +138,9 @@ class Job extends React.Component {
                           Districtings
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" onClick={()=> this.generateDistrcting('Average')}>Average</a>
-                          <a class="dropdown-item" onClick={()=> this.generateDistrcting('Extreme')}>Extreme</a>
-                          <a class="dropdown-item" onClick={()=> this.generateDistrcting('Random')}>Random</a>
+                          <a class="dropdown-item" onClick={()=> this.requestDistrcting('Average')}>Average</a>
+                          <a class="dropdown-item" onClick={()=> this.requestDistrcting('Extreme')}>Extreme</a>
+                          <a class="dropdown-item" onClick={()=> this.requestDistrcting('Random')}>Random</a>
                         </div>
                       </div>
 
