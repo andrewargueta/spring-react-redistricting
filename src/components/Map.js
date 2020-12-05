@@ -317,7 +317,6 @@ class Map extends Component {
     state: stateName});
     //adds layer to map
     this.addGeoJSONLayer(geojson);
-    
     //sends post to axios
     axios.post('http://localhost:8080/state/set-state', { name: stateName }, {
     headers: {
@@ -505,18 +504,29 @@ class Map extends Component {
                     <a class="dropdown-item" onClick={()=> this.handleStateView('Texas')}>Texas</a>
                   </div>
               </div>
+              {
+              this.state.currentState?
+
+              <>
               <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   State Layers
                 </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" onClick={this.handleDistrictView}>Districts</a>
-                    <a class="dropdown-item" onClick={this.handlePrecinctView}>Precincts</a>
+                    <div class="font-small d-flex align-items-center">
+                      <label class="radio-inline">
+                      <input type="checkbox" name="inlineDistricttOption" id="districtCheckbox" onClick={this.handleDistrictView} /> Districts</label>
+                    </div>                  
+                    <div class="font-small d-flex align-items-center">
+                      <label class="radio-inline">
+                      <input type="checkbox" name="inlinePrecinctOption" id="precinctCheckbox" onClick={this.handlePrecinctView} /> Precicnts</label>
+                    </div>
                   </div>
               </div>
+              
               <div class="dropdown">
                 <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Demographic Map
+                  Demo. Layers
                 </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" onClick={()=> this.handleHeatMapView('black')}>African American</a>
@@ -524,9 +534,17 @@ class Map extends Component {
                     <a class="dropdown-item" onClick={()=> this.handleHeatMapView('hispanic')}>Hispanic</a>
                     <a class="dropdown-item" onClick={()=> this.handleHeatMapView('native')}>Native/Alaskan American</a>
                   </div>
-                </div>
               </div>
-            </div> 
+              </>
+              :
+              <div></div>
+              }
+                
+              </div>
+              
+              
+            </div>
+            
             <div id="menu1" class="tab-pane fade">
                   <div id="plot"><BoxWhisker plotData={this.state.plotData} /></div>
             </div> 
