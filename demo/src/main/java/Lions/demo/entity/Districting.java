@@ -40,7 +40,7 @@ public class Districting {
         Double mid = districts.get(districts.size()/2).getVotingAgePercent();
         Double q3 = districts.get((districts.size()*3) / 4).getVotingAgePercent();
         Double max = districts.get(districts.size()-1).getVotingAgePercent();
-        this.boxAndWhisker = new BoxAndWhisker(min, q1, mid, q3, max, districtingId, jobId);
+        this.boxAndWhisker = new BoxAndWhisker(mid, q1, q3, min, max, districtingId, jobId);
         persistBoxAndWhisker(this.boxAndWhisker);
     }
 

@@ -60,8 +60,8 @@ public class Job {
         System.out.println("Processing Job");
         JSONParser parser = new JSONParser();
         try {
-            // Object obj = parser.parse(new FileReader(path));
-            Object obj = parser.parse(new FileReader("demo/src/main/resources/static/test.json"));
+            Object obj = parser.parse(new FileReader(path));
+            // Object obj = parser.parse(new FileReader("demo/src/main/resources/static/test.json"));
             JSONObject jsonObject = (JSONObject)obj;
             for(int i =0; i < numberOfPlans; i++){
                 String districtingKey = jobId +"_"+i;

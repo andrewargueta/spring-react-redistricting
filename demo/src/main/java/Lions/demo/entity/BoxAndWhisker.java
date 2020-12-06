@@ -11,15 +11,15 @@ public class BoxAndWhisker {
     private String districtingId;
     private Double median;
     private Double q1;
-    private Double q2;
+    private Double q3;
     private Double min;
     private Double max;
     private int jobId;
 
-    public BoxAndWhisker(double median, double q1, double q2, double min, double max, String districtingId, int jobId) {
+    public BoxAndWhisker(double median, double q1, double q3, double min, double max, String districtingId, int jobId) {
         this.median = median;
         this.q1 = q1;
-        this.q2 = q2;
+        this.q3 = q3;
         this.min = min;
         this.max = max;
         this.districtingId = districtingId;
@@ -58,13 +58,13 @@ public class BoxAndWhisker {
         this.q1 = q1;
     }
 
-    @Column(name="q2")
-    public Double getQ2() {
-        return this.q2;
+    @Column(name="q3")
+    public Double getQ3() {
+        return this.q3;
     }
 
-    public void setQ2(Double q2) {
-        this.q2 = q2;
+    public void setQ3(Double q3) {
+        this.q3 = q3;
     }
 
     @Column(name="min")
