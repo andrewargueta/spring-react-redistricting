@@ -423,7 +423,7 @@ class Map extends Component {
       var y=[];
       
       for(var i =0; i<data[1].length;i++){
-        y = y.concat([data[1][i].min,data[1][i].median,data[1][i].max,data[1][i].q1,data[1][i].q2])
+        y = y.concat([data[1][i].min, data[1][i].median, data[1][i].max, data[1][i].q1, data[1][i].q3])
         x = x.concat(Array(6).join((i+1).toString()).split(''));
       }
 
