@@ -13,7 +13,7 @@ config.layout = {
       zeroline: false
     },
     xaxis: {
-      title: 'Districtings',
+      title: 'Districts',
       zeroline: false
     },
     boxmode: 'group'

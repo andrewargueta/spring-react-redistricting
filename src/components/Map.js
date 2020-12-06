@@ -42,7 +42,7 @@ config.tileLayer = {
 };
 var dissolve = require('geojson-dissolve');
 
-var districtLayer="", precinctLayer="";
+var districtLayer="", precinctLayer="", precinctGeojson=null, districtGeojson=null;
 class Map extends Component {
   constructor(props) {
     super(props);
@@ -57,6 +57,7 @@ class Map extends Component {
       currentPrecinctLayer: null,
       showDistrictLayer: true,
       showPrecinctLayer: true,
+      showDistrictingLayer: true,
       showPlot: false,
       showMap: true,
       currentJob:{},
@@ -85,7 +86,14 @@ class Map extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.baseLayer && this.state.map && !this.state.geojsonLayer) {
       this.addBaseLayer(this.state.baseLayer);
-    }
+      }
+    // if (prevState.currentPrecinctLayer !== this.state.currentPrecinctLayer) {
+    //   if(!this.state.showDistrictingLayer){
+    //     precinctLayer = prevState.currentPrecinctLayer;
+    //     console.log("prevState: ", prevState)
+    //     console.log("state: ", this.state)
+    //   }
+    // }
   }
 
   //initalize the map node
@@ -157,6 +165,7 @@ class Map extends Component {
   }
   generatePlanDistrictingLayer(state,response){
     //districtings 
+    this.setState({ showDistrictingLayer: !this.state.showDistrictingLayer});
     var precincts={};
     var districtings=[];
     this.handleStateView(state);
@@ -199,7 +208,6 @@ class Map extends Component {
     geojsonResponse += "]}";
     // var dissolved =  turf.dissolve(json);
     // console.log(dissolved);
-    
     var geojsonLayer = L.geoJson(dissolve(JSON.parse(geojsonResponse)), {
       onEachFeature: function(feature, layer){  
         layer.setStyle({"color": "palegreen"});
@@ -222,10 +230,17 @@ class Map extends Component {
         map.removeLayer(layer);
       }
     });
-
+    if(precinctGeojson && this.state.showPrecinctLayer){
+      precinctGeojson.addTo(map)
+    }
+    if(districtGeojson && this.state.showDistrictLayer){
+      districtGeojson.addTo(map)
+    }
     for(var i =0; i<districtings.length;i++){
       districtings[i].addTo(map);
     }
+
+    
   }
   handleHeatMapView(demographic){
     if(!this.state.currentState ) return;
@@ -338,6 +353,7 @@ class Map extends Component {
         (response) => { 
             districtLayer = this.generateDistrictLayer(response);
             precinctLayer = this.generatePrecinctLayer(response);
+            // districtingLayer = precinctLayer;
             //console.log("spring :" + JSON.stringify(response.data)); 
         }, 
         (error) => { 
@@ -367,6 +383,7 @@ class Map extends Component {
         layer.setStyle({"color": "#E0C568FF"});
       }
     });
+    districtGeojson=geojsonLayer;
     if(this.state.currentPrecinctLayer)
       this.state.currentPrecinctLayer.addTo(this.state.map)
     if(this.state.showDistrictLayer){
@@ -376,6 +393,7 @@ class Map extends Component {
     }
     else{
       this.setState({currentDistrictLayer: null});
+      districtGeojson=null;
     }
     
   }
@@ -411,6 +429,7 @@ class Map extends Component {
         });
       }
     });
+    precinctGeojson=geojsonLayer;
     if(this.state.currentDistrictLayer)
         this.state.currentDistrictLayer.addTo(this.state.map)
     if(this.state.showPrecinctLayer){
@@ -420,6 +439,7 @@ class Map extends Component {
     }
     else{
       this.setState({currentPrecinctLayer: null});
+      precinctGeojson=null;
     }
     // console.log(this.state, 'precinct');
   }
