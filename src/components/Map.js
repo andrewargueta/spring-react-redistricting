@@ -16,7 +16,9 @@ import texasState from '../geojson/texas-state.json';
 import alabamaStateLayer from '../geojson/alabama-state.json';
 import mississippiState from '../geojson/mississippi-state.json';
 
-import mississippiPrecinct from '../geojson/mississippi.json'
+import mississippiPrecinct from '../geojson/mississippi-precinct.json'
+import alabamaPrecinct from '../geojson/alabama-precinct.json'
+import texasPrecinct from '../geojson/texas-precinct.json'
 
 
 import BoxWhisker from './BoxWhisker.js';
@@ -160,6 +162,12 @@ class Map extends Component {
     this.handleStateView(state);
     if(state=="Mississippi"){
       precincts=mississippiPrecinct; 
+    }  
+    if(state=="Alabama"){
+      precincts=alabamaPrecinct; 
+    }  
+    if(state=="Texas"){
+      precincts=texasPrecinct; 
     }  
     for(var i = 0; i<response.length; i++){
       var geojsonResponse = "{\"type\":\"FeatureCollection\", \"features\": [";
@@ -422,8 +430,9 @@ class Map extends Component {
       var x=[];
       var y=[];
       
+      data[1].sort((a, b) => (a.median > b.median) ? 1 : -1)
       for(var i =0; i<data[1].length;i++){
-        y = y.concat([data[1][i].min, data[1][i].median, data[1][i].max, data[1][i].q1, data[1][i].q3])
+        y = y.concat([data[1][i].min , data[1][i].median, data[1][i].max, data[1][i].q1, data[1][i].q3])
         x = x.concat(Array(6).join((i+1).toString()).split(''));
       }
 

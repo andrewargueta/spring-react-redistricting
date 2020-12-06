@@ -6,14 +6,14 @@ let config={};
 
 config.layout = {
     // autosize: true,
-    height: 400,
-    width: 600,
+    height: 600,
+    width: 800,
     yaxis: {
       title: 'Voting Age Population',
       zeroline: false
     },
     xaxis: {
-      title: 'Districts',
+      title: 'Districtings',
       zeroline: false
     },
     boxmode: 'group'
