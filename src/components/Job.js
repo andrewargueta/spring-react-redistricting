@@ -26,27 +26,28 @@ class Job extends React.Component {
     }
     
     requestDistrcting(plan){
-      if(plan =="Average"){
-        var jobID = this.props.jobNum;
-        const url = 'http://localhost:8080/job/' + jobID + '/averageDistricting';;
-        axios.get(url).then( 
-          (response) => { 
-              var result = response.data; 
-              // console.log(response)
-              this.sendingData([this.state.state,response.data]);
-              // console.log("Average Districting was clicked:" + result);
-          }, 
-          (error) => { 
-              console.log(error); 
-          } 
-        );
+      var jobID = this.props.jobNum;
+      var url ="";
+      if(plan =="Average"){   
+        url = 'http://localhost:8080/job/' + jobID + '/averageDistricting';;
       }
       else if(plan =="Extreme"){
-        // this.sendingData("Extreme was clicked");
+        url = 'http://localhost:8080/job/' + jobID + '/extremeDistricting';;
       }
       else{
-        // this.sendingData("Random was clicked");
+        url = 'http://localhost:8080/job/' + jobID + '/randomDistricting';;
       }
+      axios.get(url).then( 
+        (response) => { 
+            var result = response.data; 
+            // console.log(response)
+            this.sendingData([this.state.state,response.data]);
+            // console.log("Average Districting was clicked:" + result);
+        }, 
+        (error) => { 
+            console.log(error); 
+        } 
+      );
     }
 
     clickJob(e){
