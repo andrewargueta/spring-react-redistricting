@@ -31,7 +31,7 @@ class BocWhisker extends React.Component {
             //     marker: {color: '#3D9970'},
             //     type: 'box'
             // },
-            trace2: {
+            trace2: this.props.trace2?this.props.trace2:{
                 y: this.props.plotData[0]?[this.props.plotData[0].min,this.props.plotData[0].q1,
                     this.props.plotData[0].median,this.props.plotData[0].q3, this.props.plotData[0].max]: [0,0,0,0,0] ,/*min  ?? ?? max*/
                 x: ['1', '1', '1', '1', '1'],
@@ -45,18 +45,10 @@ class BocWhisker extends React.Component {
       }
 
     componentDidUpdate(prevProps, prevState) {
+        console.log(this.props.plotData);
         if(prevProps.plotData !== this.props.plotData){
-            this.setState({trace2: {
-                y: this.props.plotData[0]?[this.props.plotData[0].min,this.props.plotData[0].q1,
-                this.props.plotData[0].median,this.props.plotData[0].q3, this.props.plotData[0].max]: [0,0,0,0,0] ,/*min  ?? ?? max*/
-                x: ['1', '1', '1', '1', '1'],
-                name: 'New',
-                marker: {color: '#FF4136'},
-                type: 'box'
-            }});
-        }
-        
-        
+            this.setState({trace2: this.props.plotData});
+        }    
       }
 
 
