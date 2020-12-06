@@ -8,7 +8,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="BoxAndWhiskers")
 public class BoxAndWhisker {
-    private String districtingId;
+    private String id;
     private Double median;
     private Double q1;
     private Double q3;
@@ -16,13 +16,13 @@ public class BoxAndWhisker {
     private Double max;
     private int jobId;
 
-    public BoxAndWhisker(double median, double q1, double q3, double min, double max, String districtingId, int jobId) {
+    public BoxAndWhisker(double min, double q1, double median, double q3, double max, String id, int jobId) {
         this.median = median;
         this.q1 = q1;
         this.q3 = q3;
         this.min = min;
         this.max = max;
-        this.districtingId = districtingId;
+        this.id = id;
         this.jobId = jobId;
     }
 
@@ -31,13 +31,13 @@ public class BoxAndWhisker {
     }
 
     @Id
-    @Column(name="districtingId")
-    public String getDistrictingId() {
-        return this.districtingId;
+    @Column(name="id")
+    public String getId() {
+        return this.id;
     }
 
-    public void setDistrictingId(String districtingId) {
-        this.districtingId = districtingId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Column(name="median")

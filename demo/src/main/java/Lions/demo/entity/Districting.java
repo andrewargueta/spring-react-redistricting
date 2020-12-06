@@ -20,7 +20,7 @@ import javax.persistence.Persistence;
 public class Districting {
     private String districtingId;
     private List<District> districts;
-    private BoxAndWhisker boxAndWhisker;
+    private Double median;
     private int jobId;
 
     public Districting(String districtingId, int jobId){
@@ -33,25 +33,29 @@ public class Districting {
         Collections.sort(districts, (a,b) -> a.getVotingAgePercent().compareTo(b.getVotingAgePercent()));
     }
 
-    public void generateBoxAndWhisker(){
-        sortDistricts();
-        Double min = districts.get(0).getVotingAgePercent();
-        Double q1 = districts.get(districts.size()/4).getVotingAgePercent();
-        Double mid = districts.get(districts.size()/2).getVotingAgePercent();
-        Double q3 = districts.get((districts.size()*3) / 4).getVotingAgePercent();
-        Double max = districts.get(districts.size()-1).getVotingAgePercent();
-        this.boxAndWhisker = new BoxAndWhisker(mid, q1, q3, min, max, districtingId, jobId);
-        persistBoxAndWhisker(this.boxAndWhisker);
+    // public void generateBoxAndWhisker(){
+    //     sortDistricts();
+    //     Double min = districts.get(0).getVotingAgePercent();
+    //     Double q1 = districts.get(districts.size()/4).getVotingAgePercent();
+    //     Double median = districts.get(districts.size()/2).getVotingAgePercent();
+    //     Double q3 = districts.get((districts.size()*3) / 4).getVotingAgePercent();
+    //     Double max = districts.get(districts.size()-1).getVotingAgePercent();
+    //     this.boxAndWhisker = new BoxAndWhisker(min, q1, median, q3, max, districtingId, jobId);
+    //     persistBoxAndWhisker(this.boxAndWhisker);
+    // }
+
+    public void findMedian(){
+        this.median = districts.get(districts.size()/2).getVotingAgePercent();
     }
 
-    public void persistBoxAndWhisker(BoxAndWhisker boxAndWhisker){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Lions.demo.entity.BoxAndWhisker");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.persist(boxAndWhisker);
-        em.getTransaction().commit();
-        em.close();
-    }
+    // public void persistBoxAndWhisker(BoxAndWhisker boxAndWhisker){
+    //     EntityManagerFactory emf = Persistence.createEntityManagerFactory("Lions.demo.entity.BoxAndWhisker");
+    //     EntityManager em = emf.createEntityManager();
+    //     em.getTransaction().begin();
+    //     em.persist(boxAndWhisker);
+    //     em.getTransaction().commit();
+    //     em.close();
+    // }
 
     // @Id
     // @Column(name = "districtingId")
@@ -77,11 +81,12 @@ public class Districting {
         this.districts.add(d);
     }
 
-    public BoxAndWhisker findBoxAndWhisker() {
-        return this.boxAndWhisker;
+    public Double getMedian() {
+        return this.median;
     }
 
-    public void setBoxAndWhisker(BoxAndWhisker boxAndWhisker) {
-        this.boxAndWhisker = boxAndWhisker;
+    public void setMedian(Double median) {
+        this.median = median;
     }
+    
 }

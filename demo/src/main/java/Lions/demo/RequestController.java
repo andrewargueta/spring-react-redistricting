@@ -154,6 +154,7 @@ public class RequestController {
     public List<BoxAndWhisker> getJob(@PathVariable int id){
         System.out.println(id);
         List<BoxAndWhisker> jobBoxAndWhiskers = boxAndWhiskerRepository.findByJobId(id);
+        Collections.sort(jobBoxAndWhiskers, (a,b)-> a.getMedian().compareTo(b.getMedian()));
         System.out.println(jobBoxAndWhiskers.size());
         return jobBoxAndWhiskers;
     }

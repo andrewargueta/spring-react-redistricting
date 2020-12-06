@@ -83,7 +83,8 @@ public class Job {
                     persistDistrict(newDistrict); //replaces adding to the list -> do it through the a join
                     newDistricting.addDistrict(newDistrict);
                 }
-                newDistricting.generateBoxAndWhisker();
+                // newDistricting.generateBoxAndWhisker();
+                newDistricting.findMedian();
                 districtings.add(newDistricting);
             }
             sortDistrictings();
@@ -91,11 +92,42 @@ public class Job {
             extremeDistricting = districtings.get(0).getDistrictingId();
             int randindex = new Random().nextInt(districtings.size());
             randomDistricting = districtings.get(randindex).getDistrictingId();
+            generateBoxAndWhisker();
             System.out.println("Done Processing");
             persistJobDistricting();
          } catch(Exception e) {
             e.printStackTrace();
          }
+    }
+
+    public void generateBoxAndWhisker(){
+        for(Districting d : this.districtings){
+            d.sortDistricts();
+        }
+        int numDistricts = this.districtings.get(0).getDistricts().size();
+        for(int i =0; i < numDistricts; i++){
+            ArrayList<Double> temp = new ArrayList<>();
+            for(Districting d : this.districtings){
+                temp.add(d.getDistricts().get(i).getVotingAgePercent());
+            }
+            Collections.sort(temp);
+            Double min = temp.get(0);
+            Double q1 = temp.get(temp.size()/4);
+            Double median = temp.get(temp.size()/2);
+            Double q3 = temp.get((temp.size()*3) / 4);
+            Double max = temp.get(temp.size()-1);
+            BoxAndWhisker boxAndWhisker = new BoxAndWhisker(min, q1, median, q3, max, jobId +"_"+ (i+1), jobId);
+            persistBoxAndWhisker(boxAndWhisker);
+        }
+    }
+
+    public void persistBoxAndWhisker(BoxAndWhisker boxAndWhisker){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Lions.demo.entity.BoxAndWhisker");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.persist(boxAndWhisker);
+        em.getTransaction().commit();
+        em.close();
     }
 
     public void persistJobDistricting(){
@@ -129,7 +161,7 @@ public class Job {
     }
 
     public void sortDistrictings(){
-        Collections.sort(districtings, (a,b) -> a.findBoxAndWhisker().getMedian().compareTo(b.findBoxAndWhisker().getMedian()));
+        Collections.sort(districtings, (a,b) -> a.getMedian().compareTo(b.getMedian()));
     }
 
     public void calculateDistrictVap(District newDistrict, List<Precinct> precincts){
