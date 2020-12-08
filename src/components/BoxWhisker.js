@@ -45,7 +45,6 @@ class BocWhisker extends React.Component {
       }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log(this.props.plotData);
         if(prevProps.plotData !== this.props.plotData){
             this.setState({trace2: this.props.plotData});
         }    

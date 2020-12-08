@@ -42,7 +42,7 @@ config.tileLayer = {
 };
 var dissolve = require('geojson-dissolve');
 
-var districtLayer="", precinctLayer="", precinctGeojson=null, districtGeojson=null;
+var districtLayer="", precinctLayer="", districtingLayer="", precinctGeojson=null, districtGeojson=null,districtingGeojson=null;
 class Map extends Component {
   constructor(props) {
     super(props);
@@ -87,13 +87,6 @@ class Map extends Component {
     if (this.state.baseLayer && this.state.map && !this.state.geojsonLayer) {
       this.addBaseLayer(this.state.baseLayer);
       }
-    // if (prevState.currentPrecinctLayer !== this.state.currentPrecinctLayer) {
-    //   if(!this.state.showDistrictingLayer){
-    //     precinctLayer = prevState.currentPrecinctLayer;
-    //     console.log("prevState: ", prevState)
-    //     console.log("state: ", this.state)
-    //   }
-    // }
   }
 
   //initalize the map node
@@ -179,6 +172,7 @@ class Map extends Component {
       precincts=texasPrecinct; 
     }  
     for(var i = 0; i<response.length; i++){
+      var totVap=0,asianVap=0,blackVap=0,hispVap=0,aianVap=0;
       var geojsonResponse = "{\"type\":\"FeatureCollection\", \"features\": [";
       var districtingPrecincts=[];
       var precinctIds= response[i]['precicntIds'].split(' ');
@@ -192,9 +186,14 @@ class Map extends Component {
         var pairOfCoords=[];
         var currentPrecinct = districtingPrecincts[j][0];
         var currPrecinctCoords = currentPrecinct.coordinates.split(',').map(Number);
+        totVap+=currentPrecinct.totVap;
+        asianVap+=currentPrecinct.asianVap;
+        blackVap+=currentPrecinct.blackVap;
+        hispVap+=currentPrecinct.hispVap;
+        aianVap+=currentPrecinct.aianVap;
         for (var k = 0; k < currPrecinctCoords.length; k++) {
           pairOfCoords.push(currPrecinctCoords[k])
-          if(pairOfCoords.length == 2){
+          if(pairOfCoords.length === 2){
             listOfCoords.push(pairOfCoords);
             pairOfCoords=[];
         } 
@@ -208,6 +207,7 @@ class Map extends Component {
     geojsonResponse += "]}";
     // var dissolved =  turf.dissolve(json);
     // console.log(dissolved);
+    
     var geojsonLayer = L.geoJson(dissolve(JSON.parse(geojsonResponse)), {
       onEachFeature: function(feature, layer){  
         layer.setStyle({"color": "palegreen"});
@@ -218,11 +218,18 @@ class Map extends Component {
     });
 
     geojsonLayer.eachLayer(function (layer) {
-      layer.bindPopup("<b>District #</b>" + (i+1)); 
+      layer.bindPopup("<b>District #</b>" + (i+1)+
+                      "<br /> <b>Total VAP:</b> " + totVap.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+
+                      "<br /> <b>Asian American VAP:</b> " + asianVap.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+
+                      "<br /> <b>African American VAP:</b> " + blackVap.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+
+                      "<br /> <b>Hispanic VAP:</b> " + hispVap.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+
+                      "<br /> <b>American Indian/Alaskan Native VAP:</b> " + aianVap.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                      ); 
       });
     districtings.push(geojsonLayer);
   }
-    //add precinct and district layers
+    // return districtings;
+    // add precinct and district layers
     var map = this.state.map;
     var tileLayer = this.state.tileLayer;
     map.eachLayer(function (layer) {
@@ -260,16 +267,16 @@ class Map extends Component {
     });
     var minorityGroup = "";
     var demographicStateAverage=stateAverages[demographic];
-    if(demographic=="black"){
+    if(demographic==="black"){
       minorityGroup = "blackTotal";
     }
-    if(demographic=="asian"){
+    if(demographic==="asian"){
       minorityGroup = "asianTotal"
     }
-    if(demographic=="hispanic"){
+    if(demographic==="hispanic"){
       minorityGroup = "hispTotal"
     }
-    if(demographic=="native"){
+    if(demographic==="native"){
       minorityGroup = "aianTotal"
     }
     this.setState({geojson: precinct});
@@ -446,7 +453,7 @@ class Map extends Component {
 
   handleCallback = (data) =>{
     if(data[0]=="plot"){
-     console.log(data)
+    // s
       var x=[];
       var y=[];
       
@@ -455,8 +462,6 @@ class Map extends Component {
         y = y.concat([data[1][i].min , data[1][i].median, data[1][i].max, data[1][i].q1, data[1][i].q3])
         x = x.concat(Array(6).join((i+1).toString()).split(''));
       }
-
-     
       var trace= {
         y: y ,/*min  ?? ?? max*/
         x: x,
@@ -465,7 +470,6 @@ class Map extends Component {
         type: 'box'
     };
       this.setState({plotData: trace});
-
     }
     else{
       this.setState({districtingData: data[1]});
