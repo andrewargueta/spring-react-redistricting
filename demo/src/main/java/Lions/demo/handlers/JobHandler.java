@@ -7,7 +7,11 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import org.springframework.stereotype.Component;
+import java.io.*;
 
 import Lions.demo.*;
 import Lions.demo.enums.*;
@@ -85,6 +89,19 @@ public class JobHandler {
         job.setStatus(status);
         em.getTransaction().commit();
         em.close();
+    }
+
+    public void generateJobSummary(Job job){
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.setPrettyPrinting().create();
+        String JSONObject = gson.toJson(job);
+        String path = "demo/src/main/resources/static/jobSummaries/"+job.getJobId()+".json";
+        try (FileWriter file = new FileWriter(path)) {
+            file.write(JSONObject);
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Job> getCreatedJobs() {

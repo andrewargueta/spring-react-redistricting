@@ -18,7 +18,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import Lions.demo.enums.*;
-import Lions.demo.repository.PrecinctRepository;
 
 @Entity
 @Table(name = "Jobs")
@@ -34,7 +33,8 @@ public class Job {
     private String[] minorities;
     private List<Districting> districtings;
     private String averageDistricting;
-    private String extremeDistricting;
+    private String minDistricting;
+    private String maxDistricting;
     private String randomDistricting;
 
     public Job(String stateName, int newJobId, int numOfPlans, String compactness, double populationVariation, String minorityGroups, String runLoc, String status){
@@ -46,7 +46,8 @@ public class Job {
         this.runLocation = runLoc;
         this.status = status;
         this.averageDistricting = "";
-        this.extremeDistricting = "";
+        this.minDistricting = "";
+        this.maxDistricting = "";
         this.minorityGroups = minorityGroups;
         this.minorities = minorityGroups.split(" ");
         this.districtings = new ArrayList<>();
@@ -57,7 +58,6 @@ public class Job {
     }
 
     public void processGraph(String path, List<Precinct> precincts){
-        System.out.println("Processing Job");
         JSONParser parser = new JSONParser();
         try {
             Object obj = parser.parse(new FileReader(path));
@@ -75,25 +75,24 @@ public class Job {
                     for(String precinctId : precinctsJson){
                         Precinct precinct = findPrecinct(precincts, precinctId);
                         counties.add(precinct.getCounty());
-                        newDistrict.addPrecinct(precinctId);
+                        newDistrict.addPrecinct(precinct);
                         newDistrict.addPrecinctIds(precinctId);
                     }
                     newDistrict.setCounties(counties.size());
                     calculateDistrictVap(newDistrict, precincts);
-                    persistDistrict(newDistrict); //replaces adding to the list -> do it through the a join
+                    persistDistrict(newDistrict);
                     newDistricting.addDistrict(newDistrict);
                 }
-                // newDistricting.generateBoxAndWhisker();
                 newDistricting.findMedian();
                 districtings.add(newDistricting);
             }
             sortDistrictings();
             averageDistricting = districtings.get(districtings.size()/2).getDistrictingId();
-            extremeDistricting = districtings.get(0).getDistrictingId();
+            minDistricting = districtings.get(0).getDistrictingId();
+            maxDistricting = districtings.get(districtings.size()-1).getDistrictingId();
             int randindex = new Random().nextInt(districtings.size());
             randomDistricting = districtings.get(randindex).getDistrictingId();
             generateBoxAndWhisker();
-            System.out.println("Done Processing");
             persistJobDistricting();
          } catch(Exception e) {
             e.printStackTrace();
@@ -136,7 +135,8 @@ public class Job {
         Job job = em.find(Job.class, jobId);
         em.getTransaction().begin();
         job.setAverageDistricting(this.averageDistricting);
-        job.setExtremeDistricting(this.extremeDistricting);
+        job.setMinDistricting(this.minDistricting);
+        job.setMaxDistricting(this.maxDistricting);
         job.setRandomDistricting(this.randomDistricting); 
         em.getTransaction().commit();
         em.close();
@@ -171,8 +171,8 @@ public class Job {
         double blackVap = 0;
         double aianVap = 0;
         double asianVap = 0;
-        for(String precinctId : newDistrict.findPrecincts()){
-            Precinct precinct = findPrecinct(precincts, precinctId);
+        for(Precinct precinct : newDistrict.findPrecincts()){
+            // Precinct precinct = findPrecinct(precincts, precinctId);
             totVap += precinct.getTotVap();
             hispVap += precinct.getHispVap();
             blackVap += precinct.getBlackVap();
@@ -280,14 +280,23 @@ public class Job {
         this.averageDistricting = averageDistricting;
     }
 
-    @Column(name = "extremeDistricting")
-    public String getExtremeDistricting() {
-        return this.extremeDistricting;
+    @Column(name = "minDistricting")
+    public String getMinDistricting() {
+        return this.minDistricting;
     }
 
-    public void setExtremeDistricting(String extremeDistricting) {
-        this.extremeDistricting = extremeDistricting;
+    public void setMinDistricting(String minDistricting) {
+        this.minDistricting = minDistricting;
     }
+
+    @Column(name = "maxDistricting")
+    public String getMaxDistricting() {
+        return this.maxDistricting;
+    }
+
+    public void setMaxDistricting(String maxDistricting) {
+        this.maxDistricting = maxDistricting;
+    }    
 
     @Column(name = "randomDistricting")
     public String getRandomDistricting() {

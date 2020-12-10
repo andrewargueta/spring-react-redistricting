@@ -16,19 +16,16 @@ import Lions.demo.repository.PrecinctRepository;
 @Table(name = "Districts")
 public class District {
     private String districtId;
-    // private List<Precinct> precincts;
-    private List<String> precincts;
+    private List<Precinct> precincts;
     private String precicntIds;
     private int counties;
     private Double votingAgePercent;
     private String districtingId;
-    private String coordinates;
     private int jobId;
 
     public District(String districtId, String districtingId, int jobId){
         this.districtId = districtId;
         this.districtingId = districtingId;
-        this.coordinates = "place holder";
         this.precincts = new ArrayList<>();
         this.precicntIds = "";
         this.jobId = jobId;
@@ -57,16 +54,16 @@ public class District {
         this.districtingId = districtingId;
     }
 
-    public List<String> findPrecincts() {
+    public List<Precinct> findPrecincts() {
         return this.precincts;
     }
 
-    public void setPrecincts(List<String> precincts) {
+    public void setPrecincts(List<Precinct> precincts) {
         this.precincts = precincts;
     }
 
-    public void addPrecinct(String precinctId){
-        this.precincts.add(precinctId);
+    public void addPrecinct(Precinct precinct){
+        this.precincts.add(precinct);
     }
 
     @Column(name="counties")
@@ -85,15 +82,6 @@ public class District {
 
     public void setVotingAgePercent(Double votingAgePercent) {
         this.votingAgePercent = votingAgePercent;
-    }
-
-    @Column(name="coordinates")
-    public String getCoordinates() {
-        return this.coordinates;
-    }
-
-    public void setCoordinates(String coordinates) {
-        this.coordinates = coordinates;
     }
 
     @Column(name="precinctIds")

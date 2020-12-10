@@ -107,6 +107,7 @@ public class RequestController {
         //     e.printStackTrace();
         // }
         if(runLoc == Location.LOCAL){
+            jobHandler.updateStatus(job.getJobId(), "Running");
             localHandler.runLocalJob(job.getJobId(), param, selectedState, JSONObject);
             String path = "demo/src/main/resources/static/result_" + param.getState() + ".json";
             job.processGraph(path, precincts);
@@ -114,6 +115,7 @@ public class RequestController {
         }else{
             seaWulfHandler.runSeaWulfJob(job.getJobId(), param, selectedState);
         }
+        jobHandler.generateJobSummary(job);
         return job;
     }
     
@@ -132,11 +134,20 @@ public class RequestController {
         return districting;
     }
 
-    @GetMapping(value = "/job/{id}/extremeDistricting")
-    public List<District> getExtremeDistricting(@PathVariable int id){
+    @GetMapping(value = "/job/{id}/minDistricting")
+    public List<District> getMinDistricting(@PathVariable int id){
         System.out.println(id);
         Job job = jobRepository.findById(id).get();
-        String districtingId = job.getExtremeDistricting();
+        String districtingId = job.getMinDistricting();
+        List<District> districting = districtRepository.findByDistrictingId(districtingId);
+        return districting;
+    }
+
+    @GetMapping(value = "/job/{id}/maxDistricting")
+    public List<District> getMaxDistricting(@PathVariable int id){
+        System.out.println(id);
+        Job job = jobRepository.findById(id).get();
+        String districtingId = job.getMaxDistricting();
         List<District> districting = districtRepository.findByDistrictingId(districtingId);
         return districting;
     }
