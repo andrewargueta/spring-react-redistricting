@@ -104,6 +104,8 @@ class UserForm extends React.Component {
                 'compactness': this.state.compactness,
                 'populationVariation': this.state.populationVariation,
             };
+            this.refs["error-msg"].innerHTML = "";
+            this.refs["success-msg"].innerHTML = "Job "+(this.state.jobs.length + 1) +" successfully being created";
             axios.post("http://localhost:8080/job/run-job", userInputs, {
                   headers: {
                       'Content-Type': 'application/json',
@@ -114,8 +116,7 @@ class UserForm extends React.Component {
                     // console.log(response);
                     var result = response.data; 
                     this.addJob(result);
-                    this.refs["error-msg"].innerHTML = "";
-                    this.refs["success-msg"].innerHTML = "Job "+result.jobId +" successfully being created";
+                    
                     console.log("spring :" + result.jobId); 
                 }, 
                 (error) => { 
