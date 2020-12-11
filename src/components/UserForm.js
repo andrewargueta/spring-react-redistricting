@@ -105,7 +105,8 @@ class UserForm extends React.Component {
                 'populationVariation': this.state.populationVariation,
             };
             this.refs["error-msg"].innerHTML = "";
-            this.refs["success-msg"].innerHTML = "Job "+(parseInt(this.state.jobs.slice(-1)[0].props.jobNum) + 1) +" successfully being created";
+            console.log(this.state.jobs);
+            this.refs["success-msg"].innerHTML = "Job "+(this.state.jobs.length?parseInt(this.state.jobs.slice(-1)[0].props.jobNum) + 1:1) +" successfully being created";
             axios.post("http://localhost:8080/job/run-job", userInputs, {
                   headers: {
                       'Content-Type': 'application/json',
@@ -116,18 +117,18 @@ class UserForm extends React.Component {
                     // console.log(response);
                     var result = response.data; 
                     var jobs = this.state.prevJobs;
-                        for(var i=0; i<response.data.length; i++){
+                        for(var i=0; i<result.length; i++){
                           jobs.push( <Job
                             status="Waiting"
-                            state={response.data[i].stateName}
+                            state={result[i].stateName}
                             deleteJob={this.deleteJob}
-                            jobNum={response.data[i].jobId}
-                            numOfPlans={response.data[i].numberOfPlans}
-                            server= {response.data[i].runLocation}
-                            minorityGroups= {response.data[i].minorityGroups}
-                            compactness= {response.data[i].compactness}
-                            populationVariation= {response.data[i].populationThreshold}
-                            status= {response.data[i].status}
+                            jobNum={result[i].jobId}
+                            numOfPlans={result[i].numberOfPlans}
+                            server= {result[i].runLocation}
+                            minorityGroups= {result[i].minorityGroups}
+                            compactness= {result[i].compactness}
+                            populationVariation= {result[i].populationThreshold}
+                            status= {result[i].status}
                             sendingData = {this.sendingData}
                             />)
                         }

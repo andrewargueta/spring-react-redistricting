@@ -8,12 +8,13 @@ class JobList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            jobs:this.props.jobs   
+            jobs:this.props.jobs.length?this.props.jobs:[]
         };
       }
 
       
   componentDidUpdate(prevProps){
+    console.log(prevProps.jobs, this.props.jobs);
     if(prevProps.jobs !== this.props.jobs){
       this.setState({          
           jobs: this.props.jobs
