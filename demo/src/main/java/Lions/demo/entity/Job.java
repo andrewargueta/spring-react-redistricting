@@ -198,6 +198,15 @@ public class Job {
         newDistrict.setVotingAgePercent(sumVap/totVap);
     }
 
+    public Districting findDistrictings(String districtingId){
+        for(Districting d : districtings){
+            if(d.getDistrictingId().equals(districtingId)){
+                return d;
+            }
+        }
+        return null;
+    }
+
     @Id
     @Column(name = "jobId")
     public int getJobId() {

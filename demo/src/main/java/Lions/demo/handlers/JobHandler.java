@@ -82,6 +82,11 @@ public class JobHandler {
     }
 
     public void updateStatus(int jobId, String status){
+        for(Job j : createdJobs){
+            if(j.getJobId() == jobId){
+                j.setStatus(status);
+            }
+        }
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("Lions.demo.entity.Job");
         EntityManager em = emf.createEntityManager();
         Job job = em.find(Job.class, jobId);
@@ -92,9 +97,10 @@ public class JobHandler {
     }
 
     public void generateJobSummary(Job job){
+        JobSummary jobSummary = new JobSummary(job);
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.setPrettyPrinting().create();
-        String JSONObject = gson.toJson(job);
+        String JSONObject = gson.toJson(jobSummary);
         String path = "demo/src/main/resources/static/jobSummaries/"+job.getJobId()+".json";
         try (FileWriter file = new FileWriter(path)) {
             file.write(JSONObject);
