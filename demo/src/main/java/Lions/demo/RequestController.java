@@ -71,6 +71,11 @@ public class RequestController {
         return jobs;
     }
 
+    @GetMapping(value = "job/allJobs")
+    public @ResponseBody Iterable<Job> getAllJobs(){
+        return jobRepository.findAll();
+    }
+
     @PostMapping(value = "state/set-state")
     public @ResponseBody Optional<State> getState(@RequestBody Map<String, String> input) {
         String stateName = input.get("name");
@@ -117,10 +122,6 @@ public class RequestController {
         }
         jobHandler.generateJobSummary(job);
         return job;
-    }
-    
-    public List<Job> getAllJobs(){
-        return null;
     }
 
     @GetMapping(value = "/job/{id}/averageDistricting")
