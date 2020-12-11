@@ -1,9 +1,9 @@
 {
-  "jobId": 3,
+  "jobId": 5,
   "stateName": "Alabama",
   "numberOfPlans": 3,
-  "compactness": "Very Compact",
-  "populationThreshold": 0.47,
+  "compactness": "Somewhat Compact",
+  "populationThreshold": 0.51,
   "runLocation": "Local",
   "status": "Completed",
   "minorityGroups": "asian ",

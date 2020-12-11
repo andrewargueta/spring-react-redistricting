@@ -1,13 +1,13 @@
 {
   "jobId": 4,
-  "stateName": "Texas",
-  "numberOfPlans": 2,
+  "stateName": "Alabama",
+  "numberOfPlans": 3,
   "compactness": "Very Compact",
-  "populationThreshold": 0.57,
+  "populationThreshold": 0.42,
   "runLocation": "Local",
   "status": "Completed",
-  "minorityGroups": "aian ",
+  "minorityGroups": "asian ",
   "minorities": [
-    "aian"
+    "asian"
   ]
 }
