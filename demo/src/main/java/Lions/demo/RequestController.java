@@ -73,7 +73,13 @@ public class RequestController {
 
     @GetMapping(value = "job/allJobs")
     public @ResponseBody Iterable<Job> getAllJobs(){
-        return jobRepository.findAll();
+        Iterable<Job> jobs = jobRepository.findAll();
+        List<Job> temp = new ArrayList<>();
+        for(Job j: jobs){
+            temp.add(j);
+        }
+        System.out.println(temp.size());
+        return jobs;
     }
 
     @PostMapping(value = "state/set-state")
