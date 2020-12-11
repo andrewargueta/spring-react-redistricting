@@ -115,9 +115,23 @@ class UserForm extends React.Component {
                 (response) => { 
                     // console.log(response);
                     var result = response.data; 
-                    this.addJob(result);
-                    
-                    console.log("spring :" + result.jobId); 
+                    var jobs = this.state.prevJobs;
+                        for(var i=0; i<response.data.length; i++){
+                          jobs.push( <Job
+                            status="Waiting"
+                            state={response.data[i].stateName}
+                            deleteJob={this.deleteJob}
+                            jobNum={response.data[i].jobId}
+                            numOfPlans={response.data[i].numberOfPlans}
+                            server= {response.data[i].runLocation}
+                            minorityGroups= {response.data[i].minorityGroups}
+                            compactness= {response.data[i].compactness}
+                            populationVariation= {response.data[i].populationThreshold}
+                            status= {response.data[i].status}
+                            sendingData = {this.sendingData}
+                            />)
+                        }
+                        this.setState({jobs: jobs});
                 }, 
                 (error) => { 
                     console.log(error); 
@@ -167,6 +181,23 @@ class UserForm extends React.Component {
         showJobs: true,
         showForm: false 
       });
+      axios.get("http://localhost:8080/job/allJobs", {
+                  headers: {
+                      'Content-Type': 'application/json',
+                  }
+              }
+            ).then( 
+                (response) => { 
+                    // console.log(response);
+                    var result = response.data; 
+                    console.log(response);
+                    
+                   
+                }, 
+                (error) => { 
+                    console.log(error); 
+                } 
+            ); 
     }
   
     showForm= () => {
