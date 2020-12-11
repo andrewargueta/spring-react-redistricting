@@ -120,7 +120,7 @@ public class RequestController {
         }else{
             seaWulfHandler.runSeaWulfJob(job.getJobId(), param, selectedState);
         }
-        jobHandler.generateJobSummary(job);
+        // jobHandler.generateJobSummary(job);
         return job;
     }
 
