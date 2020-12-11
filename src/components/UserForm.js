@@ -105,7 +105,7 @@ class UserForm extends React.Component {
                 'populationVariation': this.state.populationVariation,
             };
             this.refs["error-msg"].innerHTML = "";
-            this.refs["success-msg"].innerHTML = "Job "+(this.state.jobs.length + 1) +" successfully being created";
+            this.refs["success-msg"].innerHTML = "Job "+(parseInt(this.state.jobs.slice(-1)[0].props.jobNum) + 1) +" successfully being created";
             axios.post("http://localhost:8080/job/run-job", userInputs, {
                   headers: {
                       'Content-Type': 'application/json',
