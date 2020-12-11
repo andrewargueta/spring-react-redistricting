@@ -31,8 +31,11 @@ class Job extends React.Component {
       if(plan =="Average"){   
         url = 'http://localhost:8080/job/' + jobID + '/averageDistricting';;
       }
-      else if(plan =="Extreme"){
-        url = 'http://localhost:8080/job/' + jobID + '/extremeDistricting';;
+      else if(plan =="Minimum"){
+        url = 'http://localhost:8080/job/' + jobID + '/minDistricting';;
+      }
+      else if(plan =="Maximum"){
+        url = 'http://localhost:8080/job/' + jobID + '/maxDistricting';;
       }
       else{
         url = 'http://localhost:8080/job/' + jobID + '/randomDistricting';;
@@ -140,7 +143,8 @@ class Job extends React.Component {
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                           <a class="dropdown-item" onClick={()=> this.requestDistrcting('Average')}>Average</a>
-                          <a class="dropdown-item" onClick={()=> this.requestDistrcting('Extreme')}>Extreme</a>
+                          <a class="dropdown-item" onClick={()=> this.requestDistrcting('Minimum')}>Minimum</a>
+                          <a class="dropdown-item" onClick={()=> this.requestDistrcting('Maximum')}>Maximum</a>
                           <a class="dropdown-item" onClick={()=> this.requestDistrcting('Random')}>Random</a>
                         </div>
                       </div>
