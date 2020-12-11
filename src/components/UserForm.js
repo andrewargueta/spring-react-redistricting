@@ -177,7 +177,7 @@ class UserForm extends React.Component {
                     // console.log(response);
                     var result = response.data; 
                     var jobs = [];
-                        for(var i=0; i<result.length; i++){
+                    for(var i=0; i<result.length; i++){
                          jobs.push(<Job
                           status={result[i].status}
                           state={result[i].stateName}
@@ -187,7 +187,7 @@ class UserForm extends React.Component {
                           server= {result[i].runLocation}
                           minorityGroups= {result[i].minorityGroups}
                           compactness= {result[i].compactness}
-                          populationVariation= {result[i].populationVariation}
+                          populationVariation= {result[i].populationThreshold}
                           sendingData = {this.sendingData}
                           />
                           )

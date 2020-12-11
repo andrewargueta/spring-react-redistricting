@@ -602,18 +602,6 @@ class Map extends Component {
                     </div>
                   </div>
               </div>
-              
-              {/* <div class="dropdown">
-                <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Demo. Layers
-                </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" onClick={()=> this.handleHeatMapView('black')}>African American</a>
-                    <a class="dropdown-item" onClick={()=> this.handleHeatMapView('asian')}>Asian American</a>
-                    <a class="dropdown-item" onClick={()=> this.handleHeatMapView('hispanic')}>Hispanic</a>
-                    <a class="dropdown-item" onClick={()=> this.handleHeatMapView('native')}>Native/Alaskan American</a>
-                  </div>
-              </div> */}
               </>
               :
               <div></div>

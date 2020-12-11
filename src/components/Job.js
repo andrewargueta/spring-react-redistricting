@@ -25,7 +25,7 @@ class Job extends React.Component {
         //event.preventDefault();
     }
     
-    requestDistrcting(plan){
+  requestDistrcting(plan){
       var jobID = this.props.jobNum;
       var url ="";
       if(plan =="Average"){   
@@ -118,7 +118,7 @@ class Job extends React.Component {
                         aria-controls={"collapse"+this.props.jobNum}>
                             Job Id: {this.props.jobNum} State: {this.props.state} Plans: {this.props.numOfPlans} Status:  {this.props.status}
                             {
-                              this.props.status!="Completed"?
+                              this.props.status!=="Completed"?
                               <button className="" id="del-btn" onClick={this.cancelJob}>Cancel</button>
                               :
                               <button className="glyphicon glyphicon-trash" id="del-btn" onClick={this.deleteJob}></button>
@@ -137,6 +137,8 @@ class Job extends React.Component {
                       <div>Server:  {this.props.server}</div>
                       <div>Status:  {this.props.status}</div>
                       </div>
+                      {
+                      this.props.status==="Completed"?
                       <div class="dropdown col">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Districtings
@@ -147,7 +149,9 @@ class Job extends React.Component {
                           <a class="dropdown-item" onClick={()=> this.requestDistrcting('Maximum')}>Maximum</a>
                           <a class="dropdown-item" onClick={()=> this.requestDistrcting('Random')}>Random</a>
                         </div>
-                      </div>
+                      </div>:
+                      <div></div>
+                      }
 
                     </div>
                     </div>
