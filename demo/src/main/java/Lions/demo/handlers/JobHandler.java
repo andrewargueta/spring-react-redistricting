@@ -48,6 +48,7 @@ public class JobHandler {
         em.persist(newJob);
         em.getTransaction().commit();
         em.close();
+        emf.close();
         return newJob;
     }
 

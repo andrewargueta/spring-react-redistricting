@@ -58,6 +58,8 @@ public class Job {
     }
 
     public void processGraph(String path, List<Precinct> precincts){
+        EntityManagerFactory emfJob = Persistence.createEntityManagerFactory("Lions.demo.entity.Job");
+        EntityManagerFactory emfDistrict = Persistence.createEntityManagerFactory("Lions.demo.entity.District");
         JSONParser parser = new JSONParser();
         try {
             Object obj = parser.parse(new FileReader(path));
@@ -80,7 +82,7 @@ public class Job {
                     }
                     newDistrict.setCounties(counties.size());
                     calculateDistrictVap(newDistrict, precincts);
-                    persistDistrict(newDistrict);
+                    persistDistrict(newDistrict, emfDistrict);
                     newDistricting.addDistrict(newDistrict);
                 }
                 newDistricting.findMedian();
@@ -93,13 +95,16 @@ public class Job {
             int randindex = new Random().nextInt(districtings.size());
             randomDistricting = districtings.get(randindex).getDistrictingId();
             generateBoxAndWhisker();
-            persistJobDistricting();
+            persistJobDistricting(emfJob);
          } catch(Exception e) {
             e.printStackTrace();
          }
+         emfDistrict.close();
+         emfJob.close();
     }
 
     public void generateBoxAndWhisker(){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Lions.demo.entity.BoxAndWhisker");
         for(Districting d : this.districtings){
             d.sortDistricts();
         }
@@ -116,12 +121,12 @@ public class Job {
             Double q3 = temp.get((temp.size()*3) / 4);
             Double max = temp.get(temp.size()-1);
             BoxAndWhisker boxAndWhisker = new BoxAndWhisker(min, q1, median, q3, max, jobId +"_"+ (i+1), jobId);
-            persistBoxAndWhisker(boxAndWhisker);
+            persistBoxAndWhisker(boxAndWhisker, emf);
         }
+        emf.close();
     }
 
-    public void persistBoxAndWhisker(BoxAndWhisker boxAndWhisker){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Lions.demo.entity.BoxAndWhisker");
+    public void persistBoxAndWhisker(BoxAndWhisker boxAndWhisker, EntityManagerFactory emf){
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(boxAndWhisker);
@@ -129,8 +134,7 @@ public class Job {
         em.close();
     }
 
-    public void persistJobDistricting(){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Lions.demo.entity.Job");
+    public void persistJobDistricting(EntityManagerFactory emf){
         EntityManager em = emf.createEntityManager();
         Job job = em.find(Job.class, jobId);
         em.getTransaction().begin();
@@ -142,8 +146,7 @@ public class Job {
         em.close();
     }
 
-    public void persistDistrict(District d){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("Lions.demo.entity.District");
+    public void persistDistrict(District d, EntityManagerFactory emf){
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         em.persist(d);
