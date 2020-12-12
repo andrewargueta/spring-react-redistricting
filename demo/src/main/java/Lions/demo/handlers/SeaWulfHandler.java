@@ -1,10 +1,14 @@
 package Lions.demo.handlers;
 
 import Lions.demo.enums.*;
+
+import java.io.*;
+
 import Lions.demo.*;
 import Lions.demo.entity.*;
 
 public class SeaWulfHandler {
+    public static final String path_bash = "C:/Program Files/Git/git-bash.exe";
 
     public SeaWulfHandler(){
         
@@ -26,13 +30,37 @@ public class SeaWulfHandler {
 
     }
 
+    private void printProcessOutput(Process process) {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+                builder.append(System.getProperty("line.separator"));
+            }
+            String result = builder.toString();
+            System.out.println(result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * run the job on the seawulf after sending appropriate files
      * @param jobId -> jobId for the job created for the run
      * @param config -> JSON/string with the injected params from the user
      */
     public void runSeaWulfJob(int jobId, InputParam config, State selectedState){
-
+        System.out.println("Seawulf Run");
+        try {
+            ProcessBuilder pb = new ProcessBuilder(path_bash, "/src/main/resources/runSeawulf.sh", String.valueOf(jobId), String.valueOf(config.getNumOfPlans()), String.valueOf(config.getPopulationVariation()), String.valueOf(config.getState()));
+            pb.redirectErrorStream(true);
+            Process process = pb.start();
+            printProcessOutput(process);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -47,8 +75,15 @@ public class SeaWulfHandler {
      * cancel the job on the seawulf conresponding to the jobId passed from the user
      * @param jobId Id of the job 
      */
-    public void cancelSeaWulfJob(int jobId){
-
+    public void cancelSeaWulfJob(String batchId, int jobId){
+        try {
+            ProcessBuilder pb = new ProcessBuilder(path_bash, "/src/main/resources/cancelSeawulf.sh", String.valueOf(batchId), String.valueOf(jobId));
+            pb.redirectErrorStream(true);
+            Process process = pb.start();
+            printProcessOutput(process);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

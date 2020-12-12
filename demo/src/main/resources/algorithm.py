@@ -100,6 +100,7 @@ def calculate_district_population(precinct_graph, district):
 
     return total_pop
 
+# TODO COMPACTNESS
 def calculate_district_compactness(precinct_graph, total_edge, district):
     cut_edge_count = 0
     for precinct1 in district:

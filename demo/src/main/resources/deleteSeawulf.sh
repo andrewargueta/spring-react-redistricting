@@ -1,0 +1,1 @@
+ssh siyzou@login.seawulf.stonybrook.edu 'source /etc/profile.d/modules.sh; cd /gpfs/projects/CSE416/Lions; rm -rf jobs/'$1;
