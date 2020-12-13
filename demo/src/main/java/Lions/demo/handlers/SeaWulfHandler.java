@@ -74,9 +74,10 @@ public class SeaWulfHandler {
      * cancel the job on the seawulf conresponding to the jobId passed from the user
      * @param jobId Id of the job 
      */
-    public void cancelSeaWulfJob(String batchId, int jobId){
+    public void cancelSeaWulfJob(int jobId){
+        System.out.println("CANCEL");
         try {
-            ProcessBuilder pb = new ProcessBuilder("bash", "demo/src/main/resources/cancelSeawulf.sh", String.valueOf(batchId), String.valueOf(jobId));
+            ProcessBuilder pb = new ProcessBuilder("bash", "demo/src/main/resources/cancelSeawulf.sh", String.valueOf(jobId));
             pb.redirectErrorStream(true);
             Process process = pb.start();
             printProcessOutput(process);

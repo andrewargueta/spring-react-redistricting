@@ -8,14 +8,14 @@
 #SBATCH -p short-24core
 
 echo I am using the following nodes: $SLURM_JOB_NODELIST
-echo My job ID is: $SLURM_JOB_ID
+echo My job ID is: $SLURM_JOB_ID > jobs/$jobId/batchId.txt
 
 module load slurm 
 module load anaconda/3
 source activate lions_env
 module load gnu-parallel/6.0
 
-plan_cnt=0
+plan_cnt=1
 
 mkdir -p jobs/$jobId/result
 touch jobs/$jobId/run.txt

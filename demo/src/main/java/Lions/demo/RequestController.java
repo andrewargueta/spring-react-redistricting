@@ -191,6 +191,7 @@ public class RequestController {
     @Transactional
     public int cancelJob(@PathVariable int id){
         System.out.println(id);
+        seaWulfHandler.cancelSeaWulfJob(id);
         //cancel based on run location
         jobHandler.deleteJob(id);
         //test function for non updated job history
