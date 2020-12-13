@@ -8,7 +8,6 @@ import Lions.demo.*;
 import Lions.demo.entity.*;
 
 public class SeaWulfHandler {
-    public static final String path_bash = "C:/Program Files/Git/git-bash.exe";
 
     public SeaWulfHandler(){
         
@@ -54,7 +53,7 @@ public class SeaWulfHandler {
     public void runSeaWulfJob(int jobId, InputParam config, State selectedState){
         System.out.println("Seawulf Run");
         try {
-            ProcessBuilder pb = new ProcessBuilder(path_bash, "/src/main/resources/runSeawulf.sh", String.valueOf(jobId), String.valueOf(config.getNumOfPlans()), String.valueOf(config.getPopulationVariation()), String.valueOf(config.getState()));
+            ProcessBuilder pb = new ProcessBuilder("bash", "demo/src/main/resources/runSeawulf.sh", String.valueOf(jobId), String.valueOf(config.getNumOfPlans()), String.valueOf(config.getPopulationVariation()), String.valueOf(config.getState()));
             pb.redirectErrorStream(true);
             Process process = pb.start();
             printProcessOutput(process);
@@ -77,7 +76,7 @@ public class SeaWulfHandler {
      */
     public void cancelSeaWulfJob(String batchId, int jobId){
         try {
-            ProcessBuilder pb = new ProcessBuilder(path_bash, "/src/main/resources/cancelSeawulf.sh", String.valueOf(batchId), String.valueOf(jobId));
+            ProcessBuilder pb = new ProcessBuilder("bash", "demo/src/main/resources/cancelSeawulf.sh", String.valueOf(batchId), String.valueOf(jobId));
             pb.redirectErrorStream(true);
             Process process = pb.start();
             printProcessOutput(process);
