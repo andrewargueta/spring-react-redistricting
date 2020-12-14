@@ -3,11 +3,14 @@ package Lions.demo.handlers;
 import Lions.demo.enums.*;
 
 import java.io.*;
+import java.util.HashMap;
 
 import Lions.demo.*;
 import Lions.demo.entity.*;
 
 public class SeaWulfHandler {
+
+    HashMap<Integer, String> map = new HashMap<>();
 
     public SeaWulfHandler(){
         
@@ -27,6 +30,26 @@ public class SeaWulfHandler {
      */
     public void packageAndSend(String scriptPath){
 
+    }
+
+    private String getBatchId(Process process) {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            StringBuilder builder = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+                builder.append(System.getProperty("line.separator"));
+            }
+            String result = builder.toString();
+            String batchId = result.split(" ")[3];
+            System.out.println(batchId);
+            batchId = batchId.replaceAll("[^\\d]", "");
+            return batchId;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     private void printProcessOutput(Process process) {
@@ -56,7 +79,12 @@ public class SeaWulfHandler {
             ProcessBuilder pb = new ProcessBuilder("bash", "demo/src/main/resources/runSeawulf.sh", String.valueOf(jobId), String.valueOf(config.getNumOfPlans()), String.valueOf(config.getPopulationVariation()), String.valueOf(config.getState()));
             pb.redirectErrorStream(true);
             Process process = pb.start();
-            printProcessOutput(process);
+            map.put(jobId, getBatchId(process));
+
+            // ProcessBuilder pb2 = new ProcessBuilder("bash", "demo/src/main/resources/getSeawulf.sh", String.valueOf(jobId));
+            // pb2.redirectErrorStream(true);
+            // Process process2 = pb2.start();
+            // printProcessOutput(process2);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,7 +105,8 @@ public class SeaWulfHandler {
     public void cancelSeaWulfJob(int jobId){
         System.out.println("CANCEL");
         try {
-            ProcessBuilder pb = new ProcessBuilder("bash", "demo/src/main/resources/cancelSeawulf.sh", String.valueOf(jobId));
+            String batchId = map.get(jobId);
+            ProcessBuilder pb = new ProcessBuilder("bash", "demo/src/main/resources/cancelSeawulf.sh", batchId);
             pb.redirectErrorStream(true);
             Process process = pb.start();
             printProcessOutput(process);

@@ -1,1 +1,1 @@
-cat demo/src/main/resources/cancelSeawulf.slurm | ssh siyzou@login.seawulf.stonybrook.edu "source /etc/profile.d/modules.sh; module load slurm; cd /gpfs/projects/CSE416/Lions/$1; var=$(cat batchId.txt); sbatch --export=batchId=$var,jobId=$1;"
+ssh siyzou@login.seawulf.stonybrook.edu 'source /etc/profile.d/modules.sh; module load slurm; cd /gpfs/projects/CSE416/Lions; scancel' $1;
