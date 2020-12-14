@@ -1,0 +1,1 @@
+scp siyzou@login.seawulf.stonybrook.edu:/gpfs/projects/CSE416/Lions/jobs/$1/result/combined.json demo/src/main/resources/static
