@@ -74,8 +74,8 @@ class Job extends React.Component {
       );
     }
     deleteJob(e){
-      e.preventDefault();
-      e.stopPropagation();
+      // e.preventDefault();
+      // e.stopPropagation();
       //document.getElementById("job-btn").classList.add('disabled');
       document.getElementById("2").style.display="none";
       var jobID = this.props.jobNum;
@@ -92,8 +92,8 @@ class Job extends React.Component {
       this.props.deleteJob(this);
     }
     cancelJob(e){
-      e.preventDefault();
-      e.stopPropagation();
+      // e.preventDefault();
+      // e.stopPropagation();
       // document.getElementById("job-btn").classList.add('disabled');
       document.getElementById("2").style.display="none";
       var jobID = this.props.jobNum;
@@ -119,10 +119,55 @@ class Job extends React.Component {
                             Job Id: {this.props.jobNum} State: {this.props.state} Plans: {this.props.numOfPlans} Status:  {this.props.status}
                             {
                               this.props.status!=="Completed"?
-                              <button className="" id="del-btn" onClick={this.cancelJob}>Cancel</button>
+                              <>
+                              <button className="" id="del-btn" data-toggle="modal" data-target={"#modal"+this.props.jobNum} >Cancel</button>
+                              <div class="modal fade"  data-backdrop="false" id={"modal"+this.props.jobNum} tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>This action cannot be undone. <br></br>Click confirm to cancel Job {this.props.jobNum}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" onClick={this.cancelJob} >Cancel Job</button>
+      </div>
+    </div>
+  </div>
+</div>
+</>
                               :
-                              <button className="glyphicon glyphicon-trash" id="del-btn" onClick={this.deleteJob}></button>
+                              <>
+                              <button className=" glyphicon glyphicon-trash" id="del-btn"  data-toggle="modal" data-target={"#modal"+this.props.jobNum}></button>
+                            
+
+<div class="modal fade" id={"modal"+this.props.jobNum} data-backdrop="false" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <p>This action cannot be undone. <br></br>Click confirm to cancel Job {this.props.jobNum}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" onClick={this.deleteJob}>Delete Job</button>
+      </div>
+    </div>
+  </div>
+</div>
+</>
                             }
+                            
+
                             
                             
                         </button>

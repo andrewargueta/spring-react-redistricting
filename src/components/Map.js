@@ -284,7 +284,10 @@ class Map extends Component {
     this.setState({geojson: precinct});
       geojsonLayer = L.geoJson(precinct, {
         weight: 1, 
-        onEachFeature: function(feature, layer){  
+        onEachFeature: (feature, layer)=>{  
+          layer.on('click', e=>{
+            this.setState({ currentPrecinct: layer});
+          })
           var demographicPopulation=feature.properties[minorityGroup];
           var totalPopulation=feature.properties.totPop;
           if((demographicPopulation/totalPopulation) > (demographicStateAverage *.95) && (demographicPopulation/totalPopulation) <= (demographicStateAverage *1.05))
@@ -306,7 +309,7 @@ class Map extends Component {
           else if((demographicPopulation/totalPopulation) <= (demographicStateAverage *.5))
             layer.setStyle({"color": "white"});
           else
-            layer.setStyle({"color": "green"});
+            layer.setStyle({"color": "white"});
       }
     });
     geojsonLayer.addTo(this.state.map);
