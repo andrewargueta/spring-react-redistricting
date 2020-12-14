@@ -466,9 +466,12 @@ class Map extends Component {
       
       data[1].sort((a, b) => (a.median > b.median) ? 1 : -1)
       for(var i =0; i<data[1].length;i++){
+        var distrNum=i+1;
+      
         y = y.concat([data[1][i].min , data[1][i].median, data[1][i].max, data[1][i].q1, data[1][i].q3])
-        x = x.concat(Array(6).join((i+1).toString()).split(''));
+        x = x.concat(Array(6).fill((distrNum).toString()));
       }
+      // console.log(x,y,data[1]);
       var trace= {
         y: y ,/*min  ?? ?? max*/
         x: x,
