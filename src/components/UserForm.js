@@ -253,8 +253,8 @@ class UserForm extends React.Component {
                       <div className="d-flex justify-content-center my-4">
                         <span className="font-weight-bold indigo-text mr-2 mt-1">0</span>
                         <input 
-                        type="range" name="populationVariation" className="form-control" id="inputPop" min = {0} max = {1} step ={0.01} onChange={this.handleChange}  required />
-                        <span className="font-weight-bold indigo-text ml-2 mt-1">1</span>
+                        type="range" name="populationVariation" className="form-control" id="inputPop" min = {0} max = {3} step ={0.01} onChange={this.handleChange}  required />
+                        <span className="font-weight-bold indigo-text ml-2 mt-1">3</span>
                         <span className="font-weight-bold text-primary ml-2" id="valueSpan2">0</span>
                       </div>
                       <div ref="error-msg" id="error-msg"></div>
