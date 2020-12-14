@@ -184,6 +184,9 @@ class Map extends Component {
         var prefix = '{"type":"Feature","geometry":{"type":"Polygon","coordinates":[';
         var listOfCoords=[];
         var pairOfCoords=[];
+        
+        if(districtingPrecincts[j].length==0)
+          continue;
         var currentPrecinct = districtingPrecincts[j][0];
         var currPrecinctCoords = currentPrecinct.coordinates.split(',').map(Number);
         totVap+=currentPrecinct.totVap;
