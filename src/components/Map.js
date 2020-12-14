@@ -183,8 +183,7 @@ class Map extends Component {
       for(j =0; j<districtingPrecincts.length;j++){
         var prefix = '{"type":"Feature","geometry":{"type":"Polygon","coordinates":[';
         var listOfCoords=[];
-        var pairOfCoords=[];
-        
+        var pairOfCoords=[];   
         if(districtingPrecincts[j].length==0)
           continue;
         var currentPrecinct = districtingPrecincts[j][0];
@@ -284,6 +283,7 @@ class Map extends Component {
     }
     this.setState({geojson: precinct});
       geojsonLayer = L.geoJson(precinct, {
+        weight: 1, 
         onEachFeature: function(feature, layer){  
           var demographicPopulation=feature.properties[minorityGroup];
           var totalPopulation=feature.properties.totPop;
@@ -426,6 +426,7 @@ class Map extends Component {
     this.setState({geojson: statePrecinct});
     var prevPrecinct=null;
     geojsonLayer = L.geoJson(statePrecinct, {
+      weight: 1, 
       onEachFeature: (feature, layer)=>{  
         layer.setStyle({"color": "#D198C5FF"});
         layer.on('click', e=>{
