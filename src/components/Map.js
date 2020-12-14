@@ -469,7 +469,7 @@ class Map extends Component {
         var distrNum=i+1;
       
         y = y.concat([data[1][i].min , data[1][i].median, data[1][i].max, data[1][i].q1, data[1][i].q3])
-        x = x.concat(Array(6).fill((distrNum).toString()));
+        x = x.concat(Array(5).fill((distrNum).toString()));
       }
       // console.log(x,y,data[1]);
       var trace= {
