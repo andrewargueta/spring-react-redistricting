@@ -22,6 +22,7 @@ import texasPrecinct from '../geojson/texas-precinct.json'
 
 
 import BoxWhisker from './BoxWhisker.js';
+import * as turf from '@turf/turf'
 //import PrecinctPopUp from './PrecinctPopUp.js'
 
 let config = {};
@@ -158,6 +159,7 @@ class Map extends Component {
   }
   generatePlanDistrictingLayer(state,response){
     //districtings 
+    console.log(state,response)
     this.setState({ showDistrictingLayer: !this.state.showDistrictingLayer});
     var precincts={};
     var districtings=[];
@@ -176,16 +178,19 @@ class Map extends Component {
       var geojsonResponse = "{\"type\":\"FeatureCollection\", \"features\": [";
       var districtingPrecincts=[];
       var precinctIds= response[i]['precicntIds'].split(' ');
+      var fc=[];
       for(var j =0; j<precinctIds.length-1;j++){
         var correspondingPrecinct = precincts.filter(obj => obj.geoId === precinctIds[j]);
         districtingPrecincts.push(correspondingPrecinct);
       }
       for(j =0; j<districtingPrecincts.length;j++){
+        var turfPolygon=null;
         var prefix = '{"type":"Feature","geometry":{"type":"Polygon","coordinates":[';
         var listOfCoords=[];
         var pairOfCoords=[];   
-        if(districtingPrecincts[j].length==0)
+        if(districtingPrecincts[j].length===0 ||districtingPrecincts[j][0].coordinates===""){
           continue;
+        }
         var currentPrecinct = districtingPrecincts[j][0];
         var currPrecinctCoords = currentPrecinct.coordinates.split(',').map(Number);
         totVap+=currentPrecinct.totVap;
@@ -200,17 +205,32 @@ class Map extends Component {
             pairOfCoords=[];
         } 
       }
+      if( JSON.stringify(listOfCoords[0])!==JSON.stringify(listOfCoords[listOfCoords.length-1])){
+        
+        listOfCoords.push(listOfCoords[0]);
+      }
       prefix += JSON.stringify(listOfCoords) +']},"properties":{' +
        
       '}},';
+      
+      fc.push(turf.polygon([listOfCoords]));
       geojsonResponse += prefix;
     }
+    
     geojsonResponse = geojsonResponse.slice(0,-1);
     geojsonResponse += "]}";
-    // var dissolved =  turf.dissolve(json);
-    // console.log(dissolved);
     
-    var geojsonLayer = L.geoJson(dissolve(JSON.parse(geojsonResponse)), {
+    
+    
+    var layer = JSON.parse(geojsonResponse);
+
+  //   var poly=fc[0];
+  //   if(fc[1])
+  //   {  for(j=1; j<fc.length; j++){
+  //       poly = turf.union(poly, fc[j]);
+  //     }}
+  //  console.log(poly);
+    var geojsonLayer = L.geoJson((dissolve(layer)), {
       onEachFeature: function(feature, layer){  
         layer.setStyle({"color": "palegreen"});
         layer.on('click', e=>{
