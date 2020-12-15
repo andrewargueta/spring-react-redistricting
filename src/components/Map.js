@@ -838,6 +838,7 @@ class Map extends Component {
           console.log(error); 
       } 
     );
+    this.handleStateView(data[2].state.state);
     //generating BW
       var x=[];
       var y=[];
