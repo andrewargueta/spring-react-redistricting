@@ -42,7 +42,7 @@ config.tileLayer = {
 };
 var dissolve = require('geojson-dissolve');
 
-var districtLayer="", precinctLayer="", averageDistricting="", minimumDistricting="",maximumDistricting="", randomDistricting="", precinctGeojson=null, districtGeojson=null,districtingGeojson=null;
+var districtLayer="", precinctLayer="", averageDistricting="", minimumDistricting="",maximumDistricting="", randomDistricting="",heatMapLayer="";
 class Map extends Component {
   constructor(props) {
     super(props);
@@ -366,6 +366,43 @@ class Map extends Component {
             layer.setStyle({"color": "white"});
       }
     });
+    heatMapLayer = geojsonLayer;
+    if(this.state.currentJob.state && this.state.currentJob.state.status === "Completed"&&document.getElementById('averageCheckbox').checked){
+      for(var i = 0; i<averageDistricting.length; i++){
+        averageDistricting[i].setStyle({color :'skyblue'}) 
+      }  
+      for(var i = 0; i<averageDistricting.length; i++){
+        averageDistricting[i].addTo(map) 
+      }  
+    }
+    if(this.state.currentJob.state && this.state.currentJob.state.status === "Completed"&&document.getElementById('randomCheckbox').checked){
+      for(var i = 0; i<randomDistricting.length; i++){
+        randomDistricting[i].setStyle({color :'darksalmon'}) 
+      }  
+      for(var i = 0; i<randomDistricting.length; i++){
+        randomDistricting[i].addTo(map) 
+      }  
+    }
+    if(this.state.currentJob.state && this.state.currentJob.state.status === "Completed"&& document.getElementById('minimumCheckbox').checked){
+      for(var i = 0; i<minimumDistricting.length; i++){
+        minimumDistricting[i].setStyle({color :'palegreen'}) 
+      }  
+      for(var i = 0; i<minimumDistricting.length; i++){
+        minimumDistricting[i].addTo(map) 
+      }  
+    }
+    if(this.state.currentJob.state && this.state.currentJob.state.status === "Completed"&&document.getElementById('maximumCheckbox').checked){
+      for(var i = 0; i<maximumDistricting.length; i++){
+        maximumDistricting[i].setStyle({color :'orange'}) 
+      }  
+      for(var i = 0; i<maximumDistricting.length; i++){
+        maximumDistricting[i].addTo(map) 
+      }  
+    }
+    if(document.getElementById('precinctCheckbox').checked)
+      this.state.currentPrecinctLayer.addTo(this.state.map);
+    if(document.getElementById('districtCheckbox').checked)
+      this.state.currentDistrictLayer.addTo(this.state.map);
     geojsonLayer.addTo(this.state.map);
   }
 
@@ -450,7 +487,7 @@ class Map extends Component {
         layer.setStyle({"color": "#E0C568FF"});
       }
     });
-    districtGeojson=geojsonLayer;
+    // districtGeojson=geojsonLayer;
     if(this.state.currentJob.state && this.state.currentJob.state.status === "Completed"&&document.getElementById('averageCheckbox').checked){
       for(var i = 0; i<averageDistricting.length; i++){
         averageDistricting[i].setStyle({color :'skyblue'}) 
@@ -492,7 +529,7 @@ class Map extends Component {
     }
     else{
       this.setState({currentDistrictLayer: null});
-      districtGeojson=null;
+      // districtGeojson=null;
     }
     
   }
@@ -529,7 +566,7 @@ class Map extends Component {
         });
       }
     });
-    precinctGeojson=geojsonLayer;
+    // precinctGeojson=geojsonLayer;
     if(this.state.currentJob.state && this.state.currentJob.state.status === "Completed"&&document.getElementById('averageCheckbox').checked){
       for(var i = 0; i<averageDistricting.length; i++){
         averageDistricting[i].setStyle({color :'skyblue'}) 
@@ -571,7 +608,7 @@ class Map extends Component {
     }
     else{
       this.setState({currentPrecinctLayer: null});
-      precinctGeojson=null;
+      // precinctGeojson=null;
     }
     // console.log(this.state, 'precinct');
   }
