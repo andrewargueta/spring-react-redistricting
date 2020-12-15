@@ -22,7 +22,6 @@ import texasPrecinct from '../geojson/texas-precinct.json'
 
 
 import BoxWhisker from './BoxWhisker.js';
-import * as turf from '@turf/turf'
 //import PrecinctPopUp from './PrecinctPopUp.js'
 
 let config = {};
@@ -213,7 +212,6 @@ class Map extends Component {
        
       '}},';
       
-      fc.push(turf.polygon([listOfCoords]));
       geojsonResponse += prefix;
     }
     
@@ -224,12 +222,7 @@ class Map extends Component {
     
     var layer = JSON.parse(geojsonResponse);
 
-  //   var poly=fc[0];
-  //   if(fc[1])
-  //   {  for(j=1; j<fc.length; j++){
-  //       poly = turf.union(poly, fc[j]);
-  //     }}
-  //  console.log(poly);
+  
     var geojsonLayer = L.geoJson((dissolve(layer)), {
       onEachFeature: function(feature, layer){  
         layer.setStyle({"color": "palegreen"});
