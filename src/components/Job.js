@@ -25,47 +25,50 @@ class Job extends React.Component {
         //event.preventDefault();
     }
     
-  requestDistrcting(plan){
-      var jobID = this.props.jobNum;
-      var url ="";
-      if(plan =="Average"){   
-        url = 'http://localhost:8080/job/' + jobID + '/averageDistricting';;
-      }
-      else if(plan =="Minimum"){
-        url = 'http://localhost:8080/job/' + jobID + '/minDistricting';;
-      }
-      else if(plan =="Maximum"){
-        url = 'http://localhost:8080/job/' + jobID + '/maxDistricting';;
-      }
-      else{
-        url = 'http://localhost:8080/job/' + jobID + '/randomDistricting';;
-      }
-      axios.get(url).then( 
-        (response) => { 
-            var result = response.data; 
-            // console.log(response)
-            this.sendingData([this.state.state,response.data]);
-            // console.log("Average Districting was clicked:" + result);
-        }, 
-        (error) => { 
-            console.log(error); 
-        } 
-      );
-    }
+  // requestDistrcting(plan){
+  //     var jobID = this.props.jobNum;
+  //     var url ="";
+  //     if(plan =="Average"){   
+  //       url = 'http://localhost:8080/job/' + jobID + '/averageDistricting';;
+  //     }
+  //     else if(plan =="Minimum"){
+  //       url = 'http://localhost:8080/job/' + jobID + '/minDistricting';;
+  //     }
+  //     else if(plan =="Maximum"){
+  //       url = 'http://localhost:8080/job/' + jobID + '/maxDistricting';;
+  //     }
+  //     else{
+  //       url = 'http://localhost:8080/job/' + jobID + '/randomDistricting';;
+  //     }
+  //     axios.get(url).then( 
+  //       (response) => { 
+  //           var result = response.data; 
+  //           // console.log(response)
+  //           this.sendingData([this.state.state,response.data]);
+  //           // console.log("Average Districting was clicked:" + result);
+  //       }, 
+  //       (error) => { 
+  //           console.log(error); 
+  //       } 
+  //     );
+  //   }
 
-    clickJob(e){
+    clickJob=(e)=>{
       if(! e.target.classList.contains("collapsed")){
         //document.getElementById("card"+this.props.jobNum).classList.remove('highlighted');
         return;
       }
-      document.getElementById("2").style.display="block";
+      if(this.props.status==="Completed")
+        document.getElementById("2").style.display="block";
+      else
+      document.getElementById("2").style.display="none";
       // this.sendingData(e);
       var jobID = this.props.jobNum;
       const url = 'http://localhost:8080/job/' + jobID;
       axios.get(url).then( 
         (response) => { 
             var result = response.data; 
-            this.sendingData(["plot",response.data]);
+            this.sendingData(["plot",response.data,this]);
             // console.log("Clicked JobID :" + result);
         }, 
         (error) => { 
@@ -180,7 +183,7 @@ class Job extends React.Component {
                       <div>Server:  {this.props.server}</div>
                       <div>Status:  {this.props.status}</div>
                       </div>
-                      {
+                      {/* {
                       this.props.status==="Completed"?
                       <div class="dropdown col">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -194,7 +197,7 @@ class Job extends React.Component {
                         </div>
                       </div>:
                       <div></div>
-                      }
+                      } */}
 
                     </div>
                     </div>
