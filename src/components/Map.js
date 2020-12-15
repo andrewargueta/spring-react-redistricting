@@ -98,8 +98,18 @@ class Map extends Component {
              d === 'Average Districting' ? "skyblue" :
              d === 'Min Districting' ? "palegreen" :
              d === 'Max Districting' ? "orange" :
-             d === 'Random Districting' ? "darksalmon" :
-                          "#ff7f00";
+             d === 'Random Districting' ? "darksalmon":
+             d === '(45%, 100%]' ? "#ff0000":
+             d === '(30%, 45%]' ? "#ff4628":
+             d === '(15%, 30%]' ? "#ff6846":
+             d === '(5%, 15%]' ? "#ff8464":
+             d === '(-5%, 5%]' ? "#ff9e81":
+             d === '(-15%, -5%]' ? "#ffb7a0":
+             d === '(-30%, -15%]' ? "#ffcfbf":
+             d === '(-45%, -30%]' ? "#ffe7de":
+             d === '(-100%, -45%]' ? "white":
+             "green";
+                          
   }
     if (this.state.map) return;
     let map = L.map(id, config.params);
@@ -108,10 +118,9 @@ class Map extends Component {
     this.setState({ map, tileLayer });
     var legend = L.control({position: 'bottomleft'});
     legend.onAdd = function (map) {
-
     var div = L.DomUtil.create('div', 'info legend');
-    var labels = ['<strong>Categories</strong>'];
-    var categories = ['Current Districting','Precincts','Average Districting','Min Districting','Max Districting',' Random Districting'];
+    var labels = ['<strong>Layers Legend</strong>'];
+    var categories = ['Current Districting','Precincts','Average Districting','Min Districting','Max Districting','Random Districting'];
 
     for (var i = 0; i < categories.length; i++) {
 
@@ -125,6 +134,25 @@ class Map extends Component {
     return div;
     };
     legend.addTo(map);
+
+    var demographic = L.control({position: 'bottomright'});
+    demographic.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'info legend');
+    var labels = ['<strong>Heat Map</strong>'];
+    var categories = ['(45%, 100%]','(30%, 45%]','(15%, 30%]','(5%, 15%]','(-5%, 5%]', '(-15%, -5%]', '(-30%, -15%]' ,'(-45%, -30%]', '(-100%, -45%]'];
+
+    for (var i = 0; i < categories.length; i++) {
+
+            div.innerHTML += 
+            labels.push(
+                '<div class="circle col" style="background:' + getColor(categories[i]) + '"></div> ' +
+            (categories[i] ? categories[i] : '+'));
+
+        }
+        div.innerHTML = labels.join('<br>');
+    return div;
+    };
+    demographic.addTo(map);
   }
   generatePrecinctLayer(response){
     var geojsonResponse = "{\"type\":\"FeatureCollection\", \"features\": [";
@@ -550,6 +578,7 @@ class Map extends Component {
   handleAverageView=()=>{
     var map = this.state.map;
     var tileLayer = this.state.tileLayer;
+    
     map.eachLayer(function (layer) {
       if(layer !== tileLayer){
         map.removeLayer(layer);
