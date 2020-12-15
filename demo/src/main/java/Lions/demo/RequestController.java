@@ -125,6 +125,7 @@ public class RequestController {
             jobHandler.updateStatus(job.getJobId(), "Completed");
         }else{
             seaWulfHandler.runSeaWulfJob(job.getJobId(), param, selectedState);
+            System.out.println("dada");
         }
         // jobHandler.generateJobSummary(job);
         return job;
