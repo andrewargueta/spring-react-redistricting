@@ -901,6 +901,10 @@ class Map extends Component {
               <li id = '1' class="active"><a data-toggle="tab" href="#home" onClick={this.showMap}>Map</a></li>
               <li id = '2'><a data-toggle="tab" href="#menu1"  onClick={this.showPlot} >Plot</a></li>
         </ul>    
+       { this.state.currentJob.state?
+        <div>{"Current Selected Job: "+ this.state.currentJob.state.jobNum}</div>
+        :
+        <div></div>}
       <div class="tab-content">
         <div id="home" class="tab-pane fade in active" >
           <div ref={(node) => this._mapNode = node} id="map">
