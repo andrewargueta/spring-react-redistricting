@@ -76,7 +76,8 @@ public class SeaWulfHandler {
     public void runSeaWulfJob(int jobId, InputParam config, State selectedState){
         System.out.println("Seawulf Run");
         try {
-            ProcessBuilder pb = new ProcessBuilder("bash", "demo/src/main/resources/runSeawulf.sh", String.valueOf(jobId), String.valueOf(config.getNumOfPlans()), String.valueOf(config.getPopulationVariation()), String.valueOf(config.getState()));
+            System.out.println(String.valueOf(config.getCompactness()));
+            ProcessBuilder pb = new ProcessBuilder("bash", "demo/src/main/resources/runSeawulf.sh", String.valueOf(jobId), String.valueOf(config.getNumOfPlans()), String.valueOf(config.getPopulationVariation()), String.valueOf(config.getCompactness()), String.valueOf(config.getState()));
             pb.redirectErrorStream(true);
             Process process = pb.start();
             map.put(jobId, getBatchId(process));
@@ -85,7 +86,7 @@ public class SeaWulfHandler {
             // pb2.redirectErrorStream(true);
             // Process process2 = pb2.start();
             // printProcessOutput(process2);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

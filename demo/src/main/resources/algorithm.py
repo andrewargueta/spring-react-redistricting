@@ -219,7 +219,7 @@ def main():
         numOfDistrict = 4
         jsonpath += "mississippi.json"
     elif state == "Texas":
-        numOfDistrict = 36
+        numOfDistrict = 32
         jsonpath += "texas.json"
     elif state == "Alabama":
         numOfDistrict = 7
