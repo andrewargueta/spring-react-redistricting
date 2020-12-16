@@ -608,6 +608,7 @@ class Map extends Component {
     }
     else{
       this.setState({currentPrecinctLayer: null});
+      this.setState({currentPrecinct: null});
       // precinctGeojson=null;
     }
     // console.log(this.state, 'precinct');
