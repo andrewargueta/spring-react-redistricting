@@ -843,10 +843,10 @@ class Map extends Component {
       var x=[];
       var y=[];
       
-      data[1].sort((a, b) => (a.median > b.median) ? 1 : -1)
+      data[1].sort((a, b) => (a.median > b.median) ? 1 : -1);
+      
       for(var i =0; i<data[1].length;i++){
         var distrNum=i+1;
-      
         y = y.concat([data[1][i].min , data[1][i].median, data[1][i].max, data[1][i].q1, data[1][i].q3])
         x = x.concat(Array(5).fill((distrNum).toString()));
       }
@@ -858,7 +858,6 @@ class Map extends Component {
         marker: {color: '#FF4136'},
         type: 'box'
     };
-    console.log(data[2]);
     var old_y=[];
     var old_x=[];
     if(data[2].props.state === "Mississippi"){
@@ -894,7 +893,7 @@ class Map extends Component {
       }
       
     }
-    
+    old_y = old_y.sort(function (a, b) {  return a - b;  });
     var trace2= {
       y: old_y ,/*min  ?? ?? max*/
       x: old_x,
